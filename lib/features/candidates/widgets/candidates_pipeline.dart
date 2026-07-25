@@ -1,8 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'dart:async';
 
-class CandidatesPipeline extends StatelessWidget {
+class CandidatesPipeline extends StatefulWidget {
   const CandidatesPipeline({super.key});
+
+  @override
+  State<CandidatesPipeline> createState() => _CandidatesPipelineState();
+}
+
+class _CandidatesPipelineState extends State<CandidatesPipeline> {
+  static bool _hasShownHint = false;
+  bool _isHintVisible = false;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (!_hasShownHint) {
+      _hasShownHint = true;
+      _isHintVisible = true;
+      
+      // Auto-hide the hint after 3 seconds
+      Timer(const Duration(seconds: 3), () {
+        if (mounted) {
+          setState(() {
+            _isHintVisible = false;
+          });
+        }
+      });
+      
+      // Smooth peek animation to indicate scrollability
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          Future.delayed(const Duration(milliseconds: 600), () {
+            if (mounted && _scrollController.hasClients) {
+              _scrollController.animateTo(
+                80.0,
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeOutCubic,
+              ).then((_) {
+                if (mounted && _scrollController.hasClients) {
+                  _scrollController.animateTo(
+                    0.0,
+                    duration: const Duration(milliseconds: 600),
+                    curve: Curves.easeInCubic,
+                  );
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +79,82 @@ class CandidatesPipeline extends StatelessWidget {
         // ===== BACKEND TODO =====
         // TODO: Pipeline backend se sync hogi.
         AppCard(
-          padding: const EdgeInsets.all(24),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildPipelineStage(context, "Applied", 124, Colors.grey, isFirst: true),
-                _buildPipelineStage(context, "Shortlisted", 45, Colors.blue),
-                _buildPipelineStage(context, "Interview", 12, Colors.orange),
-                _buildPipelineStage(context, "Selected", 3, Colors.green),
-                _buildPipelineStage(context, "Rejected", 86, Colors.redAccent, isLast: true),
-              ],
-            ),
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Fade Gradient Mask
+              ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return const LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.white, 
+                      Colors.white, 
+                      Colors.transparent
+                    ],
+                    stops: [0.0, 0.9, 1.0],
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.dstIn,
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: false,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildPipelineStage(context, "Applied", 124, Colors.grey, isFirst: true),
+                        _buildPipelineStage(context, "Shortlisted", 45, Colors.blue),
+                        _buildPipelineStage(context, "Interview", 12, Colors.orange),
+                        _buildPipelineStage(context, "Selected", 3, Colors.green),
+                        _buildPipelineStage(context, "Rejected", 86, Colors.redAccent, isLast: true),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              
+              // Swipe Hint Overlay
+              IgnorePointer(
+                child: AnimatedOpacity(
+                  opacity: _isHintVisible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 400),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.9),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.2),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.arrow_back_ios_rounded, size: 12, color: Colors.white),
+                        const SizedBox(width: 8),
+                        const Text(
+                          "Swipe to view more",
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: Colors.white),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -128,3 +248,4 @@ class CandidatesPipeline extends StatelessWidget {
     );
   }
 }
+

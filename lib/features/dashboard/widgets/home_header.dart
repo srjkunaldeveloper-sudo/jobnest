@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:jobnest/core/constants/app_spacing.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -66,11 +65,15 @@ class HomeHeader extends StatelessWidget {
                       AppSpacing.h4,
                       Row(
                         children: [
-                          Text(
-                            "Tech Innovators Inc.",
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.w600,
+                          Flexible(
+                            child: Text(
+                              "Tech Innovators Inc.",
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Padding(
@@ -80,10 +83,14 @@ class HomeHeader extends StatelessWidget {
                               backgroundColor: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                             ),
                           ),
-                          Text(
-                            "$dateStr • $timeStr",
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                          Flexible(
+                            child: Text(
+                              "$dateStr • $timeStr",
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],

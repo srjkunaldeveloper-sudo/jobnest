@@ -5,7 +5,6 @@ import 'package:jobnest/features/candidates/widgets/candidates_smart_search.dart
 import 'package:jobnest/features/candidates/widgets/candidates_filters.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_overview.dart';
 import 'package:jobnest/features/candidates/widgets/candidate_list_card.dart';
-
 import 'package:jobnest/features/candidates/widgets/candidates_pipeline.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_auto_screening.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_advanced_filters.dart';
@@ -20,12 +19,10 @@ class CandidatesScreen extends StatefulWidget {
 
 class _CandidatesScreenState extends State<CandidatesScreen> {
   // ===== BACKEND TODO =====
-  // TODO: Loading state, error state, and data will be fetched here.
-  final bool _isLoading = false; // Set to true to see Skeletons
-  final bool _hasCandidates = true; // Set to false to see Empty State
-  
-  // Dummy selection state for Bulk Actions
-  final bool _isSelectionMode = true; // Forced true for prototyping
+  // TODO: Future me selected candidate IDs backend se maintain honge.
+  final bool _isLoading = false; 
+  final bool _hasCandidates = true; 
+  int _selectedCandidates = 0; 
 
   void _showAdvancedFilters() {
     showModalBottomSheet(
@@ -40,73 +37,142 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CandidatesHeader(),
-              const CandidatesSmartSearch(),
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Expanded(child: CandidatesFilters()),
-                  IconButton(
-                    onPressed: _showAdvancedFilters,
-                    icon: const Icon(Icons.tune_rounded),
-                    style: IconButton.styleFrom(
-                      backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: theme.colorScheme.surface,
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final double screenWidth = constraints.maxWidth;
+            
+            // Responsive Breakpoints
+            final bool isMobile = screenWidth < 600;
+            final bool isTablet = screenWidth >= 600 && screenWidth < 1024;
+            final bool isDesktop = screenWidth >= 1024;
+            
+            double contentMaxWidth = screenWidth;
+            if (isDesktop) {
+              contentMaxWidth = 1200.0;
+            }
+
+            final double horizontalPadding = isMobile ? 16.0 : (isTablet ? 24.0 : 32.0);
+            
+            // Calculate exact width available for grid
+            double actualContentWidth = screenWidth > contentMaxWidth ? contentMaxWidth : screenWidth;
+            final double availableGridWidth = actualContentWidth - (horizontalPadding * 2);
+
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: contentMaxWidth),
+                        child: AnimatedPadding(
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeOutCubic,
+                          padding: EdgeInsets.only(
+                            left: horizontalPadding,
+                            right: horizontalPadding,
+                            top: 24.0,
+                            // Ensure bottom padding is large enough so content scrolls ABOVE the floating action bar
+                            bottom: _selectedCandidates > 0 
+                                ? 140.0 + MediaQuery.of(context).padding.bottom 
+                                : 32.0 + MediaQuery.of(context).padding.bottom,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const CandidatesHeader(),
+                              const SizedBox(height: 24),
+                              const CandidatesSmartSearch(),
+                              const SizedBox(height: 24),
+                              
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Expanded(child: CandidatesFilters()),
+                                  const SizedBox(width: 16),
+                                  IconButton(
+                                    onPressed: _showAdvancedFilters,
+                                    icon: const Icon(Icons.tune_rounded),
+                                    style: IconButton.styleFrom(
+                                      backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 32),
+
+                              const CandidatesPipeline(),
+                              const SizedBox(height: 32),
+
+                              const CandidatesOverview(),
+                              const SizedBox(height: 32),
+                              
+                              const CandidatesAutoScreening(),
+                              const SizedBox(height: 32),
+
+                              GestureDetector(
+                                onTap: () {
+                                  // Dummy toggle for prototyping
+                                  setState(() {
+                                    _selectedCandidates = _selectedCandidates == 0 ? 2 : 0;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 16.0),
+                                  child: Text(
+                                    "All Candidates",
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: -0.3,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              
+                              _isLoading
+                                ? _buildSkeletonGrid(availableGridWidth, isMobile, isTablet, isDesktop)
+                                : (!_hasCandidates
+                                    ? _buildEmptyState(context)
+                                    : _buildCandidateGrid(availableGridWidth, isMobile, isTablet, isDesktop)),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 32),
-
-              const CandidatesPipeline(),
-              const SizedBox(height: 32),
-
-              const CandidatesOverview(),
-              const SizedBox(height: 32),
-              
-              const CandidatesAutoScreening(),
-              const SizedBox(height: 32),
-
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: Text(
-                  "All Candidates",
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.3,
+                ),
+                
+                // Floating Bottom Action Bar
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeOutCubic,
+                  left: 0,
+                  right: 0,
+                  bottom: _selectedCandidates > 0 ? 0 : -120.0 - MediaQuery.of(context).padding.bottom,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 200),
+                    opacity: _selectedCandidates > 0 ? 1.0 : 0.0,
+                    child: _buildBulkActionBar(theme, isMobile),
                   ),
                 ),
-              ),
-              
-              if (_isLoading)
-                _buildSkeletonGrid()
-              else if (!_hasCandidates)
-                _buildEmptyState(context)
-              else
-                _buildCandidateGrid(),
-                
-              const SizedBox(height: 120), // Extra padding for bottom bar
-            ],
-          ),
+              ],
+            );
+          },
         ),
       ),
-      bottomNavigationBar: _isSelectionMode ? _buildBulkActionBar(theme) : null,
     );
   }
 
-  Widget _buildBulkActionBar(ThemeData theme) {
-    // ===== BACKEND TODO =====
-    // TODO: Bulk Actions API connect hongi.
+  Widget _buildBulkActionBar(ThemeData theme, bool isMobile) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: EdgeInsets.only(
+        left: isMobile ? 16 : 24, 
+        right: isMobile ? 16 : 24, 
+        top: 16, 
+        bottom: MediaQuery.of(context).padding.bottom + 16,
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
         boxShadow: [
@@ -117,33 +183,71 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
           ),
         ],
       ),
-      child: SafeArea(
-        child: Row(
-          children: [
-            Text(
-              "2 Selected",
-              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+      child: Row(
+        children: [
+          Text(
+            "$_selectedCandidates Selected",
+            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const Spacer(),
+          Flexible(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      // TODO: Bulk Shortlist API yaha connect hogi.
+                    },
+                    icon: const Icon(Icons.check_rounded, color: Colors.green),
+                    label: const Text("Shortlist", style: TextStyle(color: Colors.green)),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton.icon(
+                    onPressed: () {
+                      // TODO: Bulk Reject API yaha connect hogi.
+                    },
+                    icon: const Icon(Icons.close_rounded, color: Colors.red),
+                    label: const Text("Reject", style: TextStyle(color: Colors.red)),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton.icon(
+                    onPressed: () {
+                      // TODO: Bulk Message API future integration.
+                    },
+                    icon: const Icon(Icons.chat_bubble_outline_rounded),
+                    label: const Text("Message"),
+                  ),
+                  const SizedBox(width: 8),
+                  PopupMenuButton<String>(
+                    tooltip: "More Actions",
+                    onSelected: (value) {
+                      // TODO: Bulk AI Actions future me add hongi.
+                    },
+                    itemBuilder: (context) => [
+                      // Reserved for future actions: Move to Interview, Assign Recruiter, Send Email, Generate AI Summary, Export, Schedule Interview
+                      const PopupMenuItem(
+                        value: "more",
+                        child: Text("More coming soon..."),
+                      ),
+                    ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.more_horiz_rounded, color: theme.colorScheme.primary),
+                          const SizedBox(width: 8),
+                          Text("More", style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const Spacer(),
-            TextButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.check_rounded, color: Colors.green),
-              label: const Text("Shortlist", style: TextStyle(color: Colors.green)),
-            ),
-            const SizedBox(width: 8),
-            TextButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.close_rounded, color: Colors.red),
-              label: const Text("Reject", style: TextStyle(color: Colors.red)),
-            ),
-            const SizedBox(width: 8),
-            TextButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.chat_bubble_outline_rounded),
-              label: const Text("Message"),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -152,7 +256,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
     final theme = Theme.of(context);
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(40.0),
+        padding: const EdgeInsets.symmetric(vertical: 64.0, horizontal: 16.0),
         child: Column(
           children: [
             Icon(Icons.inbox_rounded, size: 80, color: theme.dividerColor),
@@ -167,6 +271,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
             const SizedBox(height: 8),
             Text(
               "Try adjusting your advanced filters or search terms.",
+              textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -182,99 +287,87 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
     );
   }
 
-  Widget _buildSkeletonGrid() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double cardWidth;
-        if (constraints.maxWidth > 1000) {
-          cardWidth = (constraints.maxWidth - 32) / 3;
-        } else if (constraints.maxWidth > 650) {
-          cardWidth = (constraints.maxWidth - 16) / 2;
-        } else {
-          cardWidth = constraints.maxWidth;
-        }
+  Widget _buildSkeletonGrid(double availableWidth, bool isMobile, bool isTablet, bool isDesktop) {
+    int crossAxisCount = isDesktop ? 3 : (isTablet ? 2 : 1);
+    double spacing = isMobile ? 16.0 : 24.0;
+    
+    // Ensure cardWidth never goes negative
+    double cardWidth = (availableWidth - (spacing * (crossAxisCount - 1))) / crossAxisCount;
+    if (cardWidth < 0) cardWidth = 100;
 
-        return Wrap(
-          spacing: 16,
-          runSpacing: 16,
-          children: List.generate(4, (index) {
-            return SizedBox(
-              width: cardWidth,
-              child: const SkeletonLoaderCard(),
-            );
-          }),
+    return Wrap(
+      spacing: spacing,
+      runSpacing: spacing,
+      children: List.generate(4, (index) {
+        return SizedBox(
+          width: cardWidth,
+          child: const SkeletonLoaderCard(),
         );
-      },
+      }),
     );
   }
 
-  Widget _buildCandidateGrid() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double cardWidth;
-        if (constraints.maxWidth > 1000) {
-          cardWidth = (constraints.maxWidth - 32) / 3;
-        } else if (constraints.maxWidth > 650) {
-          cardWidth = (constraints.maxWidth - 16) / 2;
-        } else {
-          cardWidth = constraints.maxWidth;
-        }
+  Widget _buildCandidateGrid(double availableWidth, bool isMobile, bool isTablet, bool isDesktop) {
+    int crossAxisCount = isDesktop ? 3 : (isTablet ? 2 : 1);
+    double spacing = isMobile ? 16.0 : 24.0;
+    
+    // Ensure cardWidth never goes negative
+    double cardWidth = (availableWidth - (spacing * (crossAxisCount - 1))) / crossAxisCount;
+    if (cardWidth < 0) cardWidth = 100;
 
-        return Wrap(
-          spacing: 16,
-          runSpacing: 16,
-          children: [
-            SizedBox(
-              width: cardWidth,
-              child: const CandidateListCard(
-                name: "Rahul Sharma",
-                role: "Senior Flutter Developer",
-                location: "Delhi, India",
-                experience: "5 Years",
-                skills: ["Flutter", "Dart", "Firebase", "BLoC"],
-                matchPercentage: 94,
-                score: 8.5,
-              ),
-            ),
-            SizedBox(
-              width: cardWidth,
-              child: const CandidateListCard(
-                name: "Priya Singh",
-                role: "Python Backend Engineer",
-                location: "Bangalore, India",
-                experience: "4 Years",
-                skills: ["Python", "Django", "PostgreSQL", "AWS"],
-                matchPercentage: 88,
-                score: 7.9,
-              ),
-            ),
-            SizedBox(
-              width: cardWidth,
-              child: const CandidateListCard(
-                name: "Amit Patel",
-                role: "UI/UX Designer",
-                location: "Mumbai, India",
-                experience: "3 Years",
-                skills: ["Figma", "Prototyping", "Wireframing"],
-                matchPercentage: 82,
-                score: 7.2,
-              ),
-            ),
-            SizedBox(
-              width: cardWidth,
-              child: const CandidateListCard(
-                name: "Sneha Reddy",
-                role: "Frontend Developer",
-                location: "Remote",
-                experience: "2 Years",
-                skills: ["React", "JavaScript", "HTML/CSS"],
-                matchPercentage: 76,
-                score: 6.8,
-              ),
-            ),
-          ],
-        );
-      },
+    return Wrap(
+      spacing: spacing,
+      runSpacing: spacing,
+      children: [
+        SizedBox(
+          width: cardWidth,
+          child: const CandidateListCard(
+            name: "Rahul Sharma",
+            role: "Senior Flutter Developer",
+            location: "Delhi, India",
+            experience: "5 Years",
+            skills: ["Flutter", "Dart", "Firebase", "BLoC"],
+            matchPercentage: 94,
+            score: 8.5,
+          ),
+        ),
+        SizedBox(
+          width: cardWidth,
+          child: const CandidateListCard(
+            name: "Priya Singh",
+            role: "Python Backend Engineer",
+            location: "Bangalore, India",
+            experience: "4 Years",
+            skills: ["Python", "Django", "PostgreSQL", "AWS"],
+            matchPercentage: 88,
+            score: 7.9,
+          ),
+        ),
+        SizedBox(
+          width: cardWidth,
+          child: const CandidateListCard(
+            name: "Amit Patel",
+            role: "UI/UX Designer",
+            location: "Mumbai, India",
+            experience: "3 Years",
+            skills: ["Figma", "Prototyping", "Wireframing"],
+            matchPercentage: 82,
+            score: 7.2,
+          ),
+        ),
+        SizedBox(
+          width: cardWidth,
+          child: const CandidateListCard(
+            name: "Sneha Reddy",
+            role: "Frontend Developer",
+            location: "Remote",
+            experience: "2 Years",
+            skills: ["React", "JavaScript", "HTML/CSS"],
+            matchPercentage: 76,
+            score: 6.8,
+          ),
+        ),
+      ],
     );
   }
 }

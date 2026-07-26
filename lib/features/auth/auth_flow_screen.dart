@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:jobnest/core/services/session_manager.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/features/auth/login_screen.dart';
 import 'package:jobnest/features/auth/forgot_password_screen.dart';
@@ -28,10 +29,10 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
   AuthStep _currentStep = AuthStep.login;
   String _contactInfo = "";
 
-  void _navigateTo(AuthStep step, {String? contactInfo}) {
+  void _navigateTo(AuthStep step, {String contactInfo = ""}) {
     setState(() {
       _currentStep = step;
-      if (contactInfo != null) {
+      if (contactInfo.isNotEmpty) {
         _contactInfo = contactInfo;
       }
     });
@@ -53,7 +54,7 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
         case AuthStep.success:
           _currentStep = AuthStep.login;
           break;
-        default:
+        case AuthStep.login:
           break;
       }
     });
@@ -81,11 +82,14 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
           contactInfo: _contactInfo,
           buttonText: "Verify & Login",
           onBack: _goBack,
-          onVerify: () {
+          onVerify: () async {
             // End of mobile flow
-            Navigator.pushReplacement(
+            await SessionManager.instance.setLoginState(true);
+            if (!mounted) return;
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (_) => const MainDashboard()),
+              (route) => false,
             );
           },
         );

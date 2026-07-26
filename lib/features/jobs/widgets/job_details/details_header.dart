@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:jobnest/core/models/recruitment_models.dart';
+import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 
 class DetailsHeader extends StatelessWidget {
   final String title;
@@ -8,6 +10,7 @@ class DetailsHeader extends StatelessWidget {
   final String salary;
   final String jobType;
   final String status;
+  final JobModel? job;
 
   const DetailsHeader({
     super.key,
@@ -17,12 +20,20 @@ class DetailsHeader extends StatelessWidget {
     required this.salary,
     required this.jobType,
     required this.status,
+    this.job,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bool isActive = status.toLowerCase() == "active";
+    final provider = context.watch<RecruitmentDataProvider>();
+    final JobModel? activeJob = job ?? provider.jobs.cast<JobModel?>().firstWhere(
+      (j) => j?.title == title && j?.company == company,
+      orElse: () => null,
+    );
+    final bool isBookmarked = activeJob?.isBookmarked ?? false;
+    final String displayStatus = activeJob?.status ?? status;
+    final String postedDate = activeJob?.postedDate ?? "2 days ago";
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,6 +58,7 @@ class DetailsHeader extends StatelessWidget {
                     "$company • $location",
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
@@ -54,54 +66,104 @@ class DetailsHeader extends StatelessWidget {
             ),
             Row(
               children: [
-                _buildIconButton(context, Icons.edit_rounded, () {}),
+                // Bookmark button (48dp touch target)
+                Semantics(
+                  label: isBookmarked ? "Remove Bookmark" : "Bookmark Job Requisition",
+                  button: true,
+                  child: _buildIconButton(
+                    context,
+                    isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                    () {
+                      if (activeJob != null) {
+                        provider.toggleBookmarkJob(activeJob.id);
+                      }
+                    },
+                    iconColor: isBookmarked ? theme.colorScheme.primary : theme.colorScheme.onSurface,
+                  ),
+                ),
                 const SizedBox(width: 8),
-                _buildIconButton(context, Icons.share_rounded, () {}),
+                Semantics(
+                  label: "Share Requisition",
+                  button: true,
+                  child: _buildIconButton(context, Icons.share_rounded, () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Job link copied to clipboard.")),
+                    );
+                  }),
+                ),
                 const SizedBox(width: 8),
-                _buildIconButton(context, Icons.more_vert_rounded, () {}),
+                Semantics(
+                  label: "More Actions",
+                  button: true,
+                  child: _buildIconButton(context, Icons.more_vert_rounded, () {}),
+                ),
               ],
             ),
           ],
         ),
         const SizedBox(height: 24),
         Wrap(
-          spacing: 16,
+          spacing: 14,
           runSpacing: 12,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             _buildInfoChip(context, Icons.monetization_on_rounded, salary),
-            _buildInfoChip(context, Icons.work_rounded, jobType),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: isActive ? Colors.green.withValues(alpha: 0.1) : Colors.red.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    isActive ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                    size: 16,
-                    color: isActive ? Colors.green : Colors.red,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    status,
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: isActive ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildInfoChip(context, Icons.work_outline_rounded, jobType),
+            _buildInfoChip(context, Icons.calendar_today_rounded, postedDate),
+            _buildStatusBadge(theme, displayStatus),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildIconButton(BuildContext context, IconData icon, VoidCallback onTap) {
+  Widget _buildStatusBadge(ThemeData theme, String statusStr) {
+    Color badgeColor = Colors.green;
+    IconData badgeIcon = Icons.check_circle_rounded;
+    final s = statusStr.toLowerCase();
+
+    if (s == "active" || s == "open") {
+      badgeColor = Colors.green;
+      badgeIcon = Icons.check_circle_rounded;
+    } else if (s == "hiring") {
+      badgeColor = Colors.blueAccent;
+      badgeIcon = Icons.group_add_rounded;
+    } else if (s == "paused") {
+      badgeColor = Colors.amber.shade700;
+      badgeIcon = Icons.pause_circle_filled_rounded;
+    } else if (s == "closed") {
+      badgeColor = Colors.redAccent;
+      badgeIcon = Icons.cancel_rounded;
+    } else if (s == "draft") {
+      badgeColor = Colors.blueGrey;
+      badgeIcon = Icons.edit_note_rounded;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: badgeColor.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: badgeColor.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(badgeIcon, size: 15, color: badgeColor),
+          const SizedBox(width: 6),
+          Text(
+            statusStr,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: badgeColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIconButton(BuildContext context, IconData icon, VoidCallback onTap, {Color? iconColor}) {
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -112,9 +174,10 @@ class DetailsHeader extends StatelessWidget {
         ),
       ),
       child: IconButton(
-        icon: Icon(icon, size: 20, color: theme.colorScheme.onSurface),
+        icon: Icon(icon, size: 20, color: iconColor ?? theme.colorScheme.onSurface),
         onPressed: onTap,
-        splashRadius: 20,
+        splashRadius: 24,
+        constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
       ),
     );
   }
@@ -126,6 +189,7 @@ class DetailsHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

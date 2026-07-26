@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-
+import 'package:jobnest/core/models/recruitment_models.dart';
+import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 import 'package:jobnest/features/jobs/widgets/wizard_steps/step1_basic_details.dart';
 import 'package:jobnest/features/jobs/widgets/wizard_steps/step2_ai_generator.dart';
 import 'package:jobnest/features/jobs/widgets/wizard_steps/step3_salary.dart';
@@ -24,10 +26,27 @@ class _CreateJobWizardState extends State<CreateJobWizard> {
       setState(() => _currentStep++);
     } else {
       // ===== BACKEND TODO =====
+      // TODO: Jobs API integration.
       // TODO: Publish button future me API call karega.
+      final provider = context.read<RecruitmentDataProvider>();
+      provider.addJob(
+        JobModel(
+          id: 'job_custom_${DateTime.now().millisecondsSinceEpoch}',
+          title: 'Senior Software Engineer',
+          company: 'TechCorp India',
+          location: 'Remote, India',
+          salary: '₹ 18 - 24 LPA',
+          jobType: 'Full Time',
+          applicationsCount: '0',
+          status: 'Open',
+          aiMatchScore: 95,
+          isUrgent: true,
+          postedDate: 'Posted Just Now',
+        ),
+      );
       Navigator.pop(context); // Close the wizard on finish
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Job Published Successfully!')),
+        const SnackBar(content: Text('Job Published Successfully! Synchronized across Dashboard & Search.')),
       );
     }
   }
@@ -86,8 +105,25 @@ class _CreateJobWizardState extends State<CreateJobWizard> {
             onPressed: () {
               // ===== UX TODO =====
               // Auto Save Draft (Dummy)
+              final provider = context.read<RecruitmentDataProvider>();
+              provider.addJob(
+                JobModel(
+                  id: 'job_draft_${DateTime.now().millisecondsSinceEpoch}',
+                  title: 'Draft Requisition',
+                  company: 'TechCorp India',
+                  location: 'Remote, India',
+                  salary: '₹ 10 - 15 LPA',
+                  jobType: 'Remote',
+                  applicationsCount: '0',
+                  status: 'Draft',
+                  aiMatchScore: 80,
+                  isUrgent: false,
+                  postedDate: 'Drafted Just Now',
+                ),
+              );
+              Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Draft Saved.')),
+                const SnackBar(content: Text('Draft Saved to Job Requisitions.')),
               );
             },
             child: const Text("Save Draft"),

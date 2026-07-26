@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 import 'dart:async';
 
 class CandidatesPipeline extends StatefulWidget {
-  const CandidatesPipeline({super.key});
+  final String activeStage;
+  final ValueChanged<String>? onStageSelected;
+
+  const CandidatesPipeline({
+    super.key,
+    this.activeStage = "All",
+    this.onStageSelected,
+  });
 
   @override
   State<CandidatesPipeline> createState() => _CandidatesPipelineState();
@@ -64,20 +73,47 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final provider = context.watch<RecruitmentDataProvider>();
+    final candidates = provider.candidates;
+
+    // Dynamically count candidates for each ATS Stage
+    int appliedCount = candidates.where((c) => c.stage.toLowerCase() == "applied").length;
+    int screeningCount = candidates.where((c) => c.stage.toLowerCase() == "screening").length;
+    int interviewCount = candidates.where((c) => c.stage.toLowerCase() == "interview").length;
+    int offerCount = candidates.where((c) => c.stage.toLowerCase() == "offer").length;
+    int hiredCount = candidates.where((c) => c.stage.toLowerCase() == "hired").length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Hiring Pipeline",
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.3,
-          ),
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 16,
+          runSpacing: 8,
+          children: [
+            Text(
+              "Hiring Pipeline (${candidates.length} Total)",
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                letterSpacing: -0.3,
+              ),
+            ),
+            if (widget.activeStage != "All")
+              TextButton.icon(
+                onPressed: () => widget.onStageSelected?.call("All"),
+                icon: const Icon(Icons.filter_alt_off_rounded, size: 16),
+                label: const Text("Show All Stages"),
+                style: TextButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                ),
+              ),
+          ],
         ),
         const SizedBox(height: 16),
         // ===== BACKEND TODO =====
         // TODO: Pipeline backend se sync hogi.
+        // TODO: Candidate stage update API.
         AppCard(
           padding: const EdgeInsets.symmetric(vertical: 24),
           child: Stack(
@@ -109,11 +145,11 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildPipelineStage(context, "Applied", 124, Colors.grey, isFirst: true),
-                        _buildPipelineStage(context, "Shortlisted", 45, Colors.blue),
-                        _buildPipelineStage(context, "Interview", 12, Colors.orange),
-                        _buildPipelineStage(context, "Selected", 3, Colors.green),
-                        _buildPipelineStage(context, "Rejected", 86, Colors.redAccent, isLast: true),
+                        _buildPipelineStage(context, "Applied", appliedCount, Colors.blueGrey, isFirst: true),
+                        _buildPipelineStage(context, "Screening", screeningCount, Colors.blueAccent),
+                        _buildPipelineStage(context, "Interview", interviewCount, Colors.deepPurpleAccent),
+                        _buildPipelineStage(context, "Offer", offerCount, Colors.amber.shade700),
+                        _buildPipelineStage(context, "Hired", hiredCount, Colors.green, isLast: true),
                       ],
                     ),
                   ),
@@ -161,91 +197,136 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
     );
   }
 
-  Widget _buildPipelineStage(BuildContext context, String title, int count, Color color, {bool isFirst = false, bool isLast = false}) {
+  Widget _buildPipelineStage(
+    BuildContext context,
+    String title,
+    int count,
+    Color color, {
+    bool isFirst = false,
+    bool isLast = false,
+  }) {
     final theme = Theme.of(context);
+    final bool isSelected = widget.activeStage.toLowerCase() == title.toLowerCase();
     
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (!isFirst)
-          Container(
-            width: 40,
-            height: 2,
-            margin: const EdgeInsets.only(top: 24),
-            color: theme.dividerColor,
-          ),
-        SizedBox(
-          width: 140,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurfaceVariant,
+    return Semantics(
+      label: "Stage $title with $count candidates. Tap to filter by $title.",
+      button: true,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!isFirst)
+            Container(
+              width: 32,
+              height: 2,
+              margin: const EdgeInsets.only(top: 24),
+              color: theme.dividerColor,
+            ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                if (widget.onStageSelected != null) {
+                  widget.onStageSelected!(isSelected ? "All" : title);
+                }
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                width: 150,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: isSelected ? color.withValues(alpha: 0.12) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(16),
+                  border: isSelected ? Border.all(color: color, width: 2.0) : null,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          title,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                            color: isSelected ? color : theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: color.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            count.toString(),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: color,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
+                    const SizedBox(height: 12),
+                    LinearProgressIndicator(
+                      value: 1.0,
+                      backgroundColor: theme.dividerColor.withValues(alpha: 0.3),
+                      valueColor: AlwaysStoppedAnimation<Color>(color),
+                      borderRadius: BorderRadius.circular(4),
+                      minHeight: isSelected ? 6 : 4,
                     ),
-                    child: Text(
-                      count.toString(),
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: color,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    _buildAvatarStack(theme, color, isSelected),
+                  ],
+                ),
               ),
-              const SizedBox(height: 12),
-              LinearProgressIndicator(
-                value: 1.0,
-                backgroundColor: theme.dividerColor.withValues(alpha: 0.5),
-                valueColor: AlwaysStoppedAnimation<Color>(color),
-                borderRadius: BorderRadius.circular(4),
-                minHeight: 4,
-              ),
-              const SizedBox(height: 16),
-              _buildAvatarStack(theme),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildAvatarStack(ThemeData theme) {
+  Widget _buildAvatarStack(ThemeData theme, Color stageColor, bool isSelected) {
     return SizedBox(
       height: 32,
       child: Stack(
         children: [
           Positioned(
             left: 0,
-            child: CircleAvatar(radius: 16, backgroundColor: theme.colorScheme.primaryContainer, child: Text("A", style: TextStyle(fontSize: 12, color: theme.colorScheme.onPrimaryContainer))),
+            child: CircleAvatar(
+              radius: 16,
+              backgroundColor: isSelected ? stageColor.withValues(alpha: 0.3) : theme.colorScheme.primaryContainer,
+              child: Text("A", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isSelected ? stageColor : theme.colorScheme.onPrimaryContainer)),
+            ),
           ),
           Positioned(
             left: 20,
-            child: CircleAvatar(radius: 16, backgroundColor: theme.colorScheme.secondaryContainer, child: Text("B", style: TextStyle(fontSize: 12, color: theme.colorScheme.onSecondaryContainer))),
+            child: CircleAvatar(
+              radius: 16,
+              backgroundColor: isSelected ? stageColor.withValues(alpha: 0.25) : theme.colorScheme.secondaryContainer,
+              child: Text("B", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isSelected ? stageColor : theme.colorScheme.onSecondaryContainer)),
+            ),
           ),
           Positioned(
             left: 40,
-            child: CircleAvatar(radius: 16, backgroundColor: theme.colorScheme.tertiaryContainer, child: Text("C", style: TextStyle(fontSize: 12, color: theme.colorScheme.onTertiaryContainer))),
+            child: CircleAvatar(
+              radius: 16,
+              backgroundColor: isSelected ? stageColor.withValues(alpha: 0.2) : theme.colorScheme.tertiaryContainer,
+              child: Text("C", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isSelected ? stageColor : theme.colorScheme.onTertiaryContainer)),
+            ),
           ),
           Positioned(
             left: 60,
-            child: CircleAvatar(radius: 16, backgroundColor: theme.colorScheme.surfaceContainerHighest, child: Text("+9", style: TextStyle(fontSize: 10, color: theme.colorScheme.onSurfaceVariant))),
+            child: CircleAvatar(
+              radius: 16,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+              child: Text("+", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurfaceVariant)),
+            ),
           ),
         ],
       ),
     );
   }
 }
-

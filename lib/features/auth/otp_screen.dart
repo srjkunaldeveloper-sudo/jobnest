@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
 
-import 'package:jobnest/core/constants/app_config.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/constants/app_text.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
@@ -35,6 +35,7 @@ class _OtpContentState extends State<OtpContent> {
   final FocusNode _otpFocusNode = FocusNode();
   
   bool _isLoading = false;
+  String? _otpError;
   int _timerSeconds = 30;
   Timer? _timer;
 
@@ -79,18 +80,44 @@ class _OtpContentState extends State<OtpContent> {
   }
 
   void _handleVerifyOtp() async {
-    // ===== FRONTEND MODE =====
-    // Abhi frontend mode me 6-digit strict validation bypass kar rahe hain taaki testing easy ho.
-    // ===== BACKEND TODO =====
-    // TODO: Yaha OTP verify hone wali API / Firebase check integrate karna.
-    // TODO: OTP verify hone ke baad token save karna padega.
-    if (!AppConfig.kFrontendMode) {
-      if (_otpController.text.length != 6) return;
+    final otp = _otpController.text.trim();
+
+    // Validate empty or partial OTP (must be exactly 6 digits)
+    if (otp.length != 6) {
+      setState(() {
+        _otpError = "Please enter the complete 6-digit OTP code";
+      });
+      return;
     }
-    
+
+    // Validate only numeric input
+    if (!RegExp(r'^[0-9]+$').hasMatch(otp)) {
+      setState(() {
+        _otpError = "Only numeric input is allowed";
+      });
+      return;
+    }
+
+    // Dummy OTP validation (for QA/testing: 123456 or 000000 is correct, anything else is incorrect)
+    if (otp != "123456" && otp != "000000") {
+      setState(() {
+        _otpError = "Invalid OTP code. Please try again (Use 123456)";
+      });
+      return;
+    }
+
     setState(() {
+      _otpError = null;
       _isLoading = true;
     });
+
+    // ===== BACKEND TODO =====
+    // TODO:
+    // OTP service integration.
+    // TODO:
+    // Expiry validation from backend.
+    // TODO:
+    // Rate limiting.
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -179,6 +206,14 @@ class _OtpContentState extends State<OtpContent> {
             defaultPinTheme: defaultPinTheme,
             focusedPinTheme: focusedPinTheme,
             submittedPinTheme: submittedPinTheme,
+            errorText: _otpError,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            onChanged: (value) {
+              if (_otpError != null) {
+                 setState(() => _otpError = null);
+              }
+            },
             onCompleted: (pin) => _handleVerifyOtp(),
           ),
         ),
@@ -198,6 +233,14 @@ class _OtpContentState extends State<OtpContent> {
                     _startTimer();
                     _otpController.clear();
                     _otpFocusNode.requestFocus();
+                    if (_otpError != null) {
+                      setState(() => _otpError = null);
+                    }
+                    // ===== BACKEND TODO =====
+                    // TODO:
+                    // Resend OTP API.
+                    // TODO:
+                    // Rate limiting.
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: theme.colorScheme.primary,

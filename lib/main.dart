@@ -6,14 +6,21 @@ import 'package:jobnest/features/jobs/jobs_screen.dart';
 import 'package:jobnest/features/candidates/candidates_screen.dart';
 import 'package:jobnest/features/services/services_screen.dart';
 import 'package:jobnest/features/profile/profile_screen.dart';
+import 'package:jobnest/features/services/tools/interview_assistant_screen.dart';
 import 'core/theme/app_theme.dart';
 import 'core/providers/theme_provider.dart';
-import 'features/auth/auth_flow_screen.dart';
+import 'core/providers/recruitment_data_provider.dart';
+import 'features/profile/providers/profile_data_provider.dart';
+import 'features/splash/splash_screen.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => RecruitmentDataProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileDataProvider()),
+      ],
       child: const JobNestApp(),
     ),
   );
@@ -36,7 +43,7 @@ class JobNestApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          home: const AuthFlowScreen(),
+          home: const SplashScreen(),
         );
       },
     );
@@ -59,6 +66,22 @@ class _MainDashboardState extends State<MainDashboard> {
             setState(() {
               _currentIndex = 4;
             });
+          },
+          onNavigateToJobs: () {
+            setState(() {
+              _currentIndex = 1;
+            });
+          },
+          onNavigateToCandidates: () {
+            setState(() {
+              _currentIndex = 2;
+            });
+          },
+          onNavigateToInterviews: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const InterviewAssistantScreen()),
+            );
           },
         ),
         const JobsScreen(),

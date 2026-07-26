@@ -8,6 +8,9 @@ class ProfileSubscriptionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // ===== BACKEND TODO =====
+    // TODO: Fetch recruiter profile.
+    // TODO: Subscription billing API sync.
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
@@ -19,12 +22,13 @@ class ProfileSubscriptionScreen extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 800),
           child: ListView(
+            physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
             children: [
               _buildCurrentPlanCard(context),
               const SizedBox(height: 32),
               Text(
-                "Billing History",
+                "Billing History & Invoices",
                 style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -32,11 +36,11 @@ class ProfileSubscriptionScreen extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 child: Column(
                   children: [
-                    _buildBillingTile(context, "Oct 01, 2026", "Enterprise Monthly", "\$499.00", "Paid"),
+                    _buildBillingTile(context, "Oct 01, 2026", "Enterprise Recruiter Suite - Monthly", "\$499.00", "Paid"),
                     Divider(height: 1, color: theme.dividerColor),
-                    _buildBillingTile(context, "Sep 01, 2026", "Enterprise Monthly", "\$499.00", "Paid"),
+                    _buildBillingTile(context, "Sep 01, 2026", "Enterprise Recruiter Suite - Monthly", "\$499.00", "Paid"),
                     Divider(height: 1, color: theme.dividerColor),
-                    _buildBillingTile(context, "Aug 01, 2026", "Enterprise Monthly", "\$499.00", "Paid"),
+                    _buildBillingTile(context, "Aug 01, 2026", "Enterprise Recruiter Suite - Monthly", "\$499.00", "Paid"),
                   ],
                 ),
               ),
@@ -61,90 +65,152 @@ class ProfileSubscriptionScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Current Plan", style: theme.textTheme.labelLarge),
-                  const SizedBox(height: 4),
+                  Text("CURRENT PLAN", style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
+                  const SizedBox(height: 6),
                   Text(
                     "Enterprise Edition",
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.1),
+                  color: Colors.green.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text(
-                  "Active",
-                  style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.check_circle_rounded, color: Colors.green, size: 16),
+                    SizedBox(width: 6),
+                    Text(
+                      "Active License",
+                      style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 13),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
-          const Divider(),
-          const SizedBox(height: 24),
-          Text("Included Features:", style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 20),
+          Divider(color: theme.dividerColor),
+          const SizedBox(height: 20),
+          Text("Included Enterprise Capabilities:", style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          _buildFeatureRow(context, "Unlimited active job postings"),
-          const SizedBox(height: 8),
-          _buildFeatureRow(context, "Advanced AI candidate matching"),
-          const SizedBox(height: 8),
-          _buildFeatureRow(context, "Full CRM & HRMS tool access"),
-          const SizedBox(height: 8),
-          _buildFeatureRow(context, "24/7 Priority Support"),
+          _buildFeatureRow(context, "Unlimited active requisition postings and candidate pipelines"),
+          const SizedBox(height: 12),
+          _buildFeatureRow(context, "Advanced AI candidate skill matching & automated ranking"),
+          const SizedBox(height: 12),
+          _buildFeatureRow(context, "Full access to ATS, CRM, HRMS & API Integration suites"),
+          const SizedBox(height: 12),
+          _buildFeatureRow(context, "24/7 Dedicated Recruiter Priority Support & SLA 99.99%"),
           const SizedBox(height: 32),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: () {},
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Connecting to billing management portal... (Dummy)")),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(0, 48),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  child: const Text("Manage Payment Method", style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
               ),
-              child: const Text("Upgrade to Ultimate"),
-            ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Upgrade options requested. An enterprise sales rep will contact you.")),
+                    );
+                  },
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(0, 48),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  child: const Text("Upgrade Seats", style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFeatureRow(BuildContext context, String text) {
+  Widget _buildFeatureRow(BuildContext context, String feature) {
     final theme = Theme.of(context);
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(Icons.check_circle_rounded, color: theme.colorScheme.primary, size: 20),
+        Icon(Icons.check_circle_outline_rounded, color: theme.colorScheme.primary, size: 20),
         const SizedBox(width: 12),
-        Text(text, style: theme.textTheme.bodyMedium),
+        Expanded(
+          child: Text(feature, style: const TextStyle(fontWeight: FontWeight.w500, height: 1.3, fontSize: 14)),
+        ),
       ],
     );
   }
 
-  Widget _buildBillingTile(BuildContext context, String date, String plan, String amount, String status) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(8),
+  Widget _buildBillingTile(BuildContext context, String date, String description, String amount, String status) {
+    final theme = Theme.of(context);
+    return Semantics(
+      label: "Invoice: $description on $date. Amount: $amount. Status: $status",
+      button: true,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 64),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          leading: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(Icons.receipt_long_rounded, color: theme.colorScheme.primary, size: 22),
+          ),
+          title: Text(description, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Text(date, style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 12)),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(amount, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  const SizedBox(height: 2),
+                  Text(status, style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 12)),
+                ],
+              ),
+              const SizedBox(width: 12),
+              IconButton(
+                icon: const Icon(Icons.download_rounded, size: 20),
+                tooltip: "Download Invoice PDF",
+                constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Downloading invoice for $date... (Dummy)")),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-        child: const Icon(Icons.receipt_long_rounded),
-      ),
-      title: Text(plan, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(date),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(amount, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(status, style: const TextStyle(color: Colors.green, fontSize: 12, fontWeight: FontWeight.bold)),
-        ],
       ),
     );
   }

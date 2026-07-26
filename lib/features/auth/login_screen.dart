@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 
 import 'package:jobnest/core/constants/app_config.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/services/session_manager.dart';
 import 'package:jobnest/core/widgets/app_button.dart';
 import 'package:jobnest/core/widgets/app_textfield.dart';
+import 'package:jobnest/features/auth/signup_screen.dart';
+import 'package:jobnest/main.dart';
 
 class LoginContent extends StatefulWidget {
   final VoidCallback onForgotPassword;
@@ -27,25 +30,15 @@ class _LoginContentState extends State<LoginContent> {
 
   void _handleSendOtp() {
     final number = _mobileController.text.trim();
-    
-    // ===== FRONTEND MODE =====
-    // Abhi frontend mode me validation skip kar rahe hain dummy testing ke liye.
-    // ===== BACKEND TODO =====
-    // TODO: Yaha par Firebase Phone Auth API call karni hai.
-    // TODO: API se success response aane ke baad hi OTP screen par bhejna.
-    if (!AppConfig.kFrontendMode) {
-      if (number.length != 10) {
-        setState(() {
-          _mobileError = "Enter a valid 10-digit mobile number";
-        });
-        return;
-      }
+    if (number.length != 10) {
+      setState(() {
+        _mobileError = "Please enter a valid 10-digit mobile number";
+      });
+      return;
     }
-    
     setState(() {
       _mobileError = null;
     });
-
     widget.onSendMobileOtp(number);
   }
 
@@ -58,85 +51,54 @@ class _LoginContentState extends State<LoginContent> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      key: const ValueKey('login_content'),
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        /// Premium Logo Area
+        /// Header Section
         Center(
-          child: Column(
-            children: [
-              Container(
-                height: 72,
-                width: 72,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: theme.colorScheme.primary,
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                      blurRadius: 16,
-                      offset: const Offset(0, 8),
-                    )
-                  ],
-                ),
-                child: Icon(
-                  Icons.work_rounded,
-                  color: theme.colorScheme.onPrimary,
-                  size: 32,
-                ),
-              ),
-              AppSpacing.h24,
-              Text(
-                "JobNest",
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontSize: 28,
-                  letterSpacing: -0.5,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              AppSpacing.h8,
-              Text(
-                "Hire smarter with AI powered recruitment",
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontSize: 15,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primaryContainer,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.work_rounded,
+              size: 40,
+              color: theme.colorScheme.primary,
+            ),
           ),
         ),
-        AppSpacing.h48,
+        AppSpacing.h24,
         Text(
-          "Welcome Back 👋",
+          AppConfig.appName,
+          textAlign: TextAlign.center,
           style: theme.textTheme.headlineMedium?.copyWith(
-            fontSize: 24,
-            letterSpacing: -0.3,
             fontWeight: FontWeight.bold,
+            color: theme.colorScheme.primary,
           ),
         ),
-        AppSpacing.h8,
+        AppSpacing.h4,
         Text(
-          "Login to continue to your dashboard",
+          "Manage jobs, candidates & interviews",
+          textAlign: TextAlign.center,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
         AppSpacing.h32,
-        
-        /// Segment Control
+
+        /// Toggle Tabs
         Container(
-          padding: const EdgeInsets.all(4),
+          height: 48,
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: theme.dividerColor,
-              width: 1,
-            ),
+            borderRadius: BorderRadius.circular(24),
           ),
+          padding: const EdgeInsets.all(4),
           child: Row(
             children: [
               Expanded(
@@ -145,29 +107,29 @@ class _LoginContentState extends State<LoginContent> {
                     isMobileLogin = true;
                     _mobileError = null;
                   }),
+                  behavior: HitTestBehavior.opaque,
                   child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeOut,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    duration: const Duration(milliseconds: 200),
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: isMobileLogin
-                          ? theme.colorScheme.surface
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: isMobileLogin ? theme.dividerColor : Colors.transparent,
-                      ),
+                      color: isMobileLogin ? theme.colorScheme.surface : Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: isMobileLogin
+                          ? [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.05),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ]
+                          : [],
                     ),
-                    child: Center(
-                      child: Text(
-                        "Mobile",
-                        style: TextStyle(
-                          color: isMobileLogin
-                              ? theme.colorScheme.primary
-                              : theme.colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                        ),
+                    child: Text(
+                      "Mobile OTP",
+                      style: TextStyle(
+                        fontWeight: isMobileLogin ? FontWeight.bold : FontWeight.normal,
+                        color: isMobileLogin ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+                        fontSize: 15,
                       ),
                     ),
                   ),
@@ -175,30 +137,33 @@ class _LoginContentState extends State<LoginContent> {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () => setState(() => isMobileLogin = false),
+                  onTap: () => setState(() {
+                    isMobileLogin = false;
+                    _mobileError = null;
+                  }),
+                  behavior: HitTestBehavior.opaque,
                   child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeOut,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    duration: const Duration(milliseconds: 200),
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: !isMobileLogin
-                          ? theme.colorScheme.surface
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: !isMobileLogin ? theme.dividerColor : Colors.transparent,
-                      ),
+                      color: !isMobileLogin ? theme.colorScheme.surface : Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: !isMobileLogin
+                          ? [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.05),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ]
+                          : [],
                     ),
-                    child: Center(
-                      child: Text(
-                        "Email",
-                        style: TextStyle(
-                          color: !isMobileLogin
-                              ? theme.colorScheme.primary
-                              : theme.colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                        ),
+                    child: Text(
+                      "Work Email",
+                      style: TextStyle(
+                        fontWeight: !isMobileLogin ? FontWeight.bold : FontWeight.normal,
+                        color: !isMobileLogin ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+                        fontSize: 15,
                       ),
                     ),
                   ),
@@ -270,17 +235,51 @@ class _LoginContentState extends State<LoginContent> {
                     AppSpacing.h16,
                     AppButton(
                       text: "Login",
-                      onPressed: () {
+                      onPressed: () async {
                         // ===== FRONTEND MODE =====
-                        // Abhi yaha dummy navigation/logic nahi hai direct auth flow switch karenge.
                         // ===== BACKEND TODO =====
                         // TODO: Login API trigger karni hai. Error response ko Snackbar me show karna.
+                        // TODO: Future authentication backend yaha connect hoga.
+                        // TODO: Session token validation backend se hogi.
+                        await SessionManager.instance.setLoginState(true);
+                        if (!context.mounted) return;
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (_) => const MainDashboard()),
+                          (route) => false,
+                        );
                       },
                     ),
                   ],
                 ),
         ),
-        
+        AppSpacing.h24,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Don't have an account? ",
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SignupScreen()),
+                );
+              },
+              child: Text(
+                "Sign Up",
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

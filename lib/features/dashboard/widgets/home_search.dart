@@ -1,134 +1,335 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/search/global_search_screen.dart';
 
-class HomeSearch extends StatelessWidget {
+class HomeSearch extends StatefulWidget {
   const HomeSearch({super.key});
+
+  @override
+  State<HomeSearch> createState() => _HomeSearchState();
+}
+
+class _HomeSearchState extends State<HomeSearch> {
+  bool _isHovered = false;
+  bool _isPressed = false;
+  bool _isMicPressed = false;
+  String? _selectedChip;
+
+  void _openSearch(BuildContext context, {String? initialQuery}) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 250),
+        pageBuilder: (context, animation, secondaryAnimation) => GlobalSearchScreen(initialQuery: initialQuery),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curve = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+          return FadeTransition(
+            opacity: curve,
+            child: ScaleTransition(
+              scale: Tween<double>(begin: 0.96, end: 1.0).animate(curve),
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _showVoiceSearchBottomSheet(BuildContext context) {
+    // TODO:
+    // Integrate speech_to_text package.
+
+    // TODO:
+    // AI semantic search.
+
+    // TODO:
+    // Backend search endpoint.
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        final theme = Theme.of(sheetContext);
+        return Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 4,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: theme.dividerColor,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Container(
+                height: 72,
+                width: 72,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.mic_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 36,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "Voice Search",
+                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Speak your query to search across jobs, candidates, or companies in real time.",
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              ),
+              const SizedBox(height: 32),
+              FilledButton.icon(
+                onPressed: () {
+                  Navigator.pop(sheetContext);
+                  // Simulate dummy voice recognition
+                  _openSearch(context, initialQuery: "Senior Flutter Developer");
+                },
+                icon: const Icon(Icons.graphic_eq_rounded),
+                label: const Text("Start Voice Search (Dummy)"),
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 52),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
+                ),
+              ),
+              const SizedBox(height: 12),
+              OutlinedButton(
+                onPressed: () => Navigator.pop(sheetContext),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 52),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
+                ),
+                child: const Text("Coming Soon"),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _onChipSelected(String label) {
+    setState(() => _selectedChip = label);
+    Future.delayed(const Duration(milliseconds: 180), () {
+      if (mounted) {
+        setState(() => _selectedChip = null);
+        _openSearch(context, initialQuery: label);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final provider = context.watch<RecruitmentDataProvider>();
     
+    // Combine trending and recent searches into Quick Search Chips
+    final List<String> quickChips = [
+      ...provider.trendingSearches.take(4),
+      ...provider.recentSearches.take(3),
+    ];
+    final uniqueChips = quickChips.toSet().toList();
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Search Bar
-          Container(
-            height: 56,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(28),
-              border: Border.all(
-                color: theme.dividerColor,
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.shadowColor.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                )
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
+          // Fully clickable Search Bar with Ripple Effect & Smooth Focus/Hover Animation
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            onEnter: (_) => setState(() => _isHovered = true),
+            onExit: (_) => setState(() => _isHovered = false),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOutCubic,
+              height: 56,
+              decoration: BoxDecoration(
+                color: _isPressed || _isHovered 
+                    ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4) 
+                    : theme.colorScheme.surface,
                 borderRadius: BorderRadius.circular(28),
-                onTap: () {
-                  // ===== BACKEND TODO =====
-                  // TODO: Yaha par Global Search screen open karna hai with AI filters.
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.auto_awesome_rounded,
-                        color: theme.colorScheme.primary,
-                        size: 24,
-                      ),
-                      AppSpacing.w12,
-                      Expanded(
-                        child: Text(
-                          "Search jobs, candidates, companies...",
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
+                border: Border.all(
+                  color: (_isHovered || _isPressed)
+                      ? theme.colorScheme.primary
+                      : theme.dividerColor.withValues(alpha: 0.8),
+                  width: (_isHovered || _isPressed) ? 1.5 : 1.0,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: (_isHovered || _isPressed)
+                        ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                        : theme.shadowColor.withValues(alpha: 0.06),
+                    blurRadius: (_isHovered || _isPressed) ? 20 : 16,
+                    offset: const Offset(0, 4),
+                  )
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(28),
+                  onHover: (hovered) => setState(() => _isHovered = hovered),
+                  onHighlightChanged: (pressed) => setState(() => _isPressed = pressed),
+                  onTap: () => _openSearch(context),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 18.0, right: 6.0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.search_rounded,
+                          color: (_isHovered || _isPressed)
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.onSurfaceVariant,
+                          size: 24,
+                        ),
+                        AppSpacing.w12,
+                        Expanded(
+                          child: Text(
+                            "Search jobs, candidates or companies",
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      AppSpacing.w8,
-                      Container(
-                        height: 32,
-                        width: 32,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          shape: BoxShape.circle,
+                        // Functional Microphone Button with 48dp minimum tap target & animation
+                        Semantics(
+                          label: "Voice Search",
+                          button: true,
+                          child: SizedBox(
+                            width: 48,
+                            height: 48,
+                            child: Center(
+                              child: GestureDetector(
+                                onTapDown: (_) => setState(() => _isMicPressed = true),
+                                onTapUp: (_) {
+                                  setState(() => _isMicPressed = false);
+                                  _showVoiceSearchBottomSheet(context);
+                                },
+                                onTapCancel: () => setState(() => _isMicPressed = false),
+                                child: AnimatedScale(
+                                  scale: _isMicPressed ? 0.88 : 1.0,
+                                  duration: const Duration(milliseconds: 150),
+                                  curve: Curves.easeOutCubic,
+                                  child: Container(
+                                    height: 38,
+                                    width: 38,
+                                    decoration: BoxDecoration(
+                                      color: theme.colorScheme.primaryContainer.withValues(alpha: 0.7),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      Icons.mic_rounded,
+                                      color: theme.colorScheme.primary,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                        child: Icon(
-                          Icons.mic_rounded,
-                          color: theme.colorScheme.onSurfaceVariant,
-                          size: 18,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
           
-          AppSpacing.h16,
-          
-          // Recent Searches
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildRecentSearchChip(context, "Senior Flutter Developer"),
-                AppSpacing.w8,
-                _buildRecentSearchChip(context, "Product Designer"),
-                AppSpacing.w8,
-                _buildRecentSearchChip(context, "NodeJS Backend"),
-              ],
+          if (uniqueChips.isNotEmpty) ...[
+            AppSpacing.h16,
+            // Quick Search Chips with horizontal scrolling & subtle selected state
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                children: uniqueChips.map((term) {
+                  final isSelected = _selectedChip == term;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: _buildQuickSearchChip(context, term, isSelected),
+                  );
+                }).toList(),
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );
   }
 
-  Widget _buildRecentSearchChip(BuildContext context, String label) {
+  Widget _buildQuickSearchChip(BuildContext context, String label, bool isSelected) {
     final theme = Theme.of(context);
     
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.5),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.history_rounded,
-            size: 14,
-            color: theme.colorScheme.onSurfaceVariant,
+    return Semantics(
+      label: "Search $label",
+      button: true,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOutCubic,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? theme.colorScheme.primaryContainer
+              : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected
+                ? theme.colorScheme.primary
+                : theme.dividerColor.withValues(alpha: 0.5),
+            width: isSelected ? 1.5 : 1.0,
           ),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: () => _onChipSelected(label),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    isSelected ? Icons.check_circle_rounded : Icons.trending_up_rounded,
+                    size: 16,
+                    color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    label,
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

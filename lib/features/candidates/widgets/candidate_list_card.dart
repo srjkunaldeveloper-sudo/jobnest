@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/features/candidates/candidate_profile_screen.dart';
 
 class CandidateListCard extends StatefulWidget {
@@ -10,6 +11,15 @@ class CandidateListCard extends StatefulWidget {
   final List<String> skills;
   final int matchPercentage;
   final double score;
+  final CandidateModel? candidate;
+  final bool isMultiSelectMode;
+  final bool isSelected;
+  final VoidCallback? onSelectChanged;
+  final VoidCallback? onBookmarkTap;
+  final ValueChanged<String>? onStageChange;
+  final VoidCallback? onScheduleInterviewTap;
+  final VoidCallback? onSendMessageTap;
+  final VoidCallback? onDeleteTap;
 
   const CandidateListCard({
     super.key,
@@ -20,6 +30,15 @@ class CandidateListCard extends StatefulWidget {
     required this.skills,
     required this.matchPercentage,
     required this.score,
+    this.candidate,
+    this.isMultiSelectMode = false,
+    this.isSelected = false,
+    this.onSelectChanged,
+    this.onBookmarkTap,
+    this.onStageChange,
+    this.onScheduleInterviewTap,
+    this.onSendMessageTap,
+    this.onDeleteTap,
   });
 
   @override
@@ -29,154 +48,377 @@ class CandidateListCard extends StatefulWidget {
 class _CandidateListCardState extends State<CandidateListCard> {
   bool _isHovered = false;
 
+  void _navigateToProfile() {
+    if (widget.isMultiSelectMode && widget.onSelectChanged != null) {
+      widget.onSelectChanged!();
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CandidateProfileScreen(
+          name: widget.name,
+          role: widget.role,
+          location: widget.location,
+          experience: widget.experience,
+          candidate: widget.candidate,
+        ),
+      ),
+    );
+  }
+
+  void _showStageSelectionDialog(BuildContext context) {
+    final theme = Theme.of(context);
+    final stages = ["Applied", "Screening", "Interview", "Offer", "Hired", "Rejected"];
+    final currentStage = widget.candidate?.stage ?? "Screening";
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Move Stage: ${widget.name}", style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: stages.map((stg) {
+            final isCur = stg.toLowerCase() == currentStage.toLowerCase();
+            return ListTile(
+              leading: Icon(
+                isCur ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded,
+                color: isCur ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+              ),
+              title: Text(stg, style: TextStyle(fontWeight: isCur ? FontWeight.bold : FontWeight.normal)),
+              onTap: () {
+                Navigator.pop(ctx);
+                if (widget.onStageChange != null) {
+                  widget.onStageChange!(stg);
+                }
+              },
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+    final String salary = widget.candidate?.expectedSalary ?? "₹ 18 - 22 LPA";
+    final String appliedDate = widget.candidate?.appliedDate ?? "2 days ago";
+    final String stage = widget.candidate?.stage ?? "Screening";
+    final double rating = widget.candidate?.rating ?? widget.score;
+    final String company = widget.candidate?.company ?? "TechCorp India";
+    final bool isBookmarked = widget.candidate?.isBookmarked ?? false;
+    final List<String> topSkills = widget.skills.take(3).toList();
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        transform: Matrix4.translationValues(0, _isHovered ? -2 : 0, 0),
+        transform: Matrix4.translationValues(0, _isHovered ? -3 : 0, 0),
         child: AppCard(
           padding: EdgeInsets.zero,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CandidateProfileScreen(
-                    name: widget.name,
-                    role: widget.role,
-                    location: widget.location,
-                    experience: widget.experience,
-                  ),
-                ),
-              );
-            },
-            borderRadius: BorderRadius.circular(20),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: 28,
-                        backgroundColor: theme.colorScheme.primaryContainer,
-                        child: Text(
-                          widget.name[0],
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            color: theme.colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.bold,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: widget.isSelected
+                  ? Border.all(color: theme.colorScheme.primary, width: 2.0)
+                  : null,
+            ),
+            child: InkWell(
+              onTap: _navigateToProfile,
+              borderRadius: BorderRadius.circular(20),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Top Row: Avatar, Name/Role/Company, Match Score, Checkbox/Bookmark/Overflow
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Profile Photo Avatar
+                        CircleAvatar(
+                          radius: 28,
+                          backgroundColor: theme.colorScheme.primaryContainer,
+                          child: Text(
+                            widget.name.isNotEmpty ? widget.name[0].toUpperCase() : "?",
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              color: theme.colorScheme.onPrimaryContainer,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.name,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
+                        const SizedBox(width: 14),
+
+                        // Full Name, Current Position & Company
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.name,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "${widget.role} at $company",
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  color: theme.colorScheme.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+
+                        // Match Percentage Badge
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurpleAccent.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: Colors.deepPurpleAccent.withValues(alpha: 0.25)),
+                          ),
+                          child: Text(
+                            "${widget.matchPercentage}% Match",
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: Colors.deepPurpleAccent,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Info Chips Row: Experience, Location, Expected Salary, Applied Date, Rating
+                    Wrap(
+                      spacing: 14,
+                      runSpacing: 10,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        _buildInfoItem(context, Icons.work_outline_rounded, widget.experience),
+                        _buildInfoItem(context, Icons.location_on_outlined, widget.location),
+                        _buildInfoItem(context, Icons.monetization_on_outlined, salary),
+                        _buildInfoItem(context, Icons.calendar_today_rounded, appliedDate),
+                        _buildInfoItem(context, Icons.star_rounded, "Rating: $rating", iconColor: Colors.amber.shade700),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Skills (Top 3) and Stage Badge
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: topSkills.map((s) => _buildSkillTag(context, s)).toList(),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        _buildStageBadge(theme, stage),
+                      ],
+                    ),
+                    const SizedBox(height: 18),
+                    const Divider(height: 1),
+                    const SizedBox(height: 14),
+
+                    // Bottom Action Row: Checkbox (Independent), View Profile, Quick Actions & Overflow Menu
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Selection Checkbox (48dp touch target, independent from card navigation)
+                        Semantics(
+                          label: widget.isSelected ? "Deselect candidate" : "Select candidate for bulk actions",
+                          checked: widget.isSelected,
+                          button: true,
+                          child: InkWell(
+                            onTap: () {
+                              if (widget.onSelectChanged != null) {
+                                widget.onSelectChanged!();
+                              }
+                            },
+                            borderRadius: BorderRadius.circular(24),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    widget.isSelected
+                                        ? Icons.check_box_rounded
+                                        : Icons.check_box_outline_blank_rounded,
+                                    size: 22,
+                                    color: widget.isSelected
+                                        ? theme.colorScheme.primary
+                                        : theme.colorScheme.onSurfaceVariant,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    widget.isSelected ? "Selected" : "Select",
+                                    style: theme.textTheme.labelSmall?.copyWith(
+                                      fontWeight: widget.isSelected ? FontWeight.bold : FontWeight.w500,
+                                      color: widget.isSelected
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              widget.role,
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.w600,
+                          ),
+                        ),
+
+                        // Actions: View Profile button & Overflow Menu
+                        Row(
+                          children: [
+                            OutlinedButton(
+                              onPressed: _navigateToProfile,
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                minimumSize: const Size(80, 40),
+                              ),
+                              child: const Text("View Profile", style: TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(width: 6),
+
+                            // Bookmark Button (48dp touch target)
+                            Semantics(
+                              label: isBookmarked ? "Remove Bookmark" : "Bookmark Candidate",
+                              button: true,
+                              child: IconButton(
+                                onPressed: () {
+                                  if (widget.onBookmarkTap != null) {
+                                    widget.onBookmarkTap!();
+                                  }
+                                },
+                                icon: Icon(
+                                  isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                                  size: 20,
+                                  color: isBookmarked ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+                                ),
+                                tooltip: "Bookmark",
+                                splashRadius: 24,
+                                constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                              ),
+                            ),
+
+                            // Overflow Menu (48dp touch target)
+                            Semantics(
+                              label: "More Candidate Actions",
+                              button: true,
+                              child: PopupMenuButton<String>(
+                                onSelected: (action) {
+                                  switch (action) {
+                                    case 'profile':
+                                      _navigateToProfile();
+                                      break;
+                                    case 'schedule':
+                                      if (widget.onScheduleInterviewTap != null) {
+                                        widget.onScheduleInterviewTap!();
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text("Scheduled Interview with ${widget.name}.")),
+                                        );
+                                      }
+                                      break;
+                                    case 'stage':
+                                      _showStageSelectionDialog(context);
+                                      break;
+                                    case 'message':
+                                      if (widget.onSendMessageTap != null) {
+                                        widget.onSendMessageTap!();
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text("Opening message thread with ${widget.name}.")),
+                                        );
+                                      }
+                                      break;
+                                    case 'delete':
+                                      if (widget.onDeleteTap != null) {
+                                        widget.onDeleteTap!();
+                                      }
+                                      break;
+                                  }
+                                },
+                                tooltip: "More Actions",
+                                icon: Icon(Icons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurface),
+                                constraints: const BoxConstraints(minWidth: 210),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                                itemBuilder: (context) => [
+                                  const PopupMenuItem(
+                                    value: 'profile',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.person_outline_rounded, size: 18),
+                                        SizedBox(width: 12),
+                                        Text("View Profile"),
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 'schedule',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.calendar_month_outlined, size: 18),
+                                        SizedBox(width: 12),
+                                        Text("Schedule Interview"),
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 'stage',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.swap_horiz_rounded, size: 18),
+                                        SizedBox(width: 12),
+                                        Text("Move Stage"),
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 'message',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.chat_bubble_outline_rounded, size: 18),
+                                        SizedBox(width: 12),
+                                        Text("Send Message"),
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuDivider(),
+                                  PopupMenuItem(
+                                    value: 'delete',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.archive_outlined, size: 18, color: theme.colorScheme.error),
+                                        const SizedBox(width: 12),
+                                        Text("Archive Candidate", style: TextStyle(color: theme.colorScheme.error)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.deepPurpleAccent.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          "${widget.matchPercentage}% Match",
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: Colors.deepPurpleAccent,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      _buildIconLabel(context, Icons.location_on_rounded, widget.location),
-                      const SizedBox(width: 16),
-                      _buildIconLabel(context, Icons.work_history_rounded, widget.experience),
-                      const SizedBox(width: 16),
-                      _buildIconLabel(context, Icons.star_rounded, "Score: ${widget.score}"),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: widget.skills.map((s) => _buildSkillTag(context, s)).toList(),
-                  ),
-                  const SizedBox(height: 20),
-                  const Divider(),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CandidateProfileScreen(
-                                name: widget.name,
-                                role: widget.role,
-                                location: widget.location,
-                                experience: widget.experience,
-                              ),
-                            ),
-                          );
-                        },
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
-                        child: const Text("View Profile"),
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.chat_bubble_outline_rounded, size: 20),
-                            tooltip: "Message",
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.close_rounded, size: 20, color: Colors.red),
-                            tooltip: "Reject",
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.check_rounded, size: 20, color: Colors.green),
-                            tooltip: "Shortlist",
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -185,17 +427,18 @@ class _CandidateListCardState extends State<CandidateListCard> {
     );
   }
 
-  Widget _buildIconLabel(BuildContext context, IconData icon, String label) {
+  Widget _buildInfoItem(BuildContext context, IconData icon, String label, {Color? iconColor}) {
     final theme = Theme.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: theme.colorScheme.onSurfaceVariant),
-        const SizedBox(width: 4),
+        Icon(icon, size: 15, color: iconColor ?? theme.colorScheme.onSurfaceVariant),
+        const SizedBox(width: 6),
         Text(
           label,
           style: theme.textTheme.labelMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ],
@@ -205,16 +448,67 @@ class _CandidateListCardState extends State<CandidateListCard> {
   Widget _buildSkillTag(BuildContext context, String label) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(6),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
       ),
       child: Text(
         label,
         style: theme.textTheme.labelSmall?.copyWith(
           color: theme.colorScheme.onSurface,
+          fontWeight: FontWeight.w600,
         ),
+      ),
+    );
+  }
+
+  Widget _buildStageBadge(ThemeData theme, String stage) {
+    Color badgeColor = Colors.blueAccent;
+    IconData badgeIcon = Icons.group_outlined;
+    final s = stage.toLowerCase();
+
+    if (s == "applied") {
+      badgeColor = Colors.blueGrey;
+      badgeIcon = Icons.inbox_rounded;
+    } else if (s == "screening") {
+      badgeColor = Colors.blueAccent;
+      badgeIcon = Icons.fact_check_outlined;
+    } else if (s == "interview") {
+      badgeColor = Colors.deepPurpleAccent;
+      badgeIcon = Icons.people_alt_outlined;
+    } else if (s == "offer") {
+      badgeColor = Colors.amber.shade700;
+      badgeIcon = Icons.verified_outlined;
+    } else if (s == "hired") {
+      badgeColor = Colors.green;
+      badgeIcon = Icons.check_circle_rounded;
+    } else if (s == "rejected") {
+      badgeColor = Colors.redAccent;
+      badgeIcon = Icons.cancel_outlined;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: badgeColor.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: badgeColor.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(badgeIcon, size: 14, color: badgeColor),
+          const SizedBox(width: 6),
+          Text(
+            stage,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: badgeColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

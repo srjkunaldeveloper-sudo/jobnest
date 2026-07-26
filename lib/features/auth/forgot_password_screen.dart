@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:jobnest/core/constants/app_config.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_button.dart';
 import 'package:jobnest/core/widgets/app_textfield.dart';
@@ -21,17 +20,35 @@ class ForgotPasswordContent extends StatefulWidget {
 
 class _ForgotPasswordContentState extends State<ForgotPasswordContent> {
   final TextEditingController _emailController = TextEditingController();
+  String? _emailError;
 
   void _handleSendOtp() {
     final email = _emailController.text.trim();
     
-    // ===== FRONTEND MODE =====
-    // Abhi frontend mode me email validation bypass kar rahe hain taaki flow test ho sake.
-    // ===== BACKEND TODO =====
-    // TODO: Yaha Forgot Password / OTP send karne wali API call hogi.
-    if (!AppConfig.kFrontendMode) {
-      if (email.isEmpty || !email.contains('@')) return;
+    if (email.isEmpty) {
+      setState(() {
+        _emailError = "Please enter your email address";
+      });
+      return;
     }
+    if (!email.contains('@') || !email.contains('.')) {
+      setState(() {
+        _emailError = "Please enter a valid email address";
+      });
+      return;
+    }
+
+    setState(() {
+      _emailError = null;
+    });
+
+    // ===== FRONTEND MODE =====
+    // ===== BACKEND TODO =====
+    // TODO:
+    // Forgot Password API future integration.
+    // TODO:
+    // Rate limiting and security validation.
+    // TODO: Yaha Forgot Password / OTP send karne wali API call hogi.
 
     widget.onSendOtp(email);
   }
@@ -88,11 +105,12 @@ class _ForgotPasswordContentState extends State<ForgotPasswordContent> {
           controller: _emailController,
           hint: "Email Address",
           keyboardType: TextInputType.emailAddress,
+          errorText: _emailError,
         ),
         
         AppSpacing.h24,
         AppButton(
-          text: "Send OTP",
+          text: "Continue",
           onPressed: _handleSendOtp,
         ),
         AppSpacing.h16,

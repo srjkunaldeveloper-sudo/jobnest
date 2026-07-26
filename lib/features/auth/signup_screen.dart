@@ -19,6 +19,8 @@ class _SignupScreenState extends State<SignupScreen> {
     if (_currentStep < 5) {
       setState(() => _currentStep++);
     } else {
+      // TODO: Future authentication backend yaha connect hoga.
+      // TODO: Session token validation backend se hogi.
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const AdvancedSetupScreen()),
@@ -148,6 +150,32 @@ class _SignupScreenState extends State<SignupScreen> {
         _buildTextField("Mobile Number", Icons.phone_outlined, prefix: "+91 "),
         const SizedBox(height: 16),
         _buildTextField("Password", Icons.lock_outline, isPassword: true),
+        const SizedBox(height: 24),
+        Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Already have an account? ",
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Login",
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

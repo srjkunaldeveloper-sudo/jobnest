@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 
 class HomeFocus extends StatelessWidget {
-  const HomeFocus({super.key});
+  final VoidCallback? onNavigateToJobs;
+  final VoidCallback? onNavigateToCandidates;
+  final VoidCallback? onNavigateToInterviews;
+
+  const HomeFocus({
+    super.key,
+    this.onNavigateToJobs,
+    this.onNavigateToCandidates,
+    this.onNavigateToInterviews,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final provider = context.watch<RecruitmentDataProvider>();
     
+    final int interviewsCount = provider.todayInterviewsCount;
+    final int candidatesCount = provider.newCandidatesCount;
+    final int jobsCount = provider.urgentJobsCount;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
       child: Column(
@@ -24,7 +41,7 @@ class HomeFocus extends StatelessWidget {
                 ),
               ),
               AppSpacing.w8,
-              Icon(
+              const Icon(
                 Icons.star_rounded,
                 color: Colors.amber,
                 size: 20,
@@ -32,30 +49,52 @@ class HomeFocus extends StatelessWidget {
             ],
           ),
           AppSpacing.h16,
+          
+          // Complete card with interactive rows, hover, pressed states and graceful empty handling
           AppCard(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildFocusItem(
-                  context,
-                  icon: Icons.calendar_month_rounded,
-                  iconColor: theme.colorScheme.primary,
-                  text: "3 interviews today",
+                // Row 1: Interviews Today
+                _FocusRowWidget(
+                  icon: interviewsCount > 0 ? Icons.calendar_month_rounded : Icons.check_circle_outline_rounded,
+                  iconColor: interviewsCount > 0 ? theme.colorScheme.primary : Colors.green,
+                  text: interviewsCount > 0 
+                      ? "$interviewsCount ${interviewsCount == 1 ? 'interview' : 'interviews'} today" 
+                      : "No interviews scheduled today — Tap to schedule",
+                  isEmpty: interviewsCount == 0,
+                  onTap: () {
+                    if (onNavigateToInterviews != null) onNavigateToInterviews!();
+                  },
                 ),
-                AppSpacing.h16,
-                _buildFocusItem(
-                  context,
-                  icon: Icons.group_add_rounded,
-                  iconColor: Colors.orange,
-                  text: "12 new candidates",
+                const Divider(height: 16, thickness: 0.5),
+                
+                // Row 2: New Candidates
+                _FocusRowWidget(
+                  icon: candidatesCount > 0 ? Icons.group_add_rounded : Icons.person_search_outlined,
+                  iconColor: candidatesCount > 0 ? Colors.orange : theme.colorScheme.secondary,
+                  text: candidatesCount > 0 
+                      ? "$candidatesCount new ${candidatesCount == 1 ? 'candidate' : 'candidates'}" 
+                      : "No new candidates — Tap to explore talent pool",
+                  isEmpty: candidatesCount == 0,
+                  onTap: () {
+                    if (onNavigateToCandidates != null) onNavigateToCandidates!();
+                  },
                 ),
-                AppSpacing.h16,
-                _buildFocusItem(
-                  context,
-                  icon: Icons.campaign_rounded,
-                  iconColor: theme.colorScheme.error,
-                  text: "2 urgent jobs",
+                const Divider(height: 16, thickness: 0.5),
+                
+                // Row 3: Urgent Jobs
+                _FocusRowWidget(
+                  icon: jobsCount > 0 ? Icons.campaign_rounded : Icons.work_outline_rounded,
+                  iconColor: jobsCount > 0 ? theme.colorScheme.error : theme.colorScheme.primary,
+                  text: jobsCount > 0 
+                      ? "$jobsCount urgent ${jobsCount == 1 ? 'job' : 'jobs'}" 
+                      : "No urgent requisitions — All job pipelines on track",
+                  isEmpty: jobsCount == 0,
+                  onTap: () {
+                    if (onNavigateToJobs != null) onNavigateToJobs!();
+                  },
                 ),
               ],
             ),
@@ -64,40 +103,107 @@ class HomeFocus extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildFocusItem(BuildContext context, {required IconData icon, required Color iconColor, required String text}) {
+class _FocusRowWidget extends StatefulWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String text;
+  final VoidCallback onTap;
+  final bool isEmpty;
+
+  const _FocusRowWidget({
+    required this.icon,
+    required this.iconColor,
+    required this.text,
+    required this.onTap,
+    this.isEmpty = false,
+  });
+
+  @override
+  State<_FocusRowWidget> createState() => _FocusRowWidgetState();
+}
+
+class _FocusRowWidgetState extends State<_FocusRowWidget> {
+  bool _isHovered = false;
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Row(
-      children: [
-        Container(
-          height: 36,
-          width: 36,
+    
+    return Semantics(
+      label: widget.text,
+      button: true,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => setState(() => _isHovered = true),
+        onExit: (_) => setState(() => _isHovered = false),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOutCubic,
+          constraints: const BoxConstraints(minHeight: 48),
           decoration: BoxDecoration(
-            color: iconColor.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(10),
+            color: _isHovered
+                ? theme.colorScheme.primaryContainer.withValues(alpha: 0.25)
+                : (_isPressed
+                    ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6)
+                    : Colors.transparent),
+            borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            icon,
-            color: iconColor,
-            size: 20,
-          ),
-        ),
-        AppSpacing.w16,
-        Expanded(
-          child: Text(
-            text,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onHover: (hovered) => setState(() => _isHovered = hovered),
+              onHighlightChanged: (pressed) => setState(() => _isPressed = pressed),
+              onTap: widget.onTap,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                child: AnimatedScale(
+                  scale: _isPressed ? 0.98 : 1.0,
+                  duration: const Duration(milliseconds: 120),
+                  curve: Curves.easeOutCubic,
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 38,
+                        width: 38,
+                        decoration: BoxDecoration(
+                          color: widget.iconColor.withValues(alpha: widget.isEmpty ? 0.08 : 0.15),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          widget.icon,
+                          color: widget.iconColor,
+                          size: 20,
+                        ),
+                      ),
+                      AppSpacing.w16,
+                      Expanded(
+                        child: Text(
+                          widget.text,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: widget.isEmpty ? FontWeight.w500 : FontWeight.w600,
+                            color: widget.isEmpty ? theme.colorScheme.onSurfaceVariant : theme.colorScheme.onSurface,
+                            fontStyle: widget.isEmpty ? FontStyle.italic : FontStyle.normal,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: (_isHovered || _isPressed) ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+                        size: 22,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),
-        Icon(
-          Icons.chevron_right_rounded,
-          color: theme.colorScheme.onSurfaceVariant,
-          size: 20,
-        ),
-      ],
+      ),
     );
   }
 }

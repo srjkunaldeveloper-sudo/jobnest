@@ -33,7 +33,7 @@ class PasswordSuccessContent extends StatelessWidget {
         ),
         AppSpacing.h32,
         Text(
-          "Password Updated\nSuccessfully",
+          "Password Reset Successfully",
           textAlign: TextAlign.center,
           style: theme.textTheme.headlineMedium?.copyWith(
             fontSize: 24,
@@ -52,7 +52,7 @@ class PasswordSuccessContent extends StatelessWidget {
         ),
         AppSpacing.h48,
         AppButton(
-          text: "Back to Login",
+          text: "Return to Login",
           onPressed: onBackToLogin,
         ),
       ],

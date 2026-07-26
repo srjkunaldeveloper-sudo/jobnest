@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_header.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_overview.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_pipeline.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_analytics.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_ai_insights.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_top_candidates.dart';
+import 'package:jobnest/features/jobs/widgets/wizard_steps/create_job_wizard.dart';
 
 class JobDetailsScreen extends StatelessWidget {
   final String title;
@@ -14,6 +16,7 @@ class JobDetailsScreen extends StatelessWidget {
   final String salary;
   final String jobType;
   final String status;
+  final JobModel? job;
 
   const JobDetailsScreen({
     super.key,
@@ -23,6 +26,7 @@ class JobDetailsScreen extends StatelessWidget {
     required this.salary,
     required this.jobType,
     required this.status,
+    this.job,
   });
 
   @override
@@ -31,16 +35,27 @@ class JobDetailsScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: Job details backend se fetch honge using job ID.
+    // TODO: Real-time job updates.
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => Navigator.pop(context),
+        leading: Semantics(
+          label: "Back to Job Requisitions",
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded),
+            onPressed: () => Navigator.pop(context),
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+          ),
         ),
+        title: Text(
+          "Requisition Details",
+          style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
       body: Center(
         child: ConstrainedBox(
@@ -57,10 +72,11 @@ class JobDetailsScreen extends StatelessWidget {
                   salary: salary,
                   jobType: jobType,
                   status: status,
+                  job: job,
                 ),
                 const SizedBox(height: 32),
                 
-                const DetailsOverview(),
+                DetailsOverview(job: job),
                 const SizedBox(height: 32),
                 
                 const DetailsPipeline(),
@@ -80,14 +96,23 @@ class JobDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        icon: const Icon(Icons.edit_rounded),
-        label: const Text(
-          "Edit Job",
-          style: TextStyle(fontWeight: FontWeight.bold),
+      floatingActionButton: Semantics(
+        label: "Edit Job Requisition",
+        button: true,
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const CreateJobWizard()),
+            );
+          },
+          icon: const Icon(Icons.edit_rounded),
+          label: const Text(
+            "Edit Requisition",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          elevation: 4,
         ),
-        elevation: 4,
       ),
     );
   }

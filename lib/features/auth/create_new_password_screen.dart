@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:jobnest/core/constants/app_config.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/constants/app_text.dart';
 import 'package:jobnest/core/widgets/app_button.dart';
@@ -35,10 +34,12 @@ class _CreateNewPasswordContentState extends State<CreateNewPasswordContent> {
 
   bool get _canContinue {
     // ===== FRONTEND MODE =====
-    // Abhi frontend mode me password validation bypass kar rahe hain taaki flow test ho sake.
     // ===== BACKEND TODO =====
+    // TODO:
+    // Password reset API.
+    // TODO:
+    // Rate limiting and security validation.
     // TODO: Yaha par password reset API call hogi.
-    if (AppConfig.kFrontendMode) return true;
     
     return _isPasswordValid &&
         _passwordController.text.isNotEmpty &&
@@ -144,6 +145,10 @@ class _CreateNewPasswordContentState extends State<CreateNewPasswordContent> {
           controller: _confirmController,
           hint: "Confirm Password",
           isPassword: true,
+          errorText: (_confirmController.text.isNotEmpty &&
+                  _passwordController.text != _confirmController.text)
+              ? "Passwords do not match"
+              : null,
         ),
         
         AppSpacing.h24,

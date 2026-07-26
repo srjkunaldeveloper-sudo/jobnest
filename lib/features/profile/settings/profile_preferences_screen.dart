@@ -60,13 +60,16 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                   itemBuilder: (context, index) {
                     final option = options[index];
                     final isSelected = option == currentValue;
-                    return ListTile(
-                      title: Text(option),
-                      trailing: isSelected ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary) : null,
-                      onTap: () {
-                        onSelected(option);
-                        Navigator.pop(context);
-                      },
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 48),
+                      child: ListTile(
+                        title: Text(option),
+                        trailing: isSelected ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary) : null,
+                        onTap: () {
+                          onSelected(option);
+                          Navigator.pop(context);
+                        },
+                      ),
                     );
                   },
                 ),
@@ -134,16 +137,19 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                         itemBuilder: (context, index) {
                           final option = filteredOptions[index];
                           final isSelected = option == _timeZone;
-                          return ListTile(
-                            title: Text(option),
-                            trailing: isSelected ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary) : null,
-                            onTap: () {
-                              setState(() {
-                                _timeZone = option;
-                              });
-                              _savePreference('pref_time_zone', option);
-                              Navigator.pop(context);
-                            },
+                          return ConstrainedBox(
+                            constraints: const BoxConstraints(minHeight: 48),
+                            child: ListTile(
+                              title: Text(option),
+                              trailing: isSelected ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary) : null,
+                              onTap: () {
+                                setState(() {
+                                  _timeZone = option;
+                                });
+                                _savePreference('pref_time_zone', option);
+                                Navigator.pop(context);
+                              },
+                            ),
                           );
                         },
                       ),
@@ -165,7 +171,6 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
       case ThemeMode.dark:
         return "Dark";
       case ThemeMode.system:
-      default:
         return "System Default";
     }
   }
@@ -175,26 +180,25 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
     final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    // TODO:
-    // Future me preferences backend user profile ke saath sync hongi.
-
-    // TODO:
-    // Theme backend profile se restore hogi.
-
-    // TODO:
-    // Language localization backend support future me add hoga.
+    // ===== BACKEND TODO =====
+    // TODO: Fetch recruiter profile.
+    // TODO: Update profile API.
+    // TODO: Future me preferences backend user profile ke saath sync hongi.
+    // TODO: Theme backend profile se restore hogi.
+    // TODO: Language localization backend support future me add hoga.
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
-        title: const Text("App Preferences"),
+        title: const Text("App Preferences & Theme"),
       ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 800),
           child: ListView(
+            physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
             children: [
               AppCard(
@@ -224,17 +228,20 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                     _buildDropdownTile(
                       context, 
                       Icons.palette_outlined, 
-                      "Theme", 
+                      "Theme Mode", 
                       _getThemeName(themeProvider.themeMode),
                       () {
                          _showSelectionSheet(
-                           "Theme",
+                           "Theme Mode",
                            ["System Default", "Light", "Dark"],
                            _getThemeName(themeProvider.themeMode),
                            (selected) {
                               ThemeMode mode = ThemeMode.system;
-                              if (selected == "Light") mode = ThemeMode.light;
-                              else if (selected == "Dark") mode = ThemeMode.dark;
+                              if (selected == "Light") {
+                                mode = ThemeMode.light;
+                              } else if (selected == "Dark") {
+                                mode = ThemeMode.dark;
+                              }
                               themeProvider.setTheme(mode);
                            }
                          );
@@ -303,13 +310,33 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
 
   Widget _buildDropdownTile(BuildContext context, IconData icon, String title, String currentValue, VoidCallback onTap) {
     final theme = Theme.of(context);
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      leading: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(currentValue, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.primary)),
-      trailing: const Icon(Icons.arrow_drop_down_rounded),
-      onTap: onTap,
+    return Semantics(
+      label: "$title. Current value: $currentValue",
+      button: true,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 64),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          leading: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, color: theme.colorScheme.primary, size: 22),
+          ),
+          title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Text(
+              currentValue,
+              style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w600),
+            ),
+          ),
+          trailing: Icon(Icons.arrow_drop_down_rounded, size: 24, color: theme.colorScheme.onSurfaceVariant),
+          onTap: onTap,
+        ),
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobnest/core/models/recruitment_models.dart';
 
 import 'package:jobnest/features/candidates/widgets/candidate_profile/profile_header.dart';
 import 'package:jobnest/features/candidates/widgets/candidate_profile/profile_summary.dart';
@@ -22,6 +23,7 @@ class CandidateProfileScreen extends StatelessWidget {
   final String role;
   final String location;
   final String experience;
+  final CandidateModel? candidate;
 
   const CandidateProfileScreen({
     super.key,
@@ -29,6 +31,7 @@ class CandidateProfileScreen extends StatelessWidget {
     required this.role,
     required this.location,
     required this.experience,
+    this.candidate,
   });
 
   @override
@@ -37,6 +40,7 @@ class CandidateProfileScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: Backend se candidate profile fetch hoga using candidate ID.
+    // TODO: WebSocket live stage sync and recruiter notes collaboration.
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -52,6 +56,7 @@ class CandidateProfileScreen extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1000),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,8 +66,9 @@ class CandidateProfileScreen extends StatelessWidget {
                   role: role,
                   location: location,
                   experience: experience,
+                  candidate: candidate,
                 ),
-                const ProfileSummary(),
+                ProfileSummary(candidate: candidate),
                 const SizedBox(height: 32),
                 
                 const ProfileSkills(),
@@ -92,7 +98,7 @@ class CandidateProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "ML-powered insights and hiring recommendations.",
+                  "ML-powered insights, technical scoring, and hiring recommendations.",
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -126,7 +132,10 @@ class CandidateProfileScreen extends StatelessWidget {
                 const ProfileRecentActivity(),
                 const SizedBox(height: 48),
 
-                const ProfileQuickActions(),
+                ProfileQuickActions(
+                  candidate: candidate,
+                  candidateName: name,
+                ),
                 const SizedBox(height: 64), // Bottom padding
               ],
             ),

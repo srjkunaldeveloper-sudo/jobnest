@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobnest/core/services/session_manager.dart';
 import 'package:jobnest/main.dart'; // Dashboard par jane ke liye
 import 'package:jobnest/core/widgets/app_button.dart';
 import 'package:jobnest/core/widgets/app_textfield.dart';
@@ -25,8 +26,10 @@ class _AdvancedSetupScreenState extends State<AdvancedSetupScreen> {
         title: Text("Advanced Setup", style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
         actions: [
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               // "Skip" dabane par seedha Dashboard
+              await SessionManager.instance.setLoginState(true);
+              if (!context.mounted) return;
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const MainDashboard()), (route) => false);
             },
             child: Text("Skip", style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontWeight: FontWeight.bold)),
@@ -134,8 +137,10 @@ class _AdvancedSetupScreenState extends State<AdvancedSetupScreen> {
               // --- FINISH BUTTON ---
               AppButton(
                 text: "Finish Setup",
-                onPressed: () {
+                onPressed: () async {
                   // Setup complete, go to Dashboard
+                  await SessionManager.instance.setLoginState(true);
+                  if (!context.mounted) return;
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => const MainDashboard()),

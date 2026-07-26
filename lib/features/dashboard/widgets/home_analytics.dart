@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
+import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 
 class HomeAnalytics extends StatefulWidget {
   const HomeAnalytics({super.key});
@@ -16,6 +19,8 @@ class _HomeAnalyticsState extends State<HomeAnalytics> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final provider = context.watch<RecruitmentDataProvider>();
+    final bool isLoading = provider.isDashboardLoading;
     
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
@@ -53,54 +58,61 @@ class _HomeAnalyticsState extends State<HomeAnalytics> {
           AppSpacing.h16,
           // ===== BACKEND TODO =====
           // TODO: Analytics API se fetch hogi (funnel metrics).
-          AppCard(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                _buildFunnelStage(context, "Applications", "1,240", Colors.blueAccent),
-                _buildRatioLine(context, "Application → Interview Ratio", "42%"),
-                _buildFunnelStage(context, "Interviews", "520", Colors.purpleAccent),
-                _buildRatioLine(context, "Interview → Selection Ratio", "15%"),
-                _buildFunnelStage(context, "Selected", "78", Colors.teal),
-                
-                AppSpacing.h24,
-                const Divider(),
-                AppSpacing.h16,
-                
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Overall Hiring Success",
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+          if (isLoading)
+            const AppShimmerLoading(
+              width: double.infinity,
+              height: 260,
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            )
+          else
+            AppCard(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  _buildFunnelStage(context, "Applications", "1,240", Colors.blueAccent),
+                  _buildRatioLine(context, "Application → Interview Ratio", "42%"),
+                  _buildFunnelStage(context, "Interviews", "520", Colors.purpleAccent),
+                  _buildRatioLine(context, "Interview → Selection Ratio", "15%"),
+                  _buildFunnelStage(context, "Selected", "78", Colors.teal),
+                  
+                  AppSpacing.h24,
+                  const Divider(),
+                  AppSpacing.h16,
+                  
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Overall Hiring Success",
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.trending_up_rounded, size: 16, color: Colors.green),
-                          AppSpacing.w8,
-                          Text(
-                            "82%",
-                            style: theme.textTheme.labelLarge?.copyWith(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.trending_up_rounded, size: 16, color: Colors.green),
+                            AppSpacing.w8,
+                            Text(
+                              "82%",
+                              style: theme.textTheme.labelLarge?.copyWith(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

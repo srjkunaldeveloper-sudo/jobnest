@@ -5,26 +5,40 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jobnest/main.dart';
+import 'package:jobnest/core/providers/theme_provider.dart';
+import 'package:jobnest/features/splash/splash_screen.dart';
+import 'package:jobnest/features/onboarding/onboarding_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const JobNestApp());
+  testWidgets('JobNest startup flow smoke test', (WidgetTester tester) async {
+    // Initialize SharedPreferences with empty values for clean test
+    SharedPreferences.setMockInitialValues({});
 
-    // Verify that our app starts at Login Screen.
-    expect(find.text('Welcome Back!'), findsOneWidget);
-    expect(find.text('0'), findsNothing);
+    // Build our app wrapped in ThemeProvider as done in main()
+    await tester.pumpWidget(
+      ChangeNotifierProvider(
+        create: (_) => ThemeProvider(),
+        child: const JobNestApp(),
+      ),
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    // Pump once to allow async ThemeProvider._loadTheme() to complete
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that our app starts at SplashScreen with JOBNEST logo text.
+    expect(find.byType(SplashScreen), findsOneWidget);
+    expect(find.text('JOBNEST'), findsOneWidget);
+
+    // Pump duration to complete animation and initialization timers (3.5 seconds)
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+
+    // Verify that on a clean install (first launch), app navigates to OnboardingScreen.
+    expect(find.byType(OnboardingScreen), findsOneWidget);
+    expect(find.text('Smart Hiring Starts Here'), findsOneWidget);
   });
 }

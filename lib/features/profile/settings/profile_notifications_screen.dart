@@ -26,7 +26,7 @@ class ProfileNotificationsScreen extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 800),
           child: ListView(
             physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
             children: [
               _buildSection(
                 context,

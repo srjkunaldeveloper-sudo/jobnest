@@ -59,7 +59,7 @@ class _ProfilePersonalInfoScreenState extends State<ProfilePersonalInfoScreen> {
           constraints: const BoxConstraints(maxWidth: 800),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
             child: AppCard(
               padding: const EdgeInsets.all(24),
               child: Column(

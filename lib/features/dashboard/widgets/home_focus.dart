@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
 class HomeFocus extends StatelessWidget {
   final VoidCallback? onNavigateToJobs;
@@ -20,11 +20,9 @@ class HomeFocus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
-    
-    final int interviewsCount = provider.todayInterviewsCount;
-    final int candidatesCount = provider.newCandidatesCount;
-    final int jobsCount = provider.urgentJobsCount;
+    final int interviewsCount = context.select<DashboardProvider, int>((p) => p.todayInterviewsCount);
+    final int candidatesCount = context.select<DashboardProvider, int>((p) => p.newCandidatesCount);
+    final int jobsCount = context.select<DashboardProvider, int>((p) => p.urgentJobsCount);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),

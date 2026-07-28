@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/models/models.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
 class HomeActivityTimeline extends StatelessWidget {
   const HomeActivityTimeline({super.key});
@@ -12,9 +13,9 @@ class HomeActivityTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<DashboardProvider>();
     
-    final bool isEmpty = provider.jobs.isEmpty && provider.candidates.isEmpty && provider.interviews.isEmpty;
+    final bool isEmpty = provider.activityTimeline.isEmpty;
     final bool isLoading = provider.isDashboardLoading;
 
     return Padding(
@@ -83,53 +84,16 @@ class HomeActivityTimeline extends StatelessWidget {
             AppCard(
               padding: const EdgeInsets.all(20),
               child: Column(
-                children: [
-                  _buildTimelineItem(
+                children: provider.activityTimeline.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
+                  final isLast = index == provider.activityTimeline.length - 1;
+                  return _buildTimelineItem(
                     context,
-                    title: "Candidate Applied",
-                    subtitle: "Aarav Sharma applied for Backend Engineer",
-                    time: "2 minutes ago",
-                    icon: Icons.person_add_rounded,
-                    iconColor: Colors.blueAccent,
-                    isLast: false,
-                  ),
-                  _buildTimelineItem(
-                    context,
-                    title: "Interview Scheduled",
-                    subtitle: "Technical round for UI/UX",
-                    time: "15 minutes ago",
-                    icon: Icons.calendar_month_rounded,
-                    iconColor: Colors.purpleAccent,
-                    isLast: false,
-                  ),
-                  _buildTimelineItem(
-                    context,
-                    title: "Job Posted",
-                    subtitle: "Senior Flutter Developer",
-                    time: "1 hour ago",
-                    icon: Icons.work_rounded,
-                    iconColor: Colors.orangeAccent,
-                    isLast: false,
-                  ),
-                  _buildTimelineItem(
-                    context,
-                    title: "Candidate Selected",
-                    subtitle: "Priya Singh for Data Scientist",
-                    time: "Yesterday",
-                    icon: Icons.verified_rounded,
-                    iconColor: Colors.teal,
-                    isLast: false,
-                  ),
-                  _buildTimelineItem(
-                    context,
-                    title: "Offer Letter Sent",
-                    subtitle: "Offer letter generated for Priya Singh",
-                    time: "Yesterday",
-                    icon: Icons.mail_rounded,
-                    iconColor: Colors.green,
-                    isLast: true,
-                  ),
-                ],
+                    item: item,
+                    isLast: isLast,
+                  );
+                }).toList(),
               ),
             ),
         ],
@@ -139,14 +103,11 @@ class HomeActivityTimeline extends StatelessWidget {
 
   Widget _buildTimelineItem(
     BuildContext context, {
-    required String title,
-    required String subtitle,
-    required String time,
-    required IconData icon,
-    required Color iconColor,
+    required ActivityTimelineItem item,
     required bool isLast,
   }) {
     final theme = Theme.of(context);
+    final iconColor = item.iconColor;
     
     return IntrinsicHeight(
       child: Row(
@@ -163,7 +124,7 @@ class HomeActivityTimeline extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  icon,
+                  item.icon,
                   size: 16,
                   color: iconColor,
                 ),
@@ -190,14 +151,14 @@ class HomeActivityTimeline extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          title,
+                          item.title,
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       Text(
-                        time,
+                        item.timestamp,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                           fontSize: 11,
@@ -207,7 +168,7 @@ class HomeActivityTimeline extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    subtitle,
+                    item.subtitle,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),

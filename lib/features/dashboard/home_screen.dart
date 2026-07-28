@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
 import 'package:jobnest/features/dashboard/widgets/home_header.dart';
 import 'package:jobnest/features/dashboard/widgets/home_search.dart';
@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<DashboardProvider>();
     final bool isError = provider.isDashboardError;
 
     return Scaffold(
@@ -108,7 +108,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorState(BuildContext context, RecruitmentDataProvider provider) {
+  Widget _buildErrorState(BuildContext context, DashboardProvider provider) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: AppCard(
@@ -126,7 +126,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQaSimulationFooter(BuildContext context, RecruitmentDataProvider provider) {
+  Widget _buildQaSimulationFooter(BuildContext context, DashboardProvider provider) {
     if (!kDebugMode) return const SizedBox.shrink();
     final theme = Theme.of(context);
     

@@ -5,7 +5,7 @@ import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/stat_card.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
 class HomeQuickStats extends StatelessWidget {
   const HomeQuickStats({super.key});
@@ -13,13 +13,13 @@ class HomeQuickStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<DashboardProvider>();
     
-    final int jobsCount = provider.jobs.length;
-    final int candidatesCount = provider.candidates.length;
-    final int shortlistedCount = (candidatesCount * 0.35).round();
-    final int interviewsCount = provider.interviews.length;
-    final int selectedCount = (candidatesCount * 0.12).round();
+    final int jobsCount = provider.jobsCount;
+    final int candidatesCount = provider.candidatesCount;
+    final int shortlistedCount = provider.shortlistedCount;
+    final int interviewsCount = provider.interviewsCount;
+    final int selectedCount = provider.selectedCount;
 
     final bool isEmpty = jobsCount == 0 && candidatesCount == 0 && interviewsCount == 0;
     final bool isLoading = provider.isDashboardLoading;

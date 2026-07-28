@@ -4,23 +4,19 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/models/models.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
-class HomeAnalytics extends StatefulWidget {
+class HomeAnalytics extends StatelessWidget {
   const HomeAnalytics({super.key});
-
-  @override
-  State<HomeAnalytics> createState() => _HomeAnalyticsState();
-}
-
-class _HomeAnalyticsState extends State<HomeAnalytics> {
-  bool _isWeekly = true;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<DashboardProvider>();
     final bool isLoading = provider.isDashboardLoading;
+    final bool isWeekly = provider.isAnalyticsWeekly;
+    final AnalyticsFunnelModel funnel = provider.analyticsFunnel;
     
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
@@ -48,8 +44,8 @@ class _HomeAnalyticsState extends State<HomeAnalytics> {
                 ),
                 child: Row(
                   children: [
-                    _buildToggleButton("Weekly", _isWeekly, () => setState(() => _isWeekly = true)),
-                    _buildToggleButton("Monthly", !_isWeekly, () => setState(() => _isWeekly = false)),
+                    _buildToggleButton(context, "Weekly", isWeekly, () => provider.toggleAnalyticsPeriod(true)),
+                    _buildToggleButton(context, "Monthly", !isWeekly, () => provider.toggleAnalyticsPeriod(false)),
                   ],
                 ),
               )
@@ -69,11 +65,11 @@ class _HomeAnalyticsState extends State<HomeAnalytics> {
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  _buildFunnelStage(context, "Applications", "1,240", Colors.blueAccent),
-                  _buildRatioLine(context, "Application → Interview Ratio", "42%"),
-                  _buildFunnelStage(context, "Interviews", "520", Colors.purpleAccent),
-                  _buildRatioLine(context, "Interview → Selection Ratio", "15%"),
-                  _buildFunnelStage(context, "Selected", "78", Colors.teal),
+                  _buildFunnelStage(context, "Applications", funnel.applications, Colors.blueAccent),
+                  _buildRatioLine(context, "Application → Interview Ratio", funnel.conversionRate),
+                  _buildFunnelStage(context, "Interviews", funnel.interviews, Colors.purpleAccent),
+                  _buildRatioLine(context, "Interview → Selection Ratio", funnel.offerRate),
+                  _buildFunnelStage(context, "Selected", funnel.selected, Colors.teal),
                   
                   AppSpacing.h24,
                   const Divider(),
@@ -99,7 +95,7 @@ class _HomeAnalyticsState extends State<HomeAnalytics> {
                             const Icon(Icons.trending_up_rounded, size: 16, color: Colors.green),
                             AppSpacing.w8,
                             Text(
-                              "82%",
+                              funnel.overallSuccessRate,
                               style: theme.textTheme.labelLarge?.copyWith(
                                 color: Colors.green,
                                 fontWeight: FontWeight.bold,
@@ -118,7 +114,7 @@ class _HomeAnalyticsState extends State<HomeAnalytics> {
     );
   }
 
-  Widget _buildToggleButton(String text, bool isSelected, VoidCallback onTap) {
+  Widget _buildToggleButton(BuildContext context, String text, bool isSelected, VoidCallback onTap) {
     final theme = Theme.of(context);
     
     return GestureDetector(

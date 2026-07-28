@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/models/models.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
 class HomeAiAssistant extends StatelessWidget {
   const HomeAiAssistant({super.key});
@@ -12,8 +13,9 @@ class HomeAiAssistant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
-    final bool isLoading = provider.isDashboardLoading;
+    final provider = context.watch<DashboardProvider>();
+    final AiAssistantStateModel state = provider.aiAssistantState;
+    final bool isLoading = provider.isDashboardLoading || state.isLoading;
     
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
@@ -75,6 +77,11 @@ class HomeAiAssistant extends StatelessWidget {
                         AppSpacing.w12,
                         Expanded(
                           child: TextField(
+                            onSubmitted: (val) {
+                              if (val.trim().isNotEmpty) {
+                                provider.submitAiPrompt(val);
+                              }
+                            },
                             decoration: InputDecoration(
                               hintText: "Ask AI anything...",
                               hintStyle: TextStyle(
@@ -87,7 +94,9 @@ class HomeAiAssistant extends StatelessWidget {
                         ),
                         IconButton(
                           icon: const Icon(Icons.send_rounded, color: Colors.deepPurpleAccent),
-                          onPressed: () {},
+                          onPressed: () {
+                            provider.submitAiPrompt("Find candidates");
+                          },
                         ),
                       ],
                     ),
@@ -97,13 +106,9 @@ class HomeAiAssistant extends StatelessWidget {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: [
-                      _buildAiChip(context, "Find Python Developers"),
-                      _buildAiChip(context, "Schedule Interviews"),
-                      _buildAiChip(context, "Generate Job Description"),
-                      _buildAiChip(context, "Find Top Candidates"),
-                      _buildAiChip(context, "Improve Hiring Rate"),
-                    ],
+                    children: state.suggestedPrompts
+                        .map((prompt) => _buildAiChip(context, prompt, provider))
+                        .toList(),
                   ),
                   AppSpacing.h24,
                   const Divider(),
@@ -139,7 +144,7 @@ class HomeAiAssistant extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Your Sales Executive job is getting fewer applications.",
+                                state.recentSuggestionTitle,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: theme.colorScheme.onSurfaceVariant,
                                 ),
@@ -150,7 +155,7 @@ class HomeAiAssistant extends StatelessWidget {
                                   const Icon(Icons.arrow_right_alt_rounded, size: 16, color: Colors.deepPurple),
                                   const SizedBox(width: 4),
                                   Text(
-                                    "Increase salary by 10%.",
+                                    state.recentSuggestionAction,
                                     style: theme.textTheme.labelLarge?.copyWith(
                                       color: Colors.deepPurple,
                                       fontWeight: FontWeight.bold,
@@ -172,7 +177,7 @@ class HomeAiAssistant extends StatelessWidget {
     );
   }
 
-  Widget _buildAiChip(BuildContext context, String text) {
+  Widget _buildAiChip(BuildContext context, String text, DashboardProvider provider) {
     final theme = Theme.of(context);
     return ActionChip(
       label: Text(
@@ -188,7 +193,9 @@ class HomeAiAssistant extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
       ),
-      onPressed: () {},
+      onPressed: () {
+        provider.submitAiPrompt(text);
+      },
     );
   }
 }

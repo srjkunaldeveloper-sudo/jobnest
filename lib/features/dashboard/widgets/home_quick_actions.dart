@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/models/models.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
 class HomeQuickActions extends StatelessWidget {
   const HomeQuickActions({super.key});
@@ -11,8 +12,8 @@ class HomeQuickActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
-    final bool isLoading = provider.isDashboardLoading;
+    final bool isLoading = context.select<DashboardProvider, bool>((p) => p.isDashboardLoading);
+    final List<DashboardQuickAction> actions = context.select<DashboardProvider, List<DashboardQuickAction>>((p) => p.quickActions);
     
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
@@ -55,48 +56,22 @@ class HomeQuickActions extends StatelessWidget {
                 return Wrap(
                   spacing: 16,
                   runSpacing: 16,
-                  children: [
-                    SizedBox(
+                  children: actions.map((action) {
+                    return SizedBox(
                       width: buttonWidth,
                       child: _QuickActionShortcut(
-                        icon: Icons.add_business_rounded,
-                        title: "Create Job",
-                        subtitle: "Draft a new posting",
-                        color: Colors.blue,
-                        onTap: () {},
+                        icon: action.icon,
+                        title: action.title,
+                        subtitle: action.subtitle,
+                        color: action.color,
+                        onTap: () {
+                          if (action.enabled) {
+                            context.read<DashboardProvider>().triggerQuickAction(action.action);
+                          }
+                        },
                       ),
-                    ),
-                    SizedBox(
-                      width: buttonWidth,
-                      child: _QuickActionShortcut(
-                        icon: Icons.groups_rounded,
-                        title: "View Candidates",
-                        subtitle: "Review applicants",
-                        color: Colors.orange,
-                        onTap: () {},
-                      ),
-                    ),
-                    SizedBox(
-                      width: buttonWidth,
-                      child: _QuickActionShortcut(
-                        icon: Icons.edit_calendar_rounded,
-                        title: "Schedule Interview",
-                        subtitle: "Set up meetings",
-                        color: Colors.purple,
-                        onTap: () {},
-                      ),
-                    ),
-                    SizedBox(
-                      width: buttonWidth,
-                      child: _QuickActionShortcut(
-                        icon: Icons.chat_rounded,
-                        title: "Messages",
-                        subtitle: "Chat with candidates",
-                        color: Colors.teal,
-                        onTap: () {},
-                      ),
-                    ),
-                  ],
+                    );
+                  }).toList(),
                 );
               },
             ),

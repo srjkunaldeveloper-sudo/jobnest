@@ -6,7 +6,7 @@ import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
 import 'package:jobnest/features/notifications/notifications_screen.dart';
 import 'package:jobnest/features/notifications/models/notification_item.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
 class HomeSmartNotifications extends StatelessWidget {
   const HomeSmartNotifications({super.key});
@@ -14,9 +14,9 @@ class HomeSmartNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<DashboardProvider>();
     final bool isLoading = provider.isDashboardLoading;
-    final notifications = provider.notifications.take(4).toList();
+    final notifications = provider.recentNotifications;
     
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),

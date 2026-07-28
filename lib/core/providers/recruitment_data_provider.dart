@@ -5,9 +5,6 @@ import 'package:jobnest/features/notifications/models/notification_item.dart';
 import 'package:jobnest/features/notifications/repositories/notification_repository.dart';
 
 class RecruitmentDataProvider extends ChangeNotifier {
-  bool _isDashboardLoading = false;
-  bool _isDashboardError = false;
-
   final JobRepository _jobRepository = JobRepository();
 
   bool _isCandidatesLoading = false;
@@ -15,9 +12,6 @@ class RecruitmentDataProvider extends ChangeNotifier {
 
   bool _isNotificationsLoading = false;
   bool _isNotificationsError = false;
-
-  bool get isDashboardLoading => _isDashboardLoading;
-  bool get isDashboardError => _isDashboardError;
 
   bool get isJobsLoading => JobRepository.dummyLoading;
   bool get isJobsError => JobRepository.dummyError;
@@ -338,46 +332,8 @@ class RecruitmentDataProvider extends ChangeNotifier {
   int get newCandidatesCount => _candidates.where((c) => c.isNew).length;
   int get urgentJobsCount => jobs.where((j) => j.isUrgent).length;
 
-  // Dashboard Simulation & Quality Assurance Methods
-  Future<void> refreshDashboard() async {
-    _isDashboardLoading = true;
-    _isDashboardError = false;
-    notifyListeners();
-
-    await Future.delayed(const Duration(milliseconds: 800));
-
-    // If data was cleared during empty simulation, restore default dummy data on refresh
-    if (jobs.isEmpty && _candidates.isEmpty && _interviews.isEmpty) {
-      restoreDefault(notify: false);
-    }
-
-    _isDashboardLoading = false;
-    notifyListeners();
-  }
-
-  void simulateLoading() {
-    _isDashboardLoading = true;
-    _isDashboardError = false;
-    notifyListeners();
-
-    // Auto-recover after 3 seconds so user isn't locked out during testing
-    Future.delayed(const Duration(seconds: 3), () {
-      if (_isDashboardLoading) {
-        _isDashboardLoading = false;
-        notifyListeners();
-      }
-    });
-  }
-
-  void simulateError() {
-    _isDashboardLoading = false;
-    _isDashboardError = true;
-    notifyListeners();
-  }
-
+  // Legacy compatibility methods (simulateEmpty / restoreDefault) for non-dashboard domains
   void simulateEmpty() {
-    _isDashboardLoading = false;
-    _isDashboardError = false;
     _jobRepository.simulateEmpty();
     _candidates.clear();
     _interviews.clear();
@@ -385,9 +341,6 @@ class RecruitmentDataProvider extends ChangeNotifier {
   }
 
   void restoreDefault({bool notify = true}) {
-    _isDashboardLoading = false;
-    _isDashboardError = false;
-    
     _jobRepository.restoreDefault();
     
     _candidates.clear();

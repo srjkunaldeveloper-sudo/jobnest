@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/models/models.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
 class HomeHiringProbability extends StatelessWidget {
   const HomeHiringProbability({super.key});
@@ -12,8 +13,9 @@ class HomeHiringProbability extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<DashboardProvider>();
     final bool isLoading = provider.isDashboardLoading;
+    final HiringProbabilityModel model = provider.hiringProbability;
     
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
@@ -61,7 +63,7 @@ class HomeHiringProbability extends StatelessWidget {
                           fit: StackFit.expand,
                           children: [
                             CircularProgressIndicator(
-                              value: 0.82,
+                              value: model.overallProbability,
                               strokeWidth: 8,
                               backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                               color: theme.colorScheme.primary,
@@ -69,7 +71,7 @@ class HomeHiringProbability extends StatelessWidget {
                             ),
                             Center(
                               child: Text(
-                                "82%",
+                                model.overallPercentage,
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: theme.colorScheme.primary,
@@ -92,7 +94,7 @@ class HomeHiringProbability extends StatelessWidget {
                             ),
                             AppSpacing.h4,
                             Text(
-                              "Based on recent candidate pipelines",
+                              model.confidence,
                               style: theme.textTheme.labelMedium?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
@@ -105,10 +107,11 @@ class HomeHiringProbability extends StatelessWidget {
                   AppSpacing.h24,
                   const Divider(),
                   AppSpacing.h16,
-                  _buildLinearProgress(context, "Candidate Fit Score", 0.75, "75%", Colors.green),
-                  AppSpacing.h16,
-                  _buildLinearProgress(context, "Average Time To Hire", 0.60, "12 Days", Colors.orangeAccent),
-                  AppSpacing.h24,
+                  ...model.departmentBreakdown.expand((item) => [
+                    _buildLinearProgress(context, item.name, item.score, item.displayValue, item.color),
+                    AppSpacing.h16,
+                  ]),
+                  AppSpacing.h8,
                   // AI Insight
                   Container(
                     padding: const EdgeInsets.all(12),
@@ -129,7 +132,7 @@ class HomeHiringProbability extends StatelessWidget {
                         AppSpacing.w8,
                         Expanded(
                           child: Text(
-                            "Your hiring success has increased by 8% this week.",
+                            model.insightText,
                             style: theme.textTheme.labelMedium?.copyWith(
                               color: Colors.deepPurpleAccent,
                               fontWeight: FontWeight.w600,

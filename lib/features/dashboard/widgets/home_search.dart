@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 import 'package:jobnest/features/search/global_search_screen.dart';
 
 class HomeSearch extends StatefulWidget {
@@ -140,7 +140,7 @@ class _HomeSearchState extends State<HomeSearch> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<DashboardProvider>();
     
     // Combine trending and recent searches into Quick Search Chips
     final List<String> quickChips = [

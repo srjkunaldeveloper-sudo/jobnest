@@ -13,6 +13,7 @@ import 'core/providers/recruitment_data_provider.dart';
 import 'features/jobs/providers/job_form_provider.dart';
 import 'features/jobs/providers/job_provider.dart';
 import 'features/jobs/providers/job_filter_provider.dart';
+import 'features/dashboard/providers/dashboard_provider.dart';
 import 'features/profile/providers/profile_data_provider.dart';
 import 'features/splash/splash_screen.dart';
 
@@ -29,6 +30,11 @@ void main() {
           create: (_) => JobFilterProvider(),
           update: (_, jobProvider, filterProvider) =>
               (filterProvider ?? JobFilterProvider())..updateJobs(jobProvider.jobs),
+        ),
+        ChangeNotifierProxyProvider2<JobProvider, RecruitmentDataProvider, DashboardProvider>(
+          create: (_) => DashboardProvider(),
+          update: (_, jobProvider, recruitmentProvider, dashboardProvider) =>
+              (dashboardProvider ?? DashboardProvider())..updateDependencies(jobProvider, recruitmentProvider),
         ),
       ],
       child: const JobNestApp(),

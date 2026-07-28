@@ -4,34 +4,22 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/dashboard/models/models.dart';
+import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
-class HomeDailyTasks extends StatefulWidget {
+class HomeDailyTasks extends StatelessWidget {
   const HomeDailyTasks({super.key});
-
-  @override
-  State<HomeDailyTasks> createState() => _HomeDailyTasksState();
-}
-
-class _HomeDailyTasksState extends State<HomeDailyTasks> {
-  // Dummy State
-  final Map<String, bool> _tasks = {
-    "Interview with Rahul Sharma": true,
-    "Follow up with Priya Singh": false,
-    "Send Offer Letter": true,
-    "Review Java Candidates": false,
-  };
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<DashboardProvider>();
     
-    int completedTasks = _tasks.values.where((v) => v).length;
-    int totalTasks = _tasks.length;
-    double progress = totalTasks > 0 ? completedTasks / totalTasks : 0;
+    final int completedTasks = provider.completedTasksCount;
+    final int totalTasks = provider.totalTasksCount;
+    final double progress = provider.tasksProgress;
 
-    final bool isEmpty = provider.jobs.isEmpty && provider.candidates.isEmpty && provider.interviews.isEmpty;
+    final bool isEmpty = provider.dailyTasks.isEmpty;
     final bool isLoading = provider.isDashboardLoading;
 
     return Padding(
@@ -131,34 +119,7 @@ class _HomeDailyTasksState extends State<HomeDailyTasks> {
                   ),
                   AppSpacing.h24,
                   // Task List
-                  _buildTaskItem(
-                    context,
-                    title: "Interview with Rahul Sharma",
-                    priority: "High",
-                    priorityColor: Colors.redAccent,
-                    time: "10:30 AM",
-                  ),
-                  _buildTaskItem(
-                    context,
-                    title: "Follow up with Priya Singh",
-                    priority: "Medium",
-                    priorityColor: Colors.orangeAccent,
-                    time: "12:00 PM",
-                  ),
-                  _buildTaskItem(
-                    context,
-                    title: "Send Offer Letter",
-                    priority: "High",
-                    priorityColor: Colors.redAccent,
-                    time: "02:00 PM",
-                  ),
-                  _buildTaskItem(
-                    context,
-                    title: "Review Java Candidates",
-                    priority: "Low",
-                    priorityColor: Colors.blueAccent,
-                    time: "04:30 PM",
-                  ),
+                  ...provider.dailyTasks.map((task) => _buildTaskItem(context, task, provider)),
                 ],
               ),
             ),
@@ -167,17 +128,13 @@ class _HomeDailyTasksState extends State<HomeDailyTasks> {
     );
   }
 
-  Widget _buildTaskItem(BuildContext context, {
-    required String title,
-    required String priority,
-    required Color priorityColor,
-    required String time,
-  }) {
+  Widget _buildTaskItem(BuildContext context, DailyTaskItem task, DashboardProvider provider) {
     final theme = Theme.of(context);
-    bool isCompleted = _tasks[title] ?? false;
-    
+    final bool isCompleted = task.isCompleted;
+    final Color priorityColor = task.priorityColor;
+
     return Semantics(
-      label: "Task $title, Priority $priority, Time $time",
+      label: "Task ${task.title}, Priority ${task.priority}, Time ${task.time}",
       checked: isCompleted,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
@@ -191,9 +148,7 @@ class _HomeDailyTasksState extends State<HomeDailyTasks> {
                 value: isCompleted,
                 onChanged: (val) {
                   if (val != null) {
-                    setState(() {
-                      _tasks[title] = val;
-                    });
+                    provider.toggleTaskCompletion(task.id);
                   }
                 },
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
@@ -204,15 +159,13 @@ class _HomeDailyTasksState extends State<HomeDailyTasks> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  setState(() {
-                    _tasks[title] = !isCompleted;
-                  });
+                  provider.toggleTaskCompletion(task.id);
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      task.title,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         decoration: isCompleted ? TextDecoration.lineThrough : null,
@@ -229,7 +182,7 @@ class _HomeDailyTasksState extends State<HomeDailyTasks> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            priority,
+                            task.priority,
                             style: theme.textTheme.labelSmall?.copyWith(
                               color: priorityColor,
                               fontWeight: FontWeight.bold,
@@ -239,7 +192,7 @@ class _HomeDailyTasksState extends State<HomeDailyTasks> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          time,
+                          task.time,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                             fontSize: 11,

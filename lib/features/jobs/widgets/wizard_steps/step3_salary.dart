@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
 
 class Step3Salary extends StatelessWidget {
   const Step3Salary({super.key});
 
+  static bool validateCurrentStep(BuildContext context) {
+    return context.read<JobFormProvider>().validateStep(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final form = context.watch<JobFormProvider>();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -52,7 +59,7 @@ class Step3Salary extends StatelessWidget {
                       ),
                       AppSpacing.h8,
                       Text(
-                        "Based on the role 'Sales Executive' in 'Bangalore, India'.",
+                        "Based on the role '${form.jobTitleController.text.isEmpty ? 'Sales Executive' : form.jobTitleController.text}' in '${form.locationController.text.isEmpty ? 'Bangalore, India' : form.locationController.text}'.",
                         style: theme.textTheme.labelMedium?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
@@ -77,12 +84,22 @@ class Step3Salary extends StatelessWidget {
             children: [
               Expanded(
                 flex: 2,
-                child: _buildTextField(context, "Minimum Salary", "e.g. 400000"),
+                child: _buildTextField(
+                  context,
+                  "Minimum Salary",
+                  "e.g. 400000",
+                  controller: form.minSalaryController,
+                ),
               ),
               AppSpacing.w16,
               Expanded(
                 flex: 2,
-                child: _buildTextField(context, "Maximum Salary", "e.g. 600000"),
+                child: _buildTextField(
+                  context,
+                  "Maximum Salary",
+                  "e.g. 600000",
+                  controller: form.maxSalaryController,
+                ),
               ),
             ],
           ),
@@ -91,11 +108,27 @@ class Step3Salary extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _buildDropdown(context, "Currency", ["INR (₹)", "USD (\$)", "EUR (€)"]),
+                child: _buildDropdown(
+                  context,
+                  "Currency",
+                  ["INR (₹)", "USD (\$)", "EUR (€)"],
+                  value: form.currency,
+                  onChanged: (val) {
+                    if (val != null) form.setCurrency(val);
+                  },
+                ),
               ),
               AppSpacing.w16,
               Expanded(
-                child: _buildDropdown(context, "Salary Type", ["Yearly", "Monthly", "Hourly"]),
+                child: _buildDropdown(
+                  context,
+                  "Salary Type",
+                  ["Yearly", "Monthly", "Hourly"],
+                  value: form.salaryType,
+                  onChanged: (val) {
+                    if (val != null) form.setSalaryType(val);
+                  },
+                ),
               ),
             ],
           ),
@@ -106,7 +139,12 @@ class Step3Salary extends StatelessWidget {
     );
   }
 
-  Widget _buildInsightItem(BuildContext context, String label, String value, {bool isHighlight = false}) {
+  Widget _buildInsightItem(
+    BuildContext context,
+    String label,
+    String value, {
+    bool isHighlight = false,
+  }) {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +167,12 @@ class Step3Salary extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(BuildContext context, String label, String hint) {
+  Widget _buildTextField(
+    BuildContext context,
+    String label,
+    String hint, {
+    TextEditingController? controller,
+  }) {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,6 +183,7 @@ class Step3Salary extends StatelessWidget {
         ),
         AppSpacing.h8,
         TextFormField(
+          controller: controller,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
             hintText: hint,
@@ -159,8 +203,15 @@ class Step3Salary extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown(BuildContext context, String label, List<String> items) {
+  Widget _buildDropdown(
+    BuildContext context,
+    String label,
+    List<String> items, {
+    required String value,
+    required ValueChanged<String?> onChanged,
+  }) {
     final theme = Theme.of(context);
+    final activeValue = items.contains(value) ? value : items.first;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -170,7 +221,7 @@ class Step3Salary extends StatelessWidget {
         ),
         AppSpacing.h8,
         DropdownButtonFormField<String>(
-          initialValue: items.first,
+          initialValue: activeValue,
           decoration: InputDecoration(
             filled: true,
             fillColor: theme.colorScheme.surface,
@@ -184,7 +235,7 @@ class Step3Salary extends StatelessWidget {
             ),
           ),
           items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-          onChanged: (val) {},
+          onChanged: onChanged,
         ),
       ],
     );

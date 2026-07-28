@@ -51,12 +51,16 @@ class DetailsPipeline extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  title,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                const SizedBox(width: 4),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
@@ -76,16 +80,25 @@ class DetailsPipeline extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                _buildAvatar(color),
-                const SizedBox(width: -8),
-                _buildAvatar(color),
-                const SizedBox(width: -8),
-                _buildAvatar(color),
+                SizedBox(
+                  width: 56,
+                  height: 24,
+                  child: Stack(
+                    children: [
+                      Positioned(left: 0, child: _buildAvatar(color)),
+                      Positioned(left: 16, child: _buildAvatar(color)),
+                      Positioned(left: 32, child: _buildAvatar(color)),
+                    ],
+                  ),
+                ),
                 const SizedBox(width: 8),
-                Text(
-                  "+ view all",
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.primary,
+                Expanded(
+                  child: Text(
+                    "+ view all",
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

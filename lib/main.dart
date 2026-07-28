@@ -10,6 +10,9 @@ import 'package:jobnest/features/services/tools/interview_assistant_screen.dart'
 import 'core/theme/app_theme.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/providers/recruitment_data_provider.dart';
+import 'features/jobs/providers/job_form_provider.dart';
+import 'features/jobs/providers/job_provider.dart';
+import 'features/jobs/providers/job_filter_provider.dart';
 import 'features/profile/providers/profile_data_provider.dart';
 import 'features/splash/splash_screen.dart';
 
@@ -20,6 +23,13 @@ void main() {
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => RecruitmentDataProvider()),
         ChangeNotifierProvider(create: (_) => ProfileDataProvider()),
+        ChangeNotifierProvider(create: (_) => JobFormProvider()),
+        ChangeNotifierProvider(create: (_) => JobProvider()),
+        ChangeNotifierProxyProvider<JobProvider, JobFilterProvider>(
+          create: (_) => JobFilterProvider(),
+          update: (_, jobProvider, filterProvider) =>
+              (filterProvider ?? JobFilterProvider())..updateJobs(jobProvider.jobs),
+        ),
       ],
       child: const JobNestApp(),
     ),

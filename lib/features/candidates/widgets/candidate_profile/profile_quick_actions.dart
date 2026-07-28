@@ -51,7 +51,7 @@ class ProfileQuickActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.read<RecruitmentDataProvider>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

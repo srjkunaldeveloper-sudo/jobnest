@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
 
 class Step2AiGenerator extends StatelessWidget {
   const Step2AiGenerator({super.key});
 
+  static bool validateCurrentStep(BuildContext context) {
+    return context.read<JobFormProvider>().validateStep(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final form = context.watch<JobFormProvider>();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -35,7 +42,7 @@ class Step2AiGenerator extends StatelessWidget {
             ),
           ),
           AppSpacing.h32,
-          
+
           AppCard(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -50,7 +57,7 @@ class Step2AiGenerator extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        initialValue: "Sales Executive Fresher",
+                        controller: form.promptController,
                         decoration: InputDecoration(
                           hintText: "E.g. Senior Flutter Developer with 5 years experience...",
                           filled: true,
@@ -85,20 +92,36 @@ class Step2AiGenerator extends StatelessWidget {
             ),
           ),
           AppSpacing.h32,
-          
+
           Text(
             "Generated Description (Editable)",
             style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           AppSpacing.h16,
-          
-          _buildEditableSection(context, "Responsibilities", "• Identify and prospect new sales leads.\n• Maintain relationships with existing clients.\n• Achieve monthly sales targets."),
+
+          _buildEditableSection(
+            context,
+            "Responsibilities",
+            form.responsibilitiesController,
+          ),
           AppSpacing.h20,
-          _buildEditableSection(context, "Skills Required", "• Excellent communication skills.\n• Negotiation and persuasion.\n• Basic understanding of CRM software."),
+          _buildEditableSection(
+            context,
+            "Skills Required",
+            form.skillsTextController,
+          ),
           AppSpacing.h20,
-          _buildEditableSection(context, "Qualifications", "• Bachelor's Degree in Business or related field.\n• Willingness to travel if required."),
+          _buildEditableSection(
+            context,
+            "Qualifications",
+            form.requirementsController,
+          ),
           AppSpacing.h20,
-          _buildEditableSection(context, "Experience", "• 0-1 years of experience in sales or marketing.\n• Fresher with strong aptitude can apply."),
+          _buildEditableSection(
+            context,
+            "Experience",
+            TextEditingController(text: "• 0-1 years of experience in sales or marketing.\n• Fresher with strong aptitude can apply."),
+          ),
 
           const SizedBox(height: 80),
         ],
@@ -106,7 +129,11 @@ class Step2AiGenerator extends StatelessWidget {
     );
   }
 
-  Widget _buildEditableSection(BuildContext context, String label, String dummyData) {
+  Widget _buildEditableSection(
+    BuildContext context,
+    String label,
+    TextEditingController controller,
+  ) {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +144,7 @@ class Step2AiGenerator extends StatelessWidget {
         ),
         AppSpacing.h8,
         TextFormField(
-          initialValue: dummyData,
+          controller: controller,
           maxLines: 4,
           decoration: InputDecoration(
             filled: true,

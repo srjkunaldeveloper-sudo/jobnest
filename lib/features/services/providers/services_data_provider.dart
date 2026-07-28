@@ -51,11 +51,12 @@ class ServicesDataProvider extends ChangeNotifier {
     "Favorites",
     "Recruitment",
     "AI Tools",
+    "HRMS",
+    "CRM",
+    "Automation",
     "Reports",
     "Communication",
     "Productivity",
-    "HRMS",
-    "CRM",
     "Recently Used",
   ];
 

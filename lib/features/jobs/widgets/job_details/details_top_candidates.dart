@@ -35,6 +35,7 @@ class DetailsTopCandidates extends StatelessWidget {
             } else {
               cardWidth = constraints.maxWidth; // 1 col
             }
+            if (cardWidth < 0) cardWidth = 100.0;
 
             return Wrap(
               spacing: 16,

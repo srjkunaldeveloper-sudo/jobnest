@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:jobnest/core/constants/app_radius.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/core/models/recruitment_models.dart';
+import 'package:jobnest/features/candidates/widgets/candidate_stage_badge.dart';
 import 'dart:async';
+
 
 class CandidatesPipeline extends StatefulWidget {
   final String activeStage;
@@ -73,8 +78,7 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
-    final candidates = provider.candidates;
+    final candidates = context.select<RecruitmentDataProvider, List<CandidateModel>>((provider) => provider.candidates);
 
     // Dynamically count candidates for each ATS Stage
     int appliedCount = candidates.where((c) => c.stage.toLowerCase() == "applied").length;
@@ -145,11 +149,11 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildPipelineStage(context, "Applied", appliedCount, Colors.blueGrey, isFirst: true),
-                        _buildPipelineStage(context, "Screening", screeningCount, Colors.blueAccent),
-                        _buildPipelineStage(context, "Interview", interviewCount, Colors.deepPurpleAccent),
-                        _buildPipelineStage(context, "Offer", offerCount, Colors.amber.shade700),
-                        _buildPipelineStage(context, "Hired", hiredCount, Colors.green, isLast: true),
+                        _buildPipelineStage(context, "Applied", appliedCount, CandidateStageBadge.getStageColor("Applied"), isFirst: true),
+                        _buildPipelineStage(context, "Screening", screeningCount, CandidateStageBadge.getStageColor("Screening")),
+                        _buildPipelineStage(context, "Interview", interviewCount, CandidateStageBadge.getStageColor("Interview")),
+                        _buildPipelineStage(context, "Offer", offerCount, CandidateStageBadge.getStageColor("Offer")),
+                        _buildPipelineStage(context, "Hired", hiredCount, CandidateStageBadge.getStageColor("Hired"), isLast: true),
                       ],
                     ),
                   ),
@@ -178,12 +182,12 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(Icons.arrow_back_ios_rounded, size: 12, color: Colors.white),
-                        const SizedBox(width: 8),
+                        AppSpacing.w8,
                         const Text(
                           "Swipe to view more",
                           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
                         ),
-                        const SizedBox(width: 8),
+                        AppSpacing.w8,
                         const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: Colors.white),
                       ],
                     ),
@@ -229,14 +233,14 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
                   widget.onStageSelected!(isSelected ? "All" : title);
                 }
               },
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: AppRadius.medium,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
                 width: 150,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: isSelected ? color.withValues(alpha: 0.12) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: AppRadius.medium,
                   border: isSelected ? Border.all(color: color, width: 2.0) : null,
                 ),
                 child: Column(
@@ -268,7 +272,7 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    AppSpacing.h12,
                     LinearProgressIndicator(
                       value: 1.0,
                       backgroundColor: theme.dividerColor.withValues(alpha: 0.3),
@@ -276,7 +280,7 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
                       borderRadius: BorderRadius.circular(4),
                       minHeight: isSelected ? 6 : 4,
                     ),
-                    const SizedBox(height: 16),
+                    AppSpacing.h16,
                     _buildAvatarStack(theme, color, isSelected),
                   ],
                 ),

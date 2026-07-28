@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:jobnest/core/models/recruitment_models.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
+import 'package:jobnest/features/jobs/providers/job_provider.dart';
 import 'package:jobnest/features/jobs/widgets/wizard_steps/step1_basic_details.dart';
 import 'package:jobnest/features/jobs/widgets/wizard_steps/step2_ai_generator.dart';
 import 'package:jobnest/features/jobs/widgets/wizard_steps/step3_salary.dart';
@@ -10,57 +11,12 @@ import 'package:jobnest/features/jobs/widgets/wizard_steps/step4_requirements.da
 import 'package:jobnest/features/jobs/widgets/wizard_steps/step5_settings.dart';
 import 'package:jobnest/features/jobs/widgets/wizard_steps/step6_preview.dart';
 
-class CreateJobWizard extends StatefulWidget {
-  const CreateJobWizard({super.key});
+class CreateJobWizard extends StatelessWidget {
+  final JobModel? initialJob;
+  const CreateJobWizard({super.key, this.initialJob});
 
-  @override
-  State<CreateJobWizard> createState() => _CreateJobWizardState();
-}
-
-class _CreateJobWizardState extends State<CreateJobWizard> {
-  int _currentStep = 0;
-  final int _totalSteps = 6;
-
-  void _nextStep() {
-    if (_currentStep < _totalSteps - 1) {
-      setState(() => _currentStep++);
-    } else {
-      // ===== BACKEND TODO =====
-      // TODO: Jobs API integration.
-      // TODO: Publish button future me API call karega.
-      final provider = context.read<RecruitmentDataProvider>();
-      provider.addJob(
-        JobModel(
-          id: 'job_custom_${DateTime.now().millisecondsSinceEpoch}',
-          title: 'Senior Software Engineer',
-          company: 'TechCorp India',
-          location: 'Remote, India',
-          salary: '₹ 18 - 24 LPA',
-          jobType: 'Full Time',
-          applicationsCount: '0',
-          status: 'Open',
-          aiMatchScore: 95,
-          isUrgent: true,
-          postedDate: 'Posted Just Now',
-        ),
-      );
-      Navigator.pop(context); // Close the wizard on finish
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Job Published Successfully! Synchronized across Dashboard & Search.')),
-      );
-    }
-  }
-
-  void _prevStep() {
-    if (_currentStep > 0) {
-      setState(() => _currentStep--);
-    } else {
-      Navigator.pop(context); // Close if on first step and hits back
-    }
-  }
-
-  Widget _buildCurrentStepWidget() {
-    switch (_currentStep) {
+  Widget _buildCurrentStepWidget(int currentStep) {
+    switch (currentStep) {
       case 0:
         return const Step1BasicDetails();
       case 1:
@@ -81,6 +37,28 @@ class _CreateJobWizardState extends State<CreateJobWizard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final formProvider = context.watch<JobFormProvider>();
+
+    if (!formProvider.isInitialized ||
+        (initialJob != null &&
+            (!formProvider.isEditMode ||
+                formProvider.editingJobId != initialJob!.id))) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) {
+          final provider = context.read<JobFormProvider>();
+          if (initialJob != null) {
+            if (!provider.isEditMode || provider.editingJobId != initialJob!.id) {
+              provider.initializeEdit(initialJob!);
+            }
+          } else if (!provider.isInitialized || provider.isEditMode) {
+            provider.initializeCreate();
+          }
+        }
+      });
+    }
+
+    final currentStep = formProvider.currentStep;
+    final totalSteps = formProvider.totalSteps;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -90,40 +68,33 @@ class _CreateJobWizardState extends State<CreateJobWizard> {
         leading: IconButton(
           icon: const Icon(Icons.close_rounded),
           onPressed: () {
-            // ===== UX TODO =====
-            // Unsaved Changes Warning (Dummy)
             Navigator.pop(context);
           },
         ),
         title: Text(
-          "Create New Job",
+          formProvider.isEditMode ? "Edit Job Requisition" : "Create New Job",
           style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
           TextButton(
             onPressed: () {
-              // ===== UX TODO =====
-              // Auto Save Draft (Dummy)
-              final provider = context.read<RecruitmentDataProvider>();
-              provider.addJob(
-                JobModel(
-                  id: 'job_draft_${DateTime.now().millisecondsSinceEpoch}',
-                  title: 'Draft Requisition',
-                  company: 'TechCorp India',
-                  location: 'Remote, India',
-                  salary: '₹ 10 - 15 LPA',
-                  jobType: 'Remote',
-                  applicationsCount: '0',
-                  status: 'Draft',
-                  aiMatchScore: 80,
-                  isUrgent: false,
-                  postedDate: 'Drafted Just Now',
-                ),
-              );
+              formProvider.setStatus('Draft');
+              final job = formProvider.buildJobModel();
+              if (formProvider.isEditMode) {
+                context.read<JobProvider>().updateJob(job);
+              } else {
+                context.read<JobProvider>().createJob(job);
+              }
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Draft Saved to Job Requisitions.')),
+                SnackBar(
+                  content: Text(
+                    formProvider.isEditMode
+                        ? 'Draft Changes Saved to Job Requisitions.'
+                        : 'Draft Saved to Job Requisitions.',
+                  ),
+                ),
               );
             },
             child: const Text("Save Draft"),
@@ -132,7 +103,7 @@ class _CreateJobWizardState extends State<CreateJobWizard> {
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
-          child: _buildProgressStepper(theme),
+          child: _buildProgressStepper(theme, currentStep, totalSteps),
         ),
       ),
       body: Center(
@@ -141,8 +112,8 @@ class _CreateJobWizardState extends State<CreateJobWizard> {
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             child: KeyedSubtree(
-              key: ValueKey<int>(_currentStep),
-              child: _buildCurrentStepWidget(),
+              key: ValueKey<int>(currentStep),
+              child: _buildCurrentStepWidget(currentStep),
             ),
           ),
         ),
@@ -163,15 +134,58 @@ class _CreateJobWizardState extends State<CreateJobWizard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    onPressed: _prevStep,
-                    child: Text(_currentStep == 0 ? "Cancel" : "Back"),
+                    onPressed: () {
+                      if (currentStep == 0) {
+                        Navigator.pop(context);
+                      } else {
+                        formProvider.previousStep();
+                      }
+                    },
+                    child: Text(currentStep == 0 ? "Cancel" : "Back"),
                   ),
                   FilledButton(
-                    onPressed: _nextStep,
+                    onPressed: () {
+                      if (currentStep < totalSteps - 1) {
+                        if (formProvider.validateCurrentStep()) {
+                          formProvider.nextStep();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please complete required fields (*).')),
+                          );
+                        }
+                      } else {
+                        if (formProvider.validateEntireForm()) {
+                          final job = formProvider.buildJobModel();
+                          if (formProvider.isEditMode) {
+                            context.read<JobProvider>().updateJob(job);
+                          } else {
+                            context.read<JobProvider>().createJob(job);
+                          }
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                formProvider.isEditMode
+                                    ? 'Job Updated Successfully! Synchronized across Dashboard & Search.'
+                                    : 'Job Published Successfully! Synchronized across Dashboard & Search.',
+                              ),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please verify all steps and complete required fields (*).')),
+                          );
+                        }
+                      }
+                    },
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                     ),
-                    child: Text(_currentStep == _totalSteps - 1 ? "Publish Job" : "Next"),
+                    child: Text(
+                      currentStep == totalSteps - 1
+                          ? (formProvider.isEditMode ? "Save Changes" : "Publish Job")
+                          : "Next",
+                    ),
                   ),
                 ],
               ),
@@ -182,10 +196,10 @@ class _CreateJobWizardState extends State<CreateJobWizard> {
     );
   }
 
-  Widget _buildProgressStepper(ThemeData theme) {
+  Widget _buildProgressStepper(ThemeData theme, int currentStep, int totalSteps) {
     return Row(
-      children: List.generate(_totalSteps, (index) {
-        bool isActive = index <= _currentStep;
+      children: List.generate(totalSteps, (index) {
+        bool isActive = index <= currentStep;
         return Expanded(
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),

@@ -38,6 +38,7 @@ class DetailsOverview extends StatelessWidget {
             } else {
               cardWidth = (constraints.maxWidth - 16) / 2;
             }
+            if (cardWidth < 0) cardWidth = 100.0;
 
             return Wrap(
               spacing: 16,

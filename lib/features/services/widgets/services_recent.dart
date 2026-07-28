@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/features/services/models/service_item.dart';
 import 'package:jobnest/features/services/providers/services_data_provider.dart';
 import 'package:jobnest/features/services/widgets/service_detail_modal.dart';
+import 'package:jobnest/features/services/widgets/services_hub_sections.dart';
 
 class ServicesRecent extends StatelessWidget {
   const ServicesRecent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final provider = context.watch<ServicesDataProvider>();
     final recentList = provider.recentServices;
 
@@ -24,29 +24,10 @@ class ServicesRecent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Recently Used",
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Semantics(
-              label: "View all recently used tools",
-              button: true,
-              child: TextButton(
-                onPressed: () {
-                  provider.setSelectedCategory("Recently Used");
-                },
-                style: TextButton.styleFrom(
-                  minimumSize: const Size(48, 36),
-                ),
-                child: const Text("View All", style: TextStyle(fontWeight: FontWeight.w600)),
-              ),
-            ),
-          ],
+        ServicesSectionHeader(
+          title: "Recently Used",
+          description: "Quick access to your most frequently launched recruitment tools and CRM modules.",
+          onViewAll: () => provider.setSelectedCategory("Recently Used"),
         ),
         const SizedBox(height: 12),
         SingleChildScrollView(

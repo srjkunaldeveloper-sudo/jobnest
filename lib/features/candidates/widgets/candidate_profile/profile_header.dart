@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/candidates/widgets/candidate_icon_button.dart';
+import 'package:jobnest/features/candidates/widgets/candidate_stage_badge.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String name;
@@ -22,7 +25,7 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.read<RecruitmentDataProvider>();
     final String company = candidate?.company ?? "TechCorp India";
     final String stage = candidate?.stage ?? "Screening";
     final String salary = candidate?.expectedSalary ?? "₹ 18 - 22 LPA";
@@ -71,11 +74,11 @@ class ProfileHeader extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const SizedBox(width: 12),
-                              _buildStageBadge(theme, stage),
+                              AppSpacing.w12,
+                              CandidateStageBadge(stage: stage, isUppercase: true),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          AppSpacing.h8,
                           Text(
                             "$role at $company",
                             style: theme.textTheme.titleMedium?.copyWith(
@@ -105,10 +108,9 @@ class ProfileHeader extends StatelessWidget {
                   Semantics(
                     label: isBookmarked ? "Remove Bookmark" : "Bookmark Candidate",
                     button: true,
-                    child: _buildIconButton(
-                      context, 
-                      isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded, 
-                      () {
+                    child: CandidateIconButton(
+                      icon: isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                      onTap: () {
                         if (candidate != null) {
                           provider.toggleBookmarkCandidate(candidate!.id);
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -117,33 +119,42 @@ class ProfileHeader extends StatelessWidget {
                         }
                       },
                       iconColor: isBookmarked ? theme.colorScheme.primary : null,
+                      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  AppSpacing.w8,
                   Semantics(
                     label: "Share Candidate Profile",
                     button: true,
-                    child: _buildIconButton(context, Icons.share_rounded, () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Profile link copied to clipboard for $name.")),
-                      );
-                    }),
+                    child: CandidateIconButton(
+                      icon: Icons.share_rounded,
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Profile link copied to clipboard for $name.")),
+                        );
+                      },
+                      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                    ),
                   ),
-                  const SizedBox(width: 8),
+                  AppSpacing.w8,
                   Semantics(
                     label: "More Options",
                     button: true,
-                    child: _buildIconButton(context, Icons.more_vert_rounded, () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Additional enterprise options...")),
-                      );
-                    }),
+                    child: CandidateIconButton(
+                      icon: Icons.more_vert_rounded,
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Additional enterprise options...")),
+                        );
+                      },
+                      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                    ),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          AppSpacing.h24,
           Wrap(
             spacing: 16,
             runSpacing: 12,
@@ -155,25 +166,6 @@ class ProfileHeader extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildIconButton(BuildContext context, IconData icon, VoidCallback onTap, {Color? iconColor}) {
-    final theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.5),
-        ),
-      ),
-      child: IconButton(
-        icon: Icon(icon, size: 20, color: iconColor ?? theme.colorScheme.onSurface),
-        onPressed: onTap,
-        splashRadius: 22,
-        constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
       ),
     );
   }
@@ -192,67 +184,13 @@ class ProfileHeader extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: c),
-          const SizedBox(width: 8),
+          AppSpacing.w8,
           Flexible(
             child: Text(
               label,
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: color != null ? c : theme.colorScheme.onSurface,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStageBadge(ThemeData theme, String stage) {
-    Color badgeColor = Colors.blueAccent;
-    IconData badgeIcon = Icons.group_outlined;
-    final s = stage.toLowerCase();
-
-    if (s == "applied") {
-      badgeColor = Colors.blueGrey;
-      badgeIcon = Icons.inbox_rounded;
-    } else if (s == "screening") {
-      badgeColor = Colors.blueAccent;
-      badgeIcon = Icons.fact_check_outlined;
-    } else if (s == "interview") {
-      badgeColor = Colors.deepPurpleAccent;
-      badgeIcon = Icons.people_alt_outlined;
-    } else if (s == "offer") {
-      badgeColor = Colors.amber.shade700;
-      badgeIcon = Icons.verified_outlined;
-    } else if (s == "hired") {
-      badgeColor = Colors.green;
-      badgeIcon = Icons.check_circle_rounded;
-    } else if (s == "rejected") {
-      badgeColor = Colors.redAccent;
-      badgeIcon = Icons.cancel_outlined;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: badgeColor),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(badgeIcon, size: 14, color: badgeColor),
-          const SizedBox(width: 6),
-          Flexible(
-            child: Text(
-              stage.toUpperCase(),
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: badgeColor,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

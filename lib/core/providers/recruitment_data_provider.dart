@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
+import 'package:jobnest/features/jobs/repositories/job_repository.dart';
 import 'package:jobnest/features/notifications/models/notification_item.dart';
+import 'package:jobnest/features/notifications/repositories/notification_repository.dart';
 
 class RecruitmentDataProvider extends ChangeNotifier {
   bool _isDashboardLoading = false;
   bool _isDashboardError = false;
 
-  bool _isJobsLoading = false;
-  bool _isJobsError = false;
+  final JobRepository _jobRepository = JobRepository();
 
   bool _isCandidatesLoading = false;
   bool _isCandidatesError = false;
@@ -18,8 +19,8 @@ class RecruitmentDataProvider extends ChangeNotifier {
   bool get isDashboardLoading => _isDashboardLoading;
   bool get isDashboardError => _isDashboardError;
 
-  bool get isJobsLoading => _isJobsLoading;
-  bool get isJobsError => _isJobsError;
+  bool get isJobsLoading => JobRepository.dummyLoading;
+  bool get isJobsError => JobRepository.dummyError;
 
   bool get isCandidatesLoading => _isCandidatesLoading;
   bool get isCandidatesError => _isCandidatesError;
@@ -27,13 +28,13 @@ class RecruitmentDataProvider extends ChangeNotifier {
   bool get isNotificationsLoading => _isNotificationsLoading;
   bool get isNotificationsError => _isNotificationsError;
 
-  final List<JobModel> _jobs = [];
   final List<CandidateModel> _candidates = [];
   final List<CompanyModel> _companies = [];
   final List<InterviewModel> _interviews = [];
   final List<String> _recentSearches = [];
   final List<String> _trendingSearches = [];
-  final List<NotificationItem> _notifications = [];
+  final NotificationRepository _notificationRepository = NotificationRepository();
+  final List<NotificationItem> _notifications = List.from(NotificationItem.getDummyNotifications());
 
   List<NotificationItem> get notifications => List.unmodifiable(_notifications);
   int get unreadNotificationsCount => _notifications.where((n) => !n.isRead).length;
@@ -42,92 +43,7 @@ class RecruitmentDataProvider extends ChangeNotifier {
     restoreDefault(notify: false);
   }
 
-  static const List<JobModel> _defaultJobs = [
-    JobModel(
-      id: 'job_1',
-      title: 'Senior Sales Executive',
-      company: 'TechCorp India',
-      location: 'Delhi, India',
-      salary: '₹ 4 - 6 LPA',
-      jobType: 'Full Time',
-      applicationsCount: '246',
-      status: 'Open',
-      aiMatchScore: 92,
-      isUrgent: true,
-      isBookmarked: true,
-      postedDate: 'Posted Today',
-    ),
-    JobModel(
-      id: 'job_2',
-      title: 'Python Developer',
-      company: 'Innovate AI',
-      location: 'Bangalore, India',
-      salary: '₹ 8 - 10 LPA',
-      jobType: 'Remote',
-      applicationsCount: '186',
-      status: 'Hiring',
-      aiMatchScore: 85,
-      isUrgent: true,
-      isBookmarked: false,
-      postedDate: '1 day ago',
-    ),
-    JobModel(
-      id: 'job_3',
-      title: 'UI/UX Designer',
-      company: 'Creative Studio',
-      location: 'Mumbai, India',
-      salary: '₹ 5 - 8 LPA',
-      jobType: 'Full Time',
-      applicationsCount: '142',
-      status: 'Paused',
-      aiMatchScore: 78,
-      isUrgent: false,
-      isBookmarked: true,
-      postedDate: '3 days ago',
-    ),
-    JobModel(
-      id: 'job_4',
-      title: 'Product Manager',
-      company: 'NextGen Solutions',
-      location: 'Pune, India',
-      salary: '₹ 12 - 15 LPA',
-      jobType: 'Hybrid',
-      applicationsCount: '94',
-      status: 'Active',
-      aiMatchScore: 88,
-      isUrgent: false,
-      isBookmarked: false,
-      postedDate: '4 days ago',
-    ),
-    JobModel(
-      id: 'job_5',
-      title: 'Senior Flutter Developer',
-      company: 'Tech Innovators Pvt Ltd',
-      location: 'Delhi, India',
-      salary: '₹ 15 - 18 LPA',
-      jobType: 'Full Time',
-      applicationsCount: '310',
-      status: 'Closed',
-      aiMatchScore: 96,
-      isUrgent: false,
-      isBookmarked: false,
-      postedDate: '1 week ago',
-    ),
-    JobModel(
-      id: 'job_6',
-      title: 'NodeJS Architect',
-      company: 'CloudScape Systems',
-      location: 'Hyderabad, India',
-      salary: '₹ 20 - 25 LPA',
-      jobType: 'Remote',
-      applicationsCount: '65',
-      status: 'Draft',
-      aiMatchScore: 91,
-      isUrgent: false,
-      isBookmarked: false,
-      postedDate: 'Drafted 2 days ago',
-    ),
-  ];
+  // _defaultJobs migrated to JobRepository
 
   static const List<CandidateModel> _defaultCandidates = [
     CandidateModel(
@@ -410,7 +326,7 @@ class RecruitmentDataProvider extends ChangeNotifier {
   ];
 
   // Getters for lists
-  List<JobModel> get jobs => List.unmodifiable(_jobs);
+  List<JobModel> get jobs => List.unmodifiable(JobRepository.getDummyJobs());
   List<CandidateModel> get candidates => List.unmodifiable(_candidates);
   List<CompanyModel> get companies => List.unmodifiable(_companies);
   List<InterviewModel> get interviews => List.unmodifiable(_interviews);
@@ -420,7 +336,7 @@ class RecruitmentDataProvider extends ChangeNotifier {
   // Synchronized counts for Today's Focus
   int get todayInterviewsCount => _interviews.where((i) => i.isToday).length;
   int get newCandidatesCount => _candidates.where((c) => c.isNew).length;
-  int get urgentJobsCount => _jobs.where((j) => j.isUrgent).length;
+  int get urgentJobsCount => jobs.where((j) => j.isUrgent).length;
 
   // Dashboard Simulation & Quality Assurance Methods
   Future<void> refreshDashboard() async {
@@ -431,7 +347,7 @@ class RecruitmentDataProvider extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 800));
 
     // If data was cleared during empty simulation, restore default dummy data on refresh
-    if (_jobs.isEmpty && _candidates.isEmpty && _interviews.isEmpty) {
+    if (jobs.isEmpty && _candidates.isEmpty && _interviews.isEmpty) {
       restoreDefault(notify: false);
     }
 
@@ -462,7 +378,7 @@ class RecruitmentDataProvider extends ChangeNotifier {
   void simulateEmpty() {
     _isDashboardLoading = false;
     _isDashboardError = false;
-    _jobs.clear();
+    _jobRepository.simulateEmpty();
     _candidates.clear();
     _interviews.clear();
     notifyListeners();
@@ -472,8 +388,7 @@ class RecruitmentDataProvider extends ChangeNotifier {
     _isDashboardLoading = false;
     _isDashboardError = false;
     
-    _jobs.clear();
-    _jobs.addAll(_defaultJobs);
+    _jobRepository.restoreDefault();
     
     _candidates.clear();
     _candidates.addAll(_defaultCandidates);
@@ -492,10 +407,11 @@ class RecruitmentDataProvider extends ChangeNotifier {
     
     _isNotificationsLoading = false;
     _isNotificationsError = false;
-    _notifications.clear();
-    _notifications.addAll(NotificationItem.getDummyNotifications());
-
-    if (notify) notifyListeners();
+    _notificationRepository.loadNotifications(forceRefresh: true).then((items) {
+      _notifications.clear();
+      _notifications.addAll(items);
+      if (notify) notifyListeners();
+    });
   }
 
   // Actions for Recent Searches (Maximum 5)
@@ -523,12 +439,12 @@ class RecruitmentDataProvider extends ChangeNotifier {
 
   // Actions for Data Synchronization
   void addJob(JobModel job) {
-    _jobs.insert(0, job);
+    _jobRepository.createJob(job);
     notifyListeners();
   }
 
   void deleteJob(String id) {
-    _jobs.removeWhere((j) => j.id == id);
+    _jobRepository.deleteJob(id);
     notifyListeners();
   }
 
@@ -560,88 +476,46 @@ class RecruitmentDataProvider extends ChangeNotifier {
   // TODO: Bookmark sync.
 
   Future<void> refreshJobs() async {
-    _isJobsLoading = true;
-    _isJobsError = false;
-    notifyListeners();
-
-    await Future.delayed(const Duration(milliseconds: 600));
-
-    // If list was cleared during simulation, restore default dummy data
-    if (_jobs.isEmpty) {
-      _jobs.addAll(_defaultJobs);
-    }
-
-    _isJobsLoading = false;
+    await _jobRepository.refresh();
     notifyListeners();
   }
 
   void simulateJobsLoading() {
-    _isJobsLoading = true;
-    _isJobsError = false;
+    _jobRepository.simulateLoading();
     notifyListeners();
-
-    Future.delayed(const Duration(seconds: 3), () {
-      if (_isJobsLoading) {
-        _isJobsLoading = false;
-        notifyListeners();
-      }
-    });
   }
 
   void simulateJobsError() {
-    _isJobsLoading = false;
-    _isJobsError = true;
+    _jobRepository.simulateError();
     notifyListeners();
   }
 
   void simulateJobsEmpty() {
-    _isJobsLoading = false;
-    _isJobsError = false;
-    _jobs.clear();
+    _jobRepository.simulateEmpty();
     notifyListeners();
   }
 
   void restoreJobsDefault({bool notify = true}) {
-    _isJobsLoading = false;
-    _isJobsError = false;
-    _jobs.clear();
-    _jobs.addAll(_defaultJobs);
+    _jobRepository.restoreDefault();
     if (notify) notifyListeners();
   }
 
   void toggleBookmarkJob(String id) {
-    // TODO: Bookmark sync with backend database.
-    final idx = _jobs.indexWhere((j) => j.id == id);
-    if (idx != -1) {
-      _jobs[idx] = _jobs[idx].copyWith(isBookmarked: !_jobs[idx].isBookmarked);
-      notifyListeners();
-    }
+    _jobRepository.toggleBookmark(id);
+    notifyListeners();
   }
 
   void updateJobStatus(String id, String newStatus) {
-    // TODO: Real-time job updates with server.
-    final idx = _jobs.indexWhere((j) => j.id == id);
+    final idx = jobs.indexWhere((j) => j.id == id);
     if (idx != -1) {
-      _jobs[idx] = _jobs[idx].copyWith(status: newStatus);
+      _jobRepository.updateJob(jobs[idx].copyWith(status: newStatus));
       notifyListeners();
     }
   }
 
   void duplicateJob(String id) {
-    final idx = _jobs.indexWhere((j) => j.id == id);
-    if (idx != -1) {
-      final orig = _jobs[idx];
-      final newJob = orig.copyWith(
-        id: 'job_copy_${DateTime.now().millisecondsSinceEpoch}',
-        title: '${orig.title} (Copy)',
-        status: 'Draft',
-        applicationsCount: '0',
-        postedDate: 'Drafted Just Now',
-        isBookmarked: false,
-      );
-      _jobs.insert(0, newJob);
-      notifyListeners();
-    }
+    _jobRepository.duplicateJob(id);
+    notifyListeners();
   }
 
   // ===== CANDIDATES MODULE ATS METHODS (PHASE 8.3) =====
@@ -759,6 +633,7 @@ class RecruitmentDataProvider extends ChangeNotifier {
       _notifications[i] = _notifications[i].copyWith(isRead: true);
     }
     if (notify) notifyListeners();
+    _notificationRepository.markAllRead();
   }
 
   void toggleNotificationRead(String id, {bool? read}) {
@@ -767,17 +642,22 @@ class RecruitmentDataProvider extends ChangeNotifier {
       final targetRead = read ?? !_notifications[idx].isRead;
       _notifications[idx] = _notifications[idx].copyWith(isRead: targetRead);
       notifyListeners();
+      _notificationRepository.markRead(id, read: targetRead);
     }
   }
 
   void deleteNotification(String id) {
     _notifications.removeWhere((n) => n.id == id);
     notifyListeners();
+    _notificationRepository.deleteNotification(id);
   }
 
   void bulkDeleteNotifications(Set<String> ids) {
     _notifications.removeWhere((n) => ids.contains(n.id));
     notifyListeners();
+    for (final id in ids) {
+      _notificationRepository.deleteNotification(id);
+    }
   }
 
   void bulkMarkReadNotifications(Set<String> ids) {
@@ -787,16 +667,21 @@ class RecruitmentDataProvider extends ChangeNotifier {
       }
     }
     notifyListeners();
+    for (final id in ids) {
+      _notificationRepository.markRead(id, read: true);
+    }
   }
 
   void clearAllNotifications() {
     _notifications.clear();
     notifyListeners();
+    _notificationRepository.clearAll();
   }
 
   void addNotification(NotificationItem item) {
     _notifications.insert(0, item);
     notifyListeners();
+    _notificationRepository.saveNotification(item);
   }
 
   Future<void> refreshNotifications() async {
@@ -804,18 +689,21 @@ class RecruitmentDataProvider extends ChangeNotifier {
     _isNotificationsError = false;
     notifyListeners();
     await Future.delayed(const Duration(milliseconds: 600));
+    final items = await _notificationRepository.loadNotifications(forceRefresh: true);
     _isNotificationsLoading = false;
     _notifications.clear();
-    _notifications.addAll(NotificationItem.getDummyNotifications());
+    _notifications.addAll(items);
     notifyListeners();
   }
 
   void restoreNotificationsDefault({bool notify = true}) {
     _isNotificationsLoading = false;
     _isNotificationsError = false;
-    _notifications.clear();
-    _notifications.addAll(NotificationItem.getDummyNotifications());
-    if (notify) notifyListeners();
+    _notificationRepository.loadNotifications(forceRefresh: true).then((items) {
+      _notifications.clear();
+      _notifications.addAll(items);
+      if (notify) notifyListeners();
+    });
   }
 
   void simulateNotificationsLoading() {
@@ -835,5 +723,6 @@ class RecruitmentDataProvider extends ChangeNotifier {
     _isNotificationsError = false;
     _notifications.clear();
     notifyListeners();
+    _notificationRepository.clearAll();
   }
 }

@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
 
 class Step5Settings extends StatelessWidget {
   const Step5Settings({super.key});
 
+  static bool validateCurrentStep(BuildContext context) {
+    return context.read<JobFormProvider>().validateStep(4);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final form = context.watch<JobFormProvider>();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -37,12 +44,12 @@ class Step5Settings extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Open Positions",
+                      "Open Positions *",
                       style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     AppSpacing.h8,
                     TextFormField(
-                      initialValue: "1",
+                      controller: form.openingsController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         filled: true,
@@ -71,8 +78,20 @@ class Step5Settings extends StatelessWidget {
                     ),
                     AppSpacing.h8,
                     TextFormField(
+                      controller: form.deadlineController,
                       readOnly: true,
-                      initialValue: "30 Aug 2026",
+                      onTap: () async {
+                        final picked = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now().add(const Duration(days: 30)),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(const Duration(days: 365)),
+                        );
+                        if (picked != null) {
+                          final months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                          form.deadlineController.text = "${picked.day} ${months[picked.month - 1]} ${picked.year}";
+                        }
+                      },
                       decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.calendar_month_rounded),
                         filled: true,
@@ -108,21 +127,24 @@ class Step5Settings extends StatelessWidget {
                   context,
                   title: "Urgent Hiring",
                   subtitle: "Highlights your job with a red badge to attract immediate joiners.",
-                  value: true,
+                  value: form.isUrgent,
+                  onChanged: (val) => form.setUrgent(val),
                 ),
                 const Divider(),
                 _buildToggleRow(
                   context,
                   title: "Auto Shortlisting",
-                  subtitle: "AI automatically moves candidates matching 80%+ skills to the shortlsited round.",
-                  value: false,
+                  subtitle: "AI automatically moves candidates matching 80%+ skills to the shortlisted round.",
+                  value: form.autoShortlist,
+                  onChanged: (val) => form.setAutoShortlist(val),
                 ),
                 const Divider(),
                 _buildToggleRow(
                   context,
                   title: "Fast Hiring Mode",
                   subtitle: "Enables 1-click apply and skips long questionnaires.",
-                  value: true,
+                  value: form.fastHiring,
+                  onChanged: (val) => form.setFastHiring(val),
                 ),
               ],
             ),
@@ -134,7 +156,13 @@ class Step5Settings extends StatelessWidget {
     );
   }
 
-  Widget _buildToggleRow(BuildContext context, {required String title, required String subtitle, required bool value}) {
+  Widget _buildToggleRow(
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -161,7 +189,7 @@ class Step5Settings extends StatelessWidget {
           AppSpacing.w16,
           Switch(
             value: value,
-            onChanged: (val) {},
+            onChanged: onChanged,
             activeThumbColor: theme.colorScheme.primary,
           ),
         ],

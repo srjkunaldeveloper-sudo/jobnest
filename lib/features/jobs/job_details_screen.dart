@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
+import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_header.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_overview.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_pipeline.dart';
@@ -101,9 +102,21 @@ class JobDetailsScreen extends StatelessWidget {
         button: true,
         child: FloatingActionButton.extended(
           onPressed: () {
+            final jobToEdit = job ?? JobModel(
+              id: 'job_fallback_${DateTime.now().millisecondsSinceEpoch}',
+              title: title,
+              company: company,
+              location: location,
+              salary: salary,
+              jobType: jobType,
+              applicationsCount: '0',
+              status: status,
+              aiMatchScore: 90,
+            );
+            context.read<JobFormProvider>().initializeEdit(jobToEdit);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const CreateJobWizard()),
+              MaterialPageRoute(builder: (_) => CreateJobWizard(initialJob: jobToEdit)),
             );
           },
           icon: const Icon(Icons.edit_rounded),

@@ -11,102 +11,20 @@ import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
+import 'package:jobnest/features/jobs/providers/job_provider.dart';
+import 'package:jobnest/features/jobs/providers/job_filter_provider.dart';
 
-class JobsScreen extends StatefulWidget {
+class JobsScreen extends StatelessWidget {
   const JobsScreen({super.key});
-
-  @override
-  State<JobsScreen> createState() => _JobsScreenState();
-}
-
-class _JobsScreenState extends State<JobsScreen> {
-  bool _isInitialLoading = true;
-  String _searchQuery = "";
-  String _selectedFilter = "All";
-  String _selectedSort = "Newest";
-
-  @override
-  void initState() {
-    super.initState();
-    // Simulate initial network fetch
-    Future.delayed(const Duration(milliseconds: 700), () {
-      if (mounted) {
-        setState(() {
-          _isInitialLoading = false;
-        });
-      }
-    });
-  }
-
-  int _extractSalary(String salaryStr) {
-    // Extract first numeric number from salary string like "₹ 15 - 18 LPA"
-    final reg = RegExp(r'\d+');
-    final match = reg.firstMatch(salaryStr);
-    return match != null ? int.tryParse(match.group(0) ?? '0') ?? 0 : 0;
-  }
-
-  List<JobModel> _getFilteredAndSortedJobs(List<JobModel> sourceJobs) {
-    List<JobModel> list = List.of(sourceJobs);
-
-    // 1. Instant Local Search Filter (Title, Company, Location, JobType, Skills)
-    if (_searchQuery.isNotEmpty) {
-      final q = _searchQuery.toLowerCase().trim();
-      list = list.where((j) {
-        return j.title.toLowerCase().contains(q) ||
-               j.company.toLowerCase().contains(q) ||
-               j.location.toLowerCase().contains(q) ||
-               j.jobType.toLowerCase().contains(q) ||
-               j.skills.any((s) => s.toLowerCase().contains(q));
-      }).toList();
-    }
-
-    // 2. Chip Filtering (Status or JobType)
-    if (_selectedFilter != "All") {
-      if (_selectedFilter == "Active" || _selectedFilter == "Open") {
-        list = list.where((j) => j.status.toLowerCase() == "active" || j.status.toLowerCase() == "open").toList();
-      } else if (["Hiring", "Paused", "Closed", "Draft"].contains(_selectedFilter)) {
-        list = list.where((j) => j.status.toLowerCase() == _selectedFilter.toLowerCase()).toList();
-      } else if (["Remote", "Hybrid", "Full Time", "Part Time", "Internship"].contains(_selectedFilter)) {
-        list = list.where((j) => j.jobType.toLowerCase() == _selectedFilter.toLowerCase()).toList();
-      }
-    }
-
-    // 3. Dummy Sorting
-    switch (_selectedSort) {
-      case "Newest":
-        // Preserve default insert-at-top chronological order
-        break;
-      case "Oldest":
-        list = list.reversed.toList();
-        break;
-      case "Recently Updated":
-        list.sort((a, b) => b.aiMatchScore.compareTo(a.aiMatchScore));
-        break;
-      case "Highest Salary":
-        list.sort((a, b) => _extractSalary(b.salary).compareTo(_extractSalary(a.salary)));
-        break;
-      case "Lowest Salary":
-        list.sort((a, b) => _extractSalary(a.salary).compareTo(_extractSalary(b.salary)));
-        break;
-      case "Most Applicants":
-        list.sort((a, b) {
-          final countA = int.tryParse(a.applicationsCount.replaceAll(',', '')) ?? 0;
-          final countB = int.tryParse(b.applicationsCount.replaceAll(',', '')) ?? 0;
-          return countB.compareTo(countA);
-        });
-        break;
-    }
-
-    return list;
-  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
-    final filteredJobs = _getFilteredAndSortedJobs(provider.jobs);
-    final bool isLoading = _isInitialLoading || provider.isJobsLoading;
+    final provider = context.watch<JobProvider>();
+    final filterProvider = context.watch<JobFilterProvider>();
+    final filteredJobs = filterProvider.filteredJobs;
+    final bool isLoading = provider.isLoading;
 
     // ===== BACKEND TODO =====
     // TODO: Jobs API integration.
@@ -133,33 +51,7 @@ class _JobsScreenState extends State<JobsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const JobsHeader(),
-                      JobsSearchAndFilters(
-                        searchQuery: _searchQuery,
-                        onSearchChanged: (val) {
-                          setState(() {
-                            _searchQuery = val;
-                          });
-                        },
-                        selectedFilter: _selectedFilter,
-                        onFilterChanged: (val) {
-                          setState(() {
-                            _selectedFilter = val;
-                          });
-                        },
-                        selectedSort: _selectedSort,
-                        onSortChanged: (val) {
-                          setState(() {
-                            _selectedSort = val;
-                          });
-                        },
-                        onClearAll: () {
-                          setState(() {
-                            _searchQuery = "";
-                            _selectedFilter = "All";
-                            _selectedSort = "Newest";
-                          });
-                        },
-                      ),
+                      const JobsSearchAndFilters(),
                       const JobsOverview(),
                       
                       // Job List Section Header
@@ -169,7 +61,7 @@ class _JobsScreenState extends State<JobsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              _searchQuery.isNotEmpty || _selectedFilter != "All"
+                              filterProvider.filterCount > 0
                                   ? "Filtered Requisitions (${filteredJobs.length})"
                                   : "All Requisitions (${provider.jobs.length})",
                               style: theme.textTheme.titleLarge?.copyWith(
@@ -202,7 +94,7 @@ class _JobsScreenState extends State<JobsScreen> {
                             : provider.isJobsError
                                 ? _buildErrorState(context, provider, theme)
                                 : filteredJobs.isEmpty
-                                    ? _buildEmptyState(context, theme, isFilterEmpty: provider.jobs.isNotEmpty)
+                                    ? _buildEmptyState(context, provider, filterProvider, theme, isFilterEmpty: provider.jobs.isNotEmpty)
                                     : _buildJobsList(context, provider, filteredJobs, theme),
                       ),
                       
@@ -220,6 +112,7 @@ class _JobsScreenState extends State<JobsScreen> {
         button: true,
         child: FloatingActionButton.extended(
           onPressed: () {
+            context.read<JobFormProvider>().initializeCreate();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -252,7 +145,7 @@ class _JobsScreenState extends State<JobsScreen> {
     );
   }
 
-  Widget _buildErrorState(BuildContext context, RecruitmentDataProvider provider, ThemeData theme) {
+  Widget _buildErrorState(BuildContext context, JobProvider provider, ThemeData theme) {
     return AppCard(
       key: const ValueKey("error"),
       padding: EdgeInsets.zero,
@@ -268,7 +161,7 @@ class _JobsScreenState extends State<JobsScreen> {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context, ThemeData theme, {required bool isFilterEmpty}) {
+  Widget _buildEmptyState(BuildContext context, JobProvider provider, JobFilterProvider filterProvider, ThemeData theme, {required bool isFilterEmpty}) {
     return AppCard(
       key: const ValueKey("empty"),
       padding: const EdgeInsets.all(40),
@@ -307,13 +200,7 @@ class _JobsScreenState extends State<JobsScreen> {
             const SizedBox(height: 28),
             if (isFilterEmpty)
               OutlinedButton.icon(
-                onPressed: () {
-                  setState(() {
-                    _searchQuery = "";
-                    _selectedFilter = "All";
-                    _selectedSort = "Newest";
-                  });
-                },
+                onPressed: () => filterProvider.clearFilters(),
                 icon: const Icon(Icons.filter_alt_off_rounded, size: 18),
                 label: const Text("Clear Filters & Search", style: TextStyle(fontWeight: FontWeight.bold)),
                 style: OutlinedButton.styleFrom(minimumSize: const Size(160, 48)),
@@ -321,6 +208,7 @@ class _JobsScreenState extends State<JobsScreen> {
             else
               FilledButton.icon(
                 onPressed: () {
+                  context.read<JobFormProvider>().initializeCreate();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -341,7 +229,7 @@ class _JobsScreenState extends State<JobsScreen> {
 
   Widget _buildJobsList(
     BuildContext context,
-    RecruitmentDataProvider provider,
+    JobProvider provider,
     List<JobModel> jobs,
     ThemeData theme,
   ) {
@@ -424,7 +312,7 @@ class _JobsScreenState extends State<JobsScreen> {
     );
   }
 
-  Widget _buildQaSimulationBar(BuildContext context, RecruitmentDataProvider provider, ThemeData theme) {
+  Widget _buildQaSimulationBar(BuildContext context, JobProvider provider, ThemeData theme) {
     if (!kDebugMode) return const SizedBox.shrink();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),

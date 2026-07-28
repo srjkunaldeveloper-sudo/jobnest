@@ -1,13 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
 
 class Step6Preview extends StatelessWidget {
   const Step6Preview({super.key});
 
+  static bool validateCurrentStep(BuildContext context) {
+    return context.read<JobFormProvider>().validateStep(5);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final form = context.watch<JobFormProvider>();
+
+    final title = form.jobTitleController.text.trim().isEmpty
+        ? "Untitled Requisition"
+        : form.jobTitleController.text.trim();
+    final company = form.companyController.text.trim().isEmpty
+        ? "JobNest Inc."
+        : form.companyController.text.trim();
+    final location = form.locationController.text.trim().isEmpty
+        ? "Remote"
+        : form.locationController.text.trim();
+
+    final chipList = <String>[
+      ...form.skills,
+      if (form.experience.isNotEmpty) form.experience,
+      ...form.education,
+      ...form.noticePeriod,
+    ];
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -43,12 +67,12 @@ class Step6Preview extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Senior Frontend Developer",
+                            title,
                             style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           AppSpacing.h4,
                           Text(
-                            "JobNest Inc. • Bangalore, India",
+                            "$company • $location",
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
@@ -56,26 +80,27 @@ class Step6Preview extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.redAccent.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.warning_amber_rounded, size: 16, color: Colors.redAccent),
-                          const SizedBox(width: 4),
-                          Text(
-                            "Urgent",
-                            style: theme.textTheme.labelMedium?.copyWith(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold,
+                    if (form.isUrgent)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.warning_amber_rounded, size: 16, color: Colors.redAccent),
+                            const SizedBox(width: 4),
+                            Text(
+                              "Urgent",
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
                 AppSpacing.h24,
@@ -84,9 +109,9 @@ class Step6Preview extends StatelessWidget {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    _buildIconLabel(context, Icons.work_rounded, "Full Time"),
-                    _buildIconLabel(context, Icons.laptop_mac_rounded, "Hybrid"),
-                    _buildIconLabel(context, Icons.monetization_on_rounded, "₹4L - ₹6L / Yr"),
+                    _buildIconLabel(context, Icons.work_rounded, form.employmentType),
+                    _buildIconLabel(context, Icons.laptop_mac_rounded, form.workMode),
+                    _buildIconLabel(context, Icons.monetization_on_rounded, form.formattedSalary),
                   ],
                 ),
                 AppSpacing.h24,
@@ -94,19 +119,16 @@ class Step6Preview extends StatelessWidget {
                 AppSpacing.h24,
                 
                 Text(
-                  "Requirements",
+                  "Requirements & Profile",
                   style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 AppSpacing.h12,
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: [
-                    _buildChip(context, "Flutter"),
-                    _buildChip(context, "Dart"),
-                    _buildChip(context, "3-5 Years Exp."),
-                    _buildChip(context, "Immediate Joiner"),
-                  ],
+                  children: (chipList.isEmpty ? ["General Qualifications"] : chipList)
+                      .map((chip) => _buildChip(context, chip))
+                      .toList(),
                 ),
                 AppSpacing.h24,
                 
@@ -116,11 +138,27 @@ class Step6Preview extends StatelessWidget {
                 ),
                 AppSpacing.h8,
                 Text(
-                  "• Identify and prospect new sales leads.\n• Maintain relationships with existing clients.\n• Achieve monthly sales targets.",
+                  form.responsibilitiesController.text.trim().isEmpty
+                      ? "General role responsibilities."
+                      : form.responsibilitiesController.text.trim(),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
+                if (form.requirementsController.text.trim().isNotEmpty) ...[
+                  AppSpacing.h24,
+                  Text(
+                    "Qualifications",
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  AppSpacing.h8,
+                  Text(
+                    form.requirementsController.text.trim(),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

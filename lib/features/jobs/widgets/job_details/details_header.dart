@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/jobs/providers/job_provider.dart';
 
 class DetailsHeader extends StatelessWidget {
   final String title;
@@ -26,7 +26,7 @@ class DetailsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<JobProvider>();
     final JobModel? activeJob = job ?? provider.jobs.cast<JobModel?>().firstWhere(
       (j) => j?.title == title && j?.company == company,
       orElse: () => null,

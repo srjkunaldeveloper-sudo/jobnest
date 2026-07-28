@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/features/candidates/widgets/candidate_icon_button.dart';
 
 class CandidatesHeader extends StatelessWidget {
   const CandidatesHeader({super.key});
@@ -24,7 +26,7 @@ class CandidatesHeader extends StatelessWidget {
                     letterSpacing: -0.5,
                   ),
                 ),
-                const SizedBox(height: 4),
+                AppSpacing.h4,
                 Text(
                   "Search and manage applicants.",
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -36,32 +38,14 @@ class CandidatesHeader extends StatelessWidget {
           ),
           Row(
             children: [
-              _buildIconButton(context, Icons.search_rounded, () {}),
-              const SizedBox(width: 8),
-              _buildIconButton(context, Icons.tune_rounded, () {}),
-              const SizedBox(width: 8),
-              _buildIconButton(context, Icons.sort_rounded, () {}),
+              CandidateIconButton(icon: Icons.search_rounded, onTap: () {}),
+              AppSpacing.w8,
+              CandidateIconButton(icon: Icons.tune_rounded, onTap: () {}),
+              AppSpacing.w8,
+              CandidateIconButton(icon: Icons.sort_rounded, onTap: () {}),
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildIconButton(BuildContext context, IconData icon, VoidCallback onTap) {
-    final theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.5),
-        ),
-      ),
-      child: IconButton(
-        icon: Icon(icon, size: 20, color: theme.colorScheme.onSurface),
-        onPressed: onTap,
-        splashRadius: 20,
       ),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/features/candidates/candidate_profile_screen.dart';
+import 'package:jobnest/features/candidates/widgets/candidate_stage_badge.dart';
 
 class CandidateListCard extends StatefulWidget {
   final String name;
@@ -227,8 +229,8 @@ class _CandidateListCardState extends State<CandidateListCard> {
                             children: topSkills.map((s) => _buildSkillTag(context, s)).toList(),
                           ),
                         ),
-                        const SizedBox(width: 12),
-                        _buildStageBadge(theme, stage),
+                        AppSpacing.w12,
+                        CandidateStageBadge(stage: stage),
                       ],
                     ),
                     const SizedBox(height: 18),
@@ -460,55 +462,6 @@ class _CandidateListCardState extends State<CandidateListCard> {
           color: theme.colorScheme.onSurface,
           fontWeight: FontWeight.w600,
         ),
-      ),
-    );
-  }
-
-  Widget _buildStageBadge(ThemeData theme, String stage) {
-    Color badgeColor = Colors.blueAccent;
-    IconData badgeIcon = Icons.group_outlined;
-    final s = stage.toLowerCase();
-
-    if (s == "applied") {
-      badgeColor = Colors.blueGrey;
-      badgeIcon = Icons.inbox_rounded;
-    } else if (s == "screening") {
-      badgeColor = Colors.blueAccent;
-      badgeIcon = Icons.fact_check_outlined;
-    } else if (s == "interview") {
-      badgeColor = Colors.deepPurpleAccent;
-      badgeIcon = Icons.people_alt_outlined;
-    } else if (s == "offer") {
-      badgeColor = Colors.amber.shade700;
-      badgeIcon = Icons.verified_outlined;
-    } else if (s == "hired") {
-      badgeColor = Colors.green;
-      badgeIcon = Icons.check_circle_rounded;
-    } else if (s == "rejected") {
-      badgeColor = Colors.redAccent;
-      badgeIcon = Icons.cancel_outlined;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: badgeColor.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(badgeIcon, size: 14, color: badgeColor),
-          const SizedBox(width: 6),
-          Text(
-            stage,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: badgeColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
       ),
     );
   }

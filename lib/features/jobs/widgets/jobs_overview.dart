@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:jobnest/core/widgets/stat_card.dart';
+import 'package:jobnest/features/jobs/providers/job_filter_provider.dart';
 
 class JobsOverview extends StatelessWidget {
   const JobsOverview({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final filterProvider = context.watch<JobFilterProvider>();
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
       child: LayoutBuilder(
@@ -19,6 +23,7 @@ class JobsOverview extends StatelessWidget {
           } else {
             cardWidth = (constraints.maxWidth - 16) / 2;
           }
+          if (cardWidth < 0) cardWidth = 100.0;
 
           return Wrap(
             spacing: 16,
@@ -26,30 +31,32 @@ class JobsOverview extends StatelessWidget {
             children: [
               SizedBox(
                 width: cardWidth,
-                child: const StatCard(
+                child: StatCard(
                   title: "Active Jobs", 
-                  count: "24", 
+                  count: filterProvider.activeJobsCount.toString(), 
                   icon: Icons.work_outline_rounded, 
                   color: Colors.blueAccent, 
                   trend: "+3", 
                   isPositiveTrend: true,
+                  onTap: () => filterProvider.setSelectedFilter("Open"),
                 ),
               ),
               SizedBox(
                 width: cardWidth,
-                child: const StatCard(
+                child: StatCard(
                   title: "Closed Jobs", 
-                  count: "156", 
+                  count: filterProvider.closedJobsCount.toString(), 
                   icon: Icons.done_all_rounded, 
                   color: Colors.teal, 
                   trend: "", 
+                  onTap: () => filterProvider.setSelectedFilter("Closed"),
                 ),
               ),
               SizedBox(
                 width: cardWidth,
-                child: const StatCard(
+                child: StatCard(
                   title: "Applications", 
-                  count: "1,240", 
+                  count: filterProvider.totalApplications.toString(), 
                   icon: Icons.description_outlined, 
                   color: Colors.orangeAccent, 
                   trend: "+12%", 
@@ -58,12 +65,13 @@ class JobsOverview extends StatelessWidget {
               ),
               SizedBox(
                 width: cardWidth,
-                child: const StatCard(
+                child: StatCard(
                   title: "Urgent Hiring", 
-                  count: "2", 
+                  count: filterProvider.urgentJobsCount.toString(), 
                   icon: Icons.warning_amber_rounded, 
                   color: Colors.redAccent, 
                   trend: "", 
+                  onTap: () => filterProvider.setSelectedFilter("Hiring"),
                 ),
               ),
             ],

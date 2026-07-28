@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/features/services/models/service_item.dart';
 import 'package:jobnest/features/services/providers/services_data_provider.dart';
 import 'package:jobnest/features/services/widgets/service_detail_modal.dart';
+import 'package:jobnest/features/services/widgets/services_hub_sections.dart';
 
 class ServicesFeatured extends StatelessWidget {
   const ServicesFeatured({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final provider = context.watch<ServicesDataProvider>();
     final featuredList = provider.featuredServices;
 
@@ -20,31 +20,10 @@ class ServicesFeatured extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Featured AI Tools",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                letterSpacing: -0.3,
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                "Enterprise AI",
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
+        ServicesSectionHeader(
+          title: "Featured AI Tools",
+          description: "Curated high-priority artificial intelligence tools to accelerate candidate screening and qualification.",
+          onViewAll: () => provider.setSelectedCategory("AI Tools"),
         ),
         const SizedBox(height: 16),
         SingleChildScrollView(

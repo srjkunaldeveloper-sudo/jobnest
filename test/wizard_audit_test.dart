@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/jobs/providers/job_provider.dart';
 import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
 import 'package:jobnest/features/jobs/jobs_screen.dart';
 import 'package:jobnest/features/jobs/job_details_screen.dart';
@@ -9,12 +9,12 @@ import 'package:jobnest/features/jobs/widgets/wizard_steps/create_job_wizard.dar
 
 void main() {
   testWidgets('Full Create Job Wizard audit across all 6 steps (Create Mode)', (WidgetTester tester) async {
-    final provider = RecruitmentDataProvider();
+    final provider = JobProvider();
 
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider<RecruitmentDataProvider>.value(value: provider),
+          ChangeNotifierProvider<JobProvider>.value(value: provider),
           ChangeNotifierProvider(create: (_) => JobFormProvider()),
         ],
         child: const MaterialApp(
@@ -95,12 +95,12 @@ void main() {
   });
 
   testWidgets('Audit JobsScreen FAB opening CreateJobWizard', (WidgetTester tester) async {
-    final provider = RecruitmentDataProvider();
+    final provider = JobProvider();
 
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider<RecruitmentDataProvider>.value(value: provider),
+          ChangeNotifierProvider<JobProvider>.value(value: provider),
           ChangeNotifierProvider(create: (_) => JobFormProvider()),
         ],
         child: const MaterialApp(
@@ -121,12 +121,12 @@ void main() {
   });
 
   testWidgets('Audit JobDetailsScreen FAB opening CreateJobWizard (Edit Requisition)', (WidgetTester tester) async {
-    final provider = RecruitmentDataProvider();
+    final provider = JobProvider();
 
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider<RecruitmentDataProvider>.value(value: provider),
+          ChangeNotifierProvider<JobProvider>.value(value: provider),
           ChangeNotifierProvider(create: (_) => JobFormProvider()),
         ],
         child: const MaterialApp(
@@ -154,14 +154,14 @@ void main() {
   });
 
   testWidgets('Verify Edit flow, edited job updates correctly, and no duplicate records', (WidgetTester tester) async {
-    final provider = RecruitmentDataProvider();
+    final provider = JobProvider();
     final jobToEdit = provider.jobs.first;
     final initialJobsCount = provider.jobs.length;
 
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider<RecruitmentDataProvider>.value(value: provider),
+          ChangeNotifierProvider<JobProvider>.value(value: provider),
           ChangeNotifierProvider(create: (_) => JobFormProvider()),
         ],
         child: MaterialApp(

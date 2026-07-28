@@ -9,7 +9,6 @@ import 'package:jobnest/features/profile/profile_screen.dart';
 import 'package:jobnest/features/services/tools/interview_assistant_screen.dart';
 import 'core/theme/app_theme.dart';
 import 'core/providers/theme_provider.dart';
-import 'core/providers/recruitment_data_provider.dart';
 import 'features/jobs/providers/job_form_provider.dart';
 import 'features/jobs/providers/job_provider.dart';
 import 'features/jobs/providers/job_filter_provider.dart';
@@ -17,7 +16,10 @@ import 'features/dashboard/providers/dashboard_provider.dart';
 import 'features/profile/providers/profile_data_provider.dart';
 import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
 import 'package:jobnest/features/candidates/providers/candidate_filter_provider.dart';
+import 'package:jobnest/features/companies/providers/company_provider.dart';
+import 'package:jobnest/features/interviews/providers/interview_provider.dart';
 import 'package:jobnest/features/notifications/providers/notification_provider.dart';
+import 'package:jobnest/features/search/providers/search_provider.dart';
 import 'package:jobnest/features/splash/splash_screen.dart';
 
 void main() {
@@ -25,12 +27,14 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => RecruitmentDataProvider()),
         ChangeNotifierProvider(create: (_) => ProfileDataProvider()),
         ChangeNotifierProvider(create: (_) => JobFormProvider()),
         ChangeNotifierProvider(create: (_) => JobProvider()),
         ChangeNotifierProvider(create: (_) => CandidateProvider()),
+        ChangeNotifierProvider(create: (_) => CompanyProvider()),
+        ChangeNotifierProvider(create: (_) => InterviewProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProxyProvider<JobProvider, JobFilterProvider>(
           create: (_) => JobFilterProvider(),
           update: (_, jobProvider, filterProvider) =>
@@ -41,10 +45,10 @@ void main() {
           update: (_, candidateProvider, filterProvider) =>
               (filterProvider ?? CandidateFilterProvider())..updateCandidates(candidateProvider.candidates),
         ),
-        ChangeNotifierProxyProvider3<JobProvider, RecruitmentDataProvider, NotificationProvider, DashboardProvider>(
+        ChangeNotifierProxyProvider5<JobProvider, CandidateProvider, InterviewProvider, NotificationProvider, SearchProvider, DashboardProvider>(
           create: (_) => DashboardProvider(),
-          update: (_, jobProvider, recruitmentProvider, notificationProvider, dashboardProvider) =>
-              (dashboardProvider ?? DashboardProvider())..updateDependencies(jobProvider, recruitmentProvider, notificationProvider),
+          update: (_, jobProvider, candidateProvider, interviewProvider, notificationProvider, searchProvider, dashboardProvider) =>
+              (dashboardProvider ?? DashboardProvider())..updateDependencies(jobProvider, candidateProvider, interviewProvider, notificationProvider, searchProvider),
         ),
       ],
       child: const JobNestApp(),

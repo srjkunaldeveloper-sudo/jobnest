@@ -1,16 +1,20 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 import 'package:jobnest/features/dashboard/models/models.dart';
 import 'package:jobnest/features/jobs/providers/job_provider.dart';
+import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
+import 'package:jobnest/features/interviews/providers/interview_provider.dart';
 import 'package:jobnest/features/notifications/models/notification_item.dart';
 import 'package:jobnest/features/notifications/providers/notification_provider.dart';
+import 'package:jobnest/features/search/providers/search_provider.dart';
 
 class DashboardProvider extends ChangeNotifier {
   JobProvider? _jobProvider;
-  RecruitmentDataProvider? _recruitmentProvider;
+  CandidateProvider? _candidateProvider;
+  InterviewProvider? _interviewProvider;
   NotificationProvider? _notificationProvider;
+  SearchProvider? _searchProvider;
 
   bool _isLoading = false;
   bool _isError = false;
@@ -22,10 +26,12 @@ class DashboardProvider extends ChangeNotifier {
   final AiAssistantStateModel _aiAssistantState = AiAssistantStateModel.getDefault();
   final List<DashboardQuickAction> _quickActions = List.from(DashboardQuickAction.getDefaultActions());
 
-  void updateDependencies(JobProvider jobProvider, RecruitmentDataProvider recruitmentProvider, NotificationProvider notificationProvider) {
+  void updateDependencies(JobProvider jobProvider, CandidateProvider candidateProvider, InterviewProvider interviewProvider, NotificationProvider notificationProvider, SearchProvider searchProvider) {
     _jobProvider = jobProvider;
-    _recruitmentProvider = recruitmentProvider;
+    _candidateProvider = candidateProvider;
+    _interviewProvider = interviewProvider;
     _notificationProvider = notificationProvider;
+    _searchProvider = searchProvider;
   }
 
   // Lifecycle state
@@ -38,8 +44,8 @@ class DashboardProvider extends ChangeNotifier {
 
   // Aggregated domain collections (delegating to underlying providers without duplicating state)
   List<JobModel> get jobs => _jobProvider?.jobs ?? [];
-  List<CandidateModel> get candidates => _recruitmentProvider?.candidates ?? [];
-  List<InterviewModel> get interviews => _recruitmentProvider?.interviews ?? [];
+  List<CandidateModel> get candidates => _candidateProvider?.candidates ?? [];
+  List<InterviewModel> get interviews => _interviewProvider?.interviews ?? [];
 
   // Dashboard presentation state (Daily Tasks & Activity Timeline)
   List<DailyTaskItem> get dailyTasks => List.unmodifiable(_dailyTasks);
@@ -54,8 +60,8 @@ class DashboardProvider extends ChangeNotifier {
   List<DashboardQuickAction> get quickActions => List.unmodifiable(_quickActions);
 
   // Search chips delegation
-  List<String> get trendingSearches => _recruitmentProvider?.trendingSearches ?? [];
-  List<String> get recentSearches => _recruitmentProvider?.recentSearches ?? [];
+  List<String> get trendingSearches => _searchProvider?.trendingSearches ?? [];
+  List<String> get recentSearches => _searchProvider?.recentSearches ?? [];
 
   // Daily Tasks computed statistics for widget rendering
   int get completedTasksCount => _dailyTasks.where((t) => t.isCompleted).length;
@@ -135,8 +141,8 @@ class DashboardProvider extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 800));
 
     final jobsEmpty = _jobProvider?.jobs.isEmpty ?? true;
-    final candidatesEmpty = _recruitmentProvider?.candidates.isEmpty ?? true;
-    final interviewsEmpty = _recruitmentProvider?.interviews.isEmpty ?? true;
+    final candidatesEmpty = _candidateProvider?.candidates.isEmpty ?? true;
+    final interviewsEmpty = _interviewProvider?.interviews.isEmpty ?? true;
 
     if (jobsEmpty && candidatesEmpty && interviewsEmpty) {
       await restoreDefault();
@@ -173,8 +179,9 @@ class DashboardProvider extends ChangeNotifier {
     _activityTimeline.clear();
     notifyListeners();
     _jobProvider?.simulateJobsEmpty();
-    _recruitmentProvider?.simulateEmpty();
-    _recruitmentProvider?.simulateNotificationsEmpty();
+    _candidateProvider?.simulateCandidatesEmpty();
+    _interviewProvider?.simulateEmpty();
+    _notificationProvider?.simulateNotificationsEmpty();
   }
 
   Future<void> restoreDefault() async {
@@ -186,8 +193,9 @@ class DashboardProvider extends ChangeNotifier {
     _activityTimeline.addAll(ActivityTimelineItem.getDefaultItems());
     notifyListeners();
     await _jobProvider?.restoreJobsDefault(notify: true);
-    _recruitmentProvider?.restoreDefault();
-    _recruitmentProvider?.restoreNotificationsDefault();
+    await _candidateProvider?.restoreCandidatesDefault(notify: true);
+    _interviewProvider?.restoreDefault();
+    _notificationProvider?.restoreNotificationsDefault();
   }
 }
 

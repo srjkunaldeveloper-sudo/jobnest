@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:jobnest/core/widgets/app_card.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/features/jobs/job_details_screen.dart';
 import 'package:jobnest/features/candidates/candidate_profile_screen.dart';
+import 'package:jobnest/features/search/providers/search_provider.dart';
+import 'package:jobnest/features/companies/providers/company_provider.dart';
+import 'package:jobnest/features/jobs/providers/job_provider.dart';
+import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
 
 class GlobalSearchScreen extends StatefulWidget {
   final String? initialQuery;
@@ -63,19 +66,22 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
     });
     
     // Save to local recent searches in single source of truth
-    context.read<RecruitmentDataProvider>().addRecentSearch(clean);
+    context.read<SearchProvider>().addRecentSearch(clean);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final jobProvider = context.watch<JobProvider>();
+    final candidateProvider = context.watch<CandidateProvider>();
+    final searchProvider = context.watch<SearchProvider>();
+    final companyProvider = context.watch<CompanyProvider>();
 
     // Live Search filtering
     final lowerQuery = _query.toLowerCase();
     final matchingJobs = lowerQuery.isEmpty
         ? <JobModel>[]
-        : provider.jobs.where((j) =>
+        : jobProvider.jobs.where((j) =>
             j.title.toLowerCase().contains(lowerQuery) ||
             j.company.toLowerCase().contains(lowerQuery) ||
             j.location.toLowerCase().contains(lowerQuery) ||
@@ -83,7 +89,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
 
     final matchingCandidates = lowerQuery.isEmpty
         ? <CandidateModel>[]
-        : provider.candidates.where((c) =>
+        : candidateProvider.candidates.where((c) =>
             c.name.toLowerCase().contains(lowerQuery) ||
             c.role.toLowerCase().contains(lowerQuery) ||
             c.location.toLowerCase().contains(lowerQuery) ||
@@ -91,7 +97,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
 
     final matchingCompanies = lowerQuery.isEmpty
         ? <CompanyModel>[]
-        : provider.companies.where((comp) =>
+        : companyProvider.companies.where((comp) =>
             comp.name.toLowerCase().contains(lowerQuery) ||
             comp.industry.toLowerCase().contains(lowerQuery) ||
             comp.location.toLowerCase().contains(lowerQuery)).toList();
@@ -112,7 +118,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
               child: FadeTransition(
                 opacity: _fadeAnimation,
                 child: _query.isEmpty
-                    ? _buildSuggestionsView(theme, provider)
+                    ? _buildSuggestionsView(theme, searchProvider, jobProvider, candidateProvider, companyProvider)
                     : _buildLiveResultsView(theme, matchingJobs, matchingCandidates, matchingCompanies),
               ),
             ),
@@ -222,14 +228,14 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
     );
   }
 
-  Widget _buildSuggestionsView(ThemeData theme, RecruitmentDataProvider provider) {
+  Widget _buildSuggestionsView(ThemeData theme, SearchProvider searchProvider, JobProvider jobProvider, CandidateProvider candidateProvider, CompanyProvider companyProvider) {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Recent Searches (Maximum 5, Delete single, Clear all)
-          if (provider.recentSearches.isNotEmpty) ...[
+          if (searchProvider.recentSearches.isNotEmpty) ...[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -238,7 +244,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
                   style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 TextButton(
-                  onPressed: () => provider.clearRecentSearches(),
+                  onPressed: () => searchProvider.clearRecentSearches(),
                   child: Text("Clear all", style: TextStyle(color: theme.colorScheme.primary, fontSize: 13)),
                 ),
               ],
@@ -247,12 +253,12 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: provider.recentSearches.map((term) {
+              children: searchProvider.recentSearches.map((term) {
                 return InputChip(
                   label: Text(term),
                   avatar: const Icon(Icons.history_rounded, size: 16),
                   deleteIcon: const Icon(Icons.close_rounded, size: 16),
-                  onDeleted: () => provider.deleteRecentSearch(term),
+                  onDeleted: () => searchProvider.deleteRecentSearch(term),
                   onPressed: () => _submitSearch(term),
                   backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -271,7 +277,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: provider.trendingSearches.map((term) {
+            children: searchProvider.trendingSearches.map((term) {
               return ActionChip(
                 label: Text(term),
                 avatar: const Icon(Icons.trending_up_rounded, size: 16, color: Colors.amber),
@@ -289,19 +295,19 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
           // Suggested Jobs
           _buildSectionHeader(theme, "Suggested Jobs", Icons.work_outline_rounded),
           const SizedBox(height: 12),
-          ...provider.jobs.take(3).map((job) => _buildSuggestedJobCard(theme, job)),
+          ...jobProvider.jobs.take(3).map((job) => _buildSuggestedJobCard(theme, job)),
           const SizedBox(height: 24),
 
           // Suggested Candidates
           _buildSectionHeader(theme, "Suggested Candidates", Icons.people_outline_rounded),
           const SizedBox(height: 12),
-          ...provider.candidates.take(3).map((cand) => _buildSuggestedCandidateCard(theme, cand)),
+          ...candidateProvider.candidates.take(3).map((cand) => _buildSuggestedCandidateCard(theme, cand)),
           const SizedBox(height: 24),
 
           // Suggested Companies
           _buildSectionHeader(theme, "Suggested Companies", Icons.business_rounded),
           const SizedBox(height: 12),
-          ...provider.companies.take(3).map((comp) => _buildSuggestedCompanyCard(theme, comp)),
+          ...companyProvider.companies.take(3).map((comp) => _buildSuggestedCompanyCard(theme, comp)),
           const SizedBox(height: 32),
         ],
       ),

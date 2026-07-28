@@ -1,12 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
 class ProfileExperience extends StatelessWidget {
-  const ProfileExperience({super.key});
+  final CandidateModel? candidate;
+
+  const ProfileExperience({
+    super.key,
+    this.candidate,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final experienceItems = candidate == null
+        ? const [
+            (
+              "Senior Flutter Developer",
+              "TechCorp India",
+              "Jan 2022 - Present (2 yrs 6 mos)",
+              "Lead the mobile team in migrating a legacy app to Flutter. Improved app performance by 40% and reduced crash rate to < 0.1%. Integrated complex animations and state management using BLoC.",
+            ),
+            (
+              "Mobile App Developer",
+              "Innovate Solutions",
+              "Mar 2019 - Dec 2021 (2 yrs 9 mos)",
+              "Developed and maintained multiple cross-platform applications using Flutter and React Native. Worked closely with the UI/UX team to implement pixel-perfect designs.",
+            ),
+          ]
+        : [
+            (
+              candidate!.role,
+              candidate!.company,
+              candidate!.experience,
+              candidate!.resumeSummary,
+            ),
+            (
+              "Professional Overview",
+              "Candidate Profile",
+              "Current Snapshot",
+              candidate!.about,
+            ),
+          ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,24 +54,20 @@ class ProfileExperience extends StatelessWidget {
         AppCard(
           padding: const EdgeInsets.all(24),
           child: Column(
-            children: [
-              _buildExperienceItem(
-                context,
-                role: "Senior Flutter Developer",
-                company: "TechCorp India",
-                duration: "Jan 2022 - Present (2 yrs 6 mos)",
-                description: "Lead the mobile team in migrating a legacy app to Flutter. Improved app performance by 40% and reduced crash rate to < 0.1%. Integrated complex animations and state management using BLoC.",
-                isLast: false,
-              ),
-              _buildExperienceItem(
-                context,
-                role: "Mobile App Developer",
-                company: "Innovate Solutions",
-                duration: "Mar 2019 - Dec 2021 (2 yrs 9 mos)",
-                description: "Developed and maintained multiple cross-platform applications using Flutter and React Native. Worked closely with the UI/UX team to implement pixel-perfect designs.",
-                isLast: true,
-              ),
-            ],
+            children: List<Widget>.generate(
+              experienceItems.length,
+              (index) {
+                final item = experienceItems[index];
+                return _buildExperienceItem(
+                  context,
+                  role: item.$1,
+                  company: item.$2,
+                  duration: item.$3,
+                  description: item.$4,
+                  isLast: index == experienceItems.length - 1,
+                );
+              },
+            ),
           ),
         ),
       ],

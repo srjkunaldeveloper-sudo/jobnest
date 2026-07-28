@@ -221,8 +221,6 @@ class ServicesAiToolsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<ServicesDataProvider>();
-
     // TODO:
     // AI APIs.
 

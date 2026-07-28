@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
 import 'package:jobnest/features/candidates/widgets/candidate_list_card.dart';
 
 class CandidatesGridView extends StatelessWidget {
-  final RecruitmentDataProvider provider;
+  final CandidateProvider provider;
   final List<CandidateModel> candidates;
   final double availableWidth;
   final bool isMobile;

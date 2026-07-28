@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
+import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
 
 import 'package:jobnest/features/candidates/widgets/candidate_profile/profile_header.dart';
 import 'package:jobnest/features/candidates/widgets/candidate_profile/profile_summary.dart';
@@ -23,6 +25,7 @@ class CandidateProfileScreen extends StatelessWidget {
   final String role;
   final String location;
   final String experience;
+  final String? candidateId;
   final CandidateModel? candidate;
 
   const CandidateProfileScreen({
@@ -31,12 +34,24 @@ class CandidateProfileScreen extends StatelessWidget {
     required this.role,
     required this.location,
     required this.experience,
+    this.candidateId,
     this.candidate,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final provider = context.read<CandidateProvider>();
+    final currentCandidate = context.select<CandidateProvider, CandidateModel?>(
+      (candidateProvider) => candidateProvider.candidateById(
+        candidateId ?? candidate?.id,
+      ),
+    );
+    final activeCandidate = currentCandidate ?? candidate;
+    final displayName = activeCandidate?.name ?? name;
+    final displayRole = activeCandidate?.role ?? role;
+    final displayLocation = activeCandidate?.location ?? location;
+    final displayExperience = activeCandidate?.experience ?? experience;
 
     // ===== BACKEND TODO =====
     // TODO: Backend se candidate profile fetch hoga using candidate ID.
@@ -62,19 +77,33 @@ class CandidateProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ProfileHeader(
-                  name: name,
-                  role: role,
-                  location: location,
-                  experience: experience,
-                  candidate: candidate,
+                  name: displayName,
+                  role: displayRole,
+                  location: displayLocation,
+                  experience: displayExperience,
+                  candidate: activeCandidate,
+                  onBookmarkTap: activeCandidate == null
+                      ? null
+                      : () {
+                          provider.toggleBookmarkCandidate(activeCandidate.id);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                activeCandidate.isBookmarked
+                                    ? "Removed bookmark for $displayName"
+                                    : "Bookmarked $displayName",
+                              ),
+                            ),
+                          );
+                        },
                 ),
-                ProfileSummary(candidate: candidate),
+                ProfileSummary(candidate: activeCandidate),
                 const SizedBox(height: 32),
                 
-                const ProfileSkills(),
+                ProfileSkills(),
                 const SizedBox(height: 32),
 
-                const ProfileExperience(),
+                ProfileExperience(candidate: activeCandidate),
                 const SizedBox(height: 32),
 
                 const ProfileEducation(),
@@ -133,8 +162,32 @@ class CandidateProfileScreen extends StatelessWidget {
                 const SizedBox(height: 48),
 
                 ProfileQuickActions(
-                  candidate: candidate,
-                  candidateName: name,
+                  candidateName: displayName,
+                  currentStage: activeCandidate?.stage ?? "Screening",
+                  onMoveStage: activeCandidate == null
+                      ? null
+                      : (newStage) {
+                          provider.updateCandidateStage(
+                            activeCandidate.id,
+                            newStage,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Moved $displayName to $newStage stage.",
+                              ),
+                            ),
+                          );
+                        },
+                  onArchive: activeCandidate == null
+                      ? null
+                      : () {
+                          provider.deleteCandidate(activeCandidate.id);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Archived $displayName.")),
+                          );
+                          Navigator.pop(context);
+                        },
                 ),
                 const SizedBox(height: 64), // Bottom padding
               ],

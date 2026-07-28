@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
 
 class CandidatesSimulationPanel extends StatelessWidget {
-  final RecruitmentDataProvider provider;
+  final CandidateProvider provider;
 
   const CandidatesSimulationPanel({
     super.key,

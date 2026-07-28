@@ -2,11 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
 class ProfileSkills extends StatelessWidget {
-  const ProfileSkills({super.key});
+  final List<String> skills;
+
+  const ProfileSkills({
+    super.key,
+    this.skills = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final displaySkills = skills.isNotEmpty
+        ? skills
+        : const [
+            "Flutter",
+            "Dart",
+            "Firebase",
+            "Provider/BLoC",
+            "Python",
+            "UI/UX Design",
+            "Agile",
+          ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,15 +37,15 @@ class ProfileSkills extends StatelessWidget {
           child: Wrap(
             spacing: 12,
             runSpacing: 12,
-            children: [
-              _buildSkillChip(context, "Flutter", "Expert", Colors.blue),
-              _buildSkillChip(context, "Dart", "Expert", Colors.blue),
-              _buildSkillChip(context, "Firebase", "Advanced", Colors.orange),
-              _buildSkillChip(context, "Provider/BLoC", "Advanced", Colors.orange),
-              _buildSkillChip(context, "Python", "Intermediate", Colors.green),
-              _buildSkillChip(context, "UI/UX Design", "Intermediate", Colors.green),
-              _buildSkillChip(context, "Agile", "Familiar", theme.colorScheme.onSurfaceVariant),
-            ],
+            children: List<Widget>.generate(
+              displaySkills.length,
+              (index) => _buildSkillChip(
+                context,
+                displaySkills[index],
+                _levelForIndex(index),
+                _colorForIndex(theme, index),
+              ),
+            ),
           ),
         ),
       ],
@@ -73,5 +89,31 @@ class ProfileSkills extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _levelForIndex(int index) {
+    if (index < 2) {
+      return "Expert";
+    }
+    if (index < 4) {
+      return "Advanced";
+    }
+    if (index < 6) {
+      return "Intermediate";
+    }
+    return "Familiar";
+  }
+
+  Color _colorForIndex(ThemeData theme, int index) {
+    if (index < 2) {
+      return Colors.blue;
+    }
+    if (index < 4) {
+      return Colors.orange;
+    }
+    if (index < 6) {
+      return Colors.green;
+    }
+    return theme.colorScheme.onSurfaceVariant;
   }
 }

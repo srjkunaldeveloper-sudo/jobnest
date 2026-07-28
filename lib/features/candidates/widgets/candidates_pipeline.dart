@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
-import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/features/candidates/widgets/candidate_stage_badge.dart';
 import 'dart:async';
 
-
 class CandidatesPipeline extends StatefulWidget {
   final String activeStage;
+  final int totalCount;
+  final int appliedCount;
+  final int screeningCount;
+  final int interviewCount;
+  final int offerCount;
+  final int hiredCount;
   final ValueChanged<String>? onStageSelected;
 
   const CandidatesPipeline({
     super.key,
     this.activeStage = "All",
+    this.totalCount = 0,
+    this.appliedCount = 0,
+    this.screeningCount = 0,
+    this.interviewCount = 0,
+    this.offerCount = 0,
+    this.hiredCount = 0,
     this.onStageSelected,
   });
 
@@ -78,14 +86,6 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final candidates = context.select<RecruitmentDataProvider, List<CandidateModel>>((provider) => provider.candidates);
-
-    // Dynamically count candidates for each ATS Stage
-    int appliedCount = candidates.where((c) => c.stage.toLowerCase() == "applied").length;
-    int screeningCount = candidates.where((c) => c.stage.toLowerCase() == "screening").length;
-    int interviewCount = candidates.where((c) => c.stage.toLowerCase() == "interview").length;
-    int offerCount = candidates.where((c) => c.stage.toLowerCase() == "offer").length;
-    int hiredCount = candidates.where((c) => c.stage.toLowerCase() == "hired").length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +97,7 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
           runSpacing: 8,
           children: [
             Text(
-              "Hiring Pipeline (${candidates.length} Total)",
+              "Hiring Pipeline (${widget.totalCount} Total)",
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 letterSpacing: -0.3,
@@ -149,11 +149,11 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildPipelineStage(context, "Applied", appliedCount, CandidateStageBadge.getStageColor("Applied"), isFirst: true),
-                        _buildPipelineStage(context, "Screening", screeningCount, CandidateStageBadge.getStageColor("Screening")),
-                        _buildPipelineStage(context, "Interview", interviewCount, CandidateStageBadge.getStageColor("Interview")),
-                        _buildPipelineStage(context, "Offer", offerCount, CandidateStageBadge.getStageColor("Offer")),
-                        _buildPipelineStage(context, "Hired", hiredCount, CandidateStageBadge.getStageColor("Hired"), isLast: true),
+                        _buildPipelineStage(context, "Applied", widget.appliedCount, CandidateStageBadge.getStageColor("Applied"), isFirst: true),
+                        _buildPipelineStage(context, "Screening", widget.screeningCount, CandidateStageBadge.getStageColor("Screening")),
+                        _buildPipelineStage(context, "Interview", widget.interviewCount, CandidateStageBadge.getStageColor("Interview")),
+                        _buildPipelineStage(context, "Offer", widget.offerCount, CandidateStageBadge.getStageColor("Offer")),
+                        _buildPipelineStage(context, "Hired", widget.hiredCount, CandidateStageBadge.getStageColor("Hired"), isLast: true),
                       ],
                     ),
                   ),

@@ -5,10 +5,12 @@ import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 import 'package:jobnest/features/dashboard/models/models.dart';
 import 'package:jobnest/features/jobs/providers/job_provider.dart';
 import 'package:jobnest/features/notifications/models/notification_item.dart';
+import 'package:jobnest/features/notifications/providers/notification_provider.dart';
 
 class DashboardProvider extends ChangeNotifier {
   JobProvider? _jobProvider;
   RecruitmentDataProvider? _recruitmentProvider;
+  NotificationProvider? _notificationProvider;
 
   bool _isLoading = false;
   bool _isError = false;
@@ -20,9 +22,10 @@ class DashboardProvider extends ChangeNotifier {
   final AiAssistantStateModel _aiAssistantState = AiAssistantStateModel.getDefault();
   final List<DashboardQuickAction> _quickActions = List.from(DashboardQuickAction.getDefaultActions());
 
-  void updateDependencies(JobProvider jobProvider, RecruitmentDataProvider recruitmentProvider) {
+  void updateDependencies(JobProvider jobProvider, RecruitmentDataProvider recruitmentProvider, NotificationProvider notificationProvider) {
     _jobProvider = jobProvider;
     _recruitmentProvider = recruitmentProvider;
+    _notificationProvider = notificationProvider;
   }
 
   // Lifecycle state
@@ -59,9 +62,9 @@ class DashboardProvider extends ChangeNotifier {
   int get totalTasksCount => _dailyTasks.length;
   double get tasksProgress => totalTasksCount > 0 ? completedTasksCount / totalTasksCount : 0.0;
 
-  // Smart Notifications delegation (proxying RecruitmentDataProvider without duplicating state)
+  // Smart Notifications delegation (proxying NotificationProvider without duplicating state)
   List<NotificationItem> get recentNotifications =>
-      (_recruitmentProvider?.notifications ?? []).take(4).toList();
+      (_notificationProvider?.notifications ?? []).take(4).toList();
 
   void toggleTaskCompletion(String taskId) {
     final idx = _dailyTasks.indexWhere((t) => t.id == taskId || t.title == taskId);

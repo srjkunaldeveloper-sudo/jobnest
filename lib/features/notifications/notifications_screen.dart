@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/notifications/providers/notification_provider.dart';
 import 'package:jobnest/features/notifications/models/notification_item.dart';
 import 'package:jobnest/features/notifications/widgets/notification_card.dart';
 import 'package:jobnest/features/profile/settings/profile_notifications_screen.dart';
@@ -64,7 +64,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     }
   }
 
-  void _markAllAsRead(RecruitmentDataProvider provider) {
+  void _markAllAsRead(NotificationProvider provider) {
     provider.markAllNotificationsAsRead();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -87,7 +87,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     });
   }
 
-  void _deleteSelected(RecruitmentDataProvider provider) {
+  void _deleteSelected(NotificationProvider provider) {
     final count = _selectedIds.length;
     final idsToDelete = Set<String>.from(_selectedIds);
     final deletedItems = provider.notifications.where((item) => idsToDelete.contains(item.id)).toList();
@@ -113,7 +113,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  void _markSelectedAsRead(RecruitmentDataProvider provider) {
+  void _markSelectedAsRead(NotificationProvider provider) {
     final count = _selectedIds.length;
     provider.bulkMarkReadNotifications(_selectedIds);
     setState(() {
@@ -129,7 +129,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  void _handleTap(NotificationItem item, RecruitmentDataProvider provider) {
+  void _handleTap(NotificationItem item, NotificationProvider provider) {
     if (_isMultiSelectMode) {
       _toggleSelection(item.id);
       return;
@@ -227,11 +227,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.watch<RecruitmentDataProvider>();
+    final provider = context.watch<NotificationProvider>();
     final allNotifications = provider.notifications;
     final filtered = _getFilteredNotifications(allNotifications);
-    final bool isLoading = provider.isNotificationsLoading;
-    final bool isError = provider.isNotificationsError;
+    final bool isLoading = provider.isLoading;
+    final bool isError = provider.isError;
 
     final todayItems = filtered.where((item) => item.section == "Today").toList();
     final yesterdayItems = filtered.where((item) => item.section == "Yesterday").toList();
@@ -279,7 +279,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  PreferredSizeWidget _buildNormalAppBar(ThemeData theme, RecruitmentDataProvider provider) {
+  PreferredSizeWidget _buildNormalAppBar(ThemeData theme, NotificationProvider provider) {
     final hasUnread = provider.unreadNotificationsCount > 0;
     return AppBar(
       backgroundColor: theme.colorScheme.surface,
@@ -413,7 +413,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   PreferredSizeWidget _buildMultiSelectAppBar(
     ThemeData theme,
-    RecruitmentDataProvider provider,
+    NotificationProvider provider,
     List<NotificationItem> currentFiltered,
   ) {
     final bool allSelected = _selectedIds.length == currentFiltered.length && currentFiltered.isNotEmpty;
@@ -553,7 +553,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Widget _buildErrorState(ThemeData theme, RecruitmentDataProvider provider) {
+  Widget _buildErrorState(ThemeData theme, NotificationProvider provider) {
     return AppErrorState(
       title: "Unable to load notifications",
       message: "An unexpected network error occurred while syncing your recruitment activities. Please check your connection and try again.",
@@ -563,7 +563,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Widget _buildEmptyState(ThemeData theme, RecruitmentDataProvider provider) {
+  Widget _buildEmptyState(ThemeData theme, NotificationProvider provider) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -637,7 +637,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   Widget _buildNotificationsList(
     ThemeData theme,
-    RecruitmentDataProvider provider,
+    NotificationProvider provider,
     List<NotificationItem> today,
     List<NotificationItem> yesterday,
     List<NotificationItem> earlier,
@@ -759,7 +759,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Widget _buildCard(NotificationItem item, RecruitmentDataProvider provider) {
+  Widget _buildCard(NotificationItem item, NotificationProvider provider) {
     return NotificationCard(
       item: item,
       isMultiSelectMode: _isMultiSelectMode,
@@ -802,7 +802,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  void _simulateNewNotification(RecruitmentDataProvider provider) {
+  void _simulateNewNotification(NotificationProvider provider) {
     final newItem = NotificationItem(
       id: "notif_sim_${DateTime.now().millisecondsSinceEpoch}",
       type: NotificationType.newApplicationReceived,

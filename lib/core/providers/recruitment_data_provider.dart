@@ -1,238 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/features/jobs/repositories/job_repository.dart';
-import 'package:jobnest/features/notifications/models/notification_item.dart';
-import 'package:jobnest/features/notifications/repositories/notification_repository.dart';
+import 'package:jobnest/features/candidates/repositories/candidate_repository.dart';
 
 class RecruitmentDataProvider extends ChangeNotifier {
   final JobRepository _jobRepository = JobRepository();
-
-  bool _isCandidatesLoading = false;
-  bool _isCandidatesError = false;
-
-  bool _isNotificationsLoading = false;
-  bool _isNotificationsError = false;
+  final CandidateRepository _candidateRepository = CandidateRepository(); // TEMPORARY COMPATIBILITY
 
   bool get isJobsLoading => JobRepository.dummyLoading;
   bool get isJobsError => JobRepository.dummyError;
 
-  bool get isCandidatesLoading => _isCandidatesLoading;
-  bool get isCandidatesError => _isCandidatesError;
+  bool get isCandidatesLoading => CandidateRepository.dummyLoading;
+  bool get isCandidatesError => CandidateRepository.dummyError;
 
-  bool get isNotificationsLoading => _isNotificationsLoading;
-  bool get isNotificationsError => _isNotificationsError;
+  // Candidates list delegated to CandidateRepository for temporary backward compatibility
+  List<CandidateModel> get candidates => CandidateRepository.getDummyCandidates();
 
-  final List<CandidateModel> _candidates = [];
   final List<CompanyModel> _companies = [];
   final List<InterviewModel> _interviews = [];
   final List<String> _recentSearches = [];
   final List<String> _trendingSearches = [];
-  final NotificationRepository _notificationRepository = NotificationRepository();
-  final List<NotificationItem> _notifications = List.from(NotificationItem.getDummyNotifications());
-
-  List<NotificationItem> get notifications => List.unmodifiable(_notifications);
-  int get unreadNotificationsCount => _notifications.where((n) => !n.isRead).length;
 
   RecruitmentDataProvider() {
     restoreDefault(notify: false);
   }
 
   // _defaultJobs migrated to JobRepository
-
-  static const List<CandidateModel> _defaultCandidates = [
-    CandidateModel(
-      id: 'cand_1',
-      name: 'Rahul Sharma',
-      role: 'Senior Flutter Developer',
-      location: 'Delhi, India',
-      experience: '5 Years',
-      skills: ['Flutter', 'Dart', 'Firebase', 'BLoC'],
-      matchPercentage: 94,
-      score: 8.5,
-      isNew: true,
-      stage: 'Interview',
-      expectedSalary: '₹ 25 - 30 LPA',
-      rating: 4.9,
-      company: 'Google India',
-      appliedDate: '2 days ago',
-    ),
-    CandidateModel(
-      id: 'cand_2',
-      name: 'Priya Singh',
-      role: 'Python Backend Engineer',
-      location: 'Bangalore, India',
-      experience: '4 Years',
-      skills: ['Python', 'Django', 'PostgreSQL', 'AWS'],
-      matchPercentage: 88,
-      score: 7.9,
-      isNew: true,
-      stage: 'Screening',
-      expectedSalary: '₹ 18 - 22 LPA',
-      rating: 4.5,
-      company: 'Infosys',
-      appliedDate: '3 days ago',
-    ),
-    CandidateModel(
-      id: 'cand_3',
-      name: 'Amit Patel',
-      role: 'UI/UX Designer',
-      location: 'Mumbai, India',
-      experience: '3 Years',
-      skills: ['Figma', 'Prototyping', 'Wireframing'],
-      matchPercentage: 82,
-      score: 7.2,
-      isNew: true,
-      stage: 'Applied',
-      expectedSalary: '₹ 12 - 15 LPA',
-      rating: 4.2,
-      company: 'Wipro',
-      appliedDate: '1 day ago',
-    ),
-    CandidateModel(
-      id: 'cand_4',
-      name: 'Sneha Reddy',
-      role: 'Frontend Developer',
-      location: 'Remote',
-      experience: '2 Years',
-      skills: ['React', 'JavaScript', 'HTML/CSS'],
-      matchPercentage: 76,
-      score: 6.8,
-      isNew: true,
-      stage: 'Offer',
-      expectedSalary: '₹ 15 - 18 LPA',
-      rating: 4.7,
-      company: 'TCS',
-      appliedDate: '5 days ago',
-    ),
-    CandidateModel(
-      id: 'cand_5',
-      name: 'Vikram Malhotra',
-      role: 'DevOps Engineer',
-      location: 'Pune, India',
-      experience: '6 Years',
-      skills: ['Docker', 'Kubernetes', 'AWS', 'CI/CD'],
-      matchPercentage: 91,
-      score: 8.8,
-      isNew: true,
-      stage: 'Hired',
-      expectedSalary: '₹ 28 - 35 LPA',
-      rating: 4.8,
-      company: 'Amazon India',
-      appliedDate: '1 week ago',
-    ),
-    CandidateModel(
-      id: 'cand_6',
-      name: 'Ananya Iyer',
-      role: 'Product Designer',
-      location: 'Bangalore, India',
-      experience: '4 Years',
-      skills: ['Figma', 'Design Systems', 'User Research'],
-      matchPercentage: 89,
-      score: 8.3,
-      isNew: true,
-      stage: 'Interview',
-      expectedSalary: '₹ 20 - 25 LPA',
-      rating: 4.6,
-      company: 'TechCorp India',
-      appliedDate: '2 days ago',
-    ),
-    CandidateModel(
-      id: 'cand_7',
-      name: 'Karan Mehta',
-      role: 'NodeJS Backend Developer',
-      location: 'Hyderabad, India',
-      experience: '3 Years',
-      skills: ['Node.js', 'Express', 'MongoDB', 'Microservices'],
-      matchPercentage: 85,
-      score: 7.7,
-      isNew: true,
-      stage: 'Screening',
-      expectedSalary: '₹ 14 - 18 LPA',
-      rating: 4.3,
-      company: 'Flipkart',
-      appliedDate: '3 days ago',
-    ),
-    CandidateModel(
-      id: 'cand_8',
-      name: 'Divya Nair',
-      role: 'Data Scientist',
-      location: 'Chennai, India',
-      experience: '5 Years',
-      skills: ['Python', 'Machine Learning', 'PyTorch', 'SQL'],
-      matchPercentage: 92,
-      score: 8.6,
-      isNew: true,
-      stage: 'Applied',
-      expectedSalary: '₹ 22 - 28 LPA',
-      rating: 4.9,
-      company: 'Swiggy',
-      appliedDate: 'Just now',
-    ),
-    CandidateModel(
-      id: 'cand_9',
-      name: 'Rohan Verma',
-      role: 'Android Engineer',
-      location: 'Delhi, India',
-      experience: '4 Years',
-      skills: ['Kotlin', 'Android Jetpack', 'Coroutines'],
-      matchPercentage: 87,
-      score: 7.8,
-      isNew: true,
-      stage: 'Interview',
-      expectedSalary: '₹ 16 - 20 LPA',
-      rating: 4.4,
-      company: 'Paytm',
-      appliedDate: '4 days ago',
-    ),
-    CandidateModel(
-      id: 'cand_10',
-      name: 'Meera Joshi',
-      role: 'QA Automation Lead',
-      location: 'Pune, India',
-      experience: '6 Years',
-      skills: ['Selenium', 'Appium', 'Java', 'CI/CD'],
-      matchPercentage: 84,
-      score: 7.5,
-      isNew: true,
-      stage: 'Offer',
-      expectedSalary: '₹ 24 - 30 LPA',
-      rating: 4.6,
-      company: 'Zomato',
-      appliedDate: '6 days ago',
-    ),
-    CandidateModel(
-      id: 'cand_11',
-      name: 'Siddharth Rao',
-      role: 'Full Stack Engineer',
-      location: 'Bangalore, India',
-      experience: '4 Years',
-      skills: ['React', 'Node.js', 'GraphQL', 'PostgreSQL'],
-      matchPercentage: 90,
-      score: 8.4,
-      isNew: true,
-      stage: 'Screening',
-      expectedSalary: '₹ 18 - 22 LPA',
-      rating: 4.5,
-      company: 'Razorpay',
-      appliedDate: '2 days ago',
-    ),
-    CandidateModel(
-      id: 'cand_12',
-      name: 'Pooja Desai',
-      role: 'Cloud Architect',
-      location: 'Mumbai, India',
-      experience: '7 Years',
-      skills: ['AWS', 'Azure', 'Terraform', 'Kubernetes'],
-      matchPercentage: 95,
-      score: 9.0,
-      isNew: true,
-      stage: 'Applied',
-      expectedSalary: '₹ 30 - 40 LPA',
-      rating: 5.0,
-      company: 'Microsoft India',
-      appliedDate: '1 day ago',
-    ),
-  ];
 
   static const List<CompanyModel> _defaultCompanies = [
     CompanyModel(
@@ -321,7 +114,6 @@ class RecruitmentDataProvider extends ChangeNotifier {
 
   // Getters for lists
   List<JobModel> get jobs => List.unmodifiable(JobRepository.getDummyJobs());
-  List<CandidateModel> get candidates => List.unmodifiable(_candidates);
   List<CompanyModel> get companies => List.unmodifiable(_companies);
   List<InterviewModel> get interviews => List.unmodifiable(_interviews);
   List<String> get recentSearches => List.unmodifiable(_recentSearches);
@@ -329,22 +121,22 @@ class RecruitmentDataProvider extends ChangeNotifier {
 
   // Synchronized counts for Today's Focus
   int get todayInterviewsCount => _interviews.where((i) => i.isToday).length;
-  int get newCandidatesCount => _candidates.where((c) => c.isNew).length;
+  int get newCandidatesCount => candidates.where((c) => c.isNew).length;
   int get urgentJobsCount => jobs.where((j) => j.isUrgent).length;
 
   // Legacy compatibility methods (simulateEmpty / restoreDefault) for non-dashboard domains
   void simulateEmpty() {
     _jobRepository.simulateEmpty();
-    _candidates.clear();
+    _candidateRepository.simulateEmpty().then((_) => notifyListeners());
     _interviews.clear();
     notifyListeners();
   }
 
   void restoreDefault({bool notify = true}) {
     _jobRepository.restoreDefault();
-    
-    _candidates.clear();
-    _candidates.addAll(_defaultCandidates);
+    _candidateRepository.restoreDefault().then((_) {
+      if (notify) notifyListeners();
+    });
     
     _companies.clear();
     _companies.addAll(_defaultCompanies);
@@ -357,14 +149,6 @@ class RecruitmentDataProvider extends ChangeNotifier {
     
     _trendingSearches.clear();
     _trendingSearches.addAll(_defaultTrendingSearches);
-    
-    _isNotificationsLoading = false;
-    _isNotificationsError = false;
-    _notificationRepository.loadNotifications(forceRefresh: true).then((items) {
-      _notifications.clear();
-      _notifications.addAll(items);
-      if (notify) notifyListeners();
-    });
   }
 
   // Actions for Recent Searches (Maximum 5)
@@ -402,13 +186,11 @@ class RecruitmentDataProvider extends ChangeNotifier {
   }
 
   void addCandidate(CandidateModel candidate) {
-    _candidates.insert(0, candidate);
-    notifyListeners();
+    _candidateRepository.createCandidate(candidate).then((_) => notifyListeners());
   }
 
   void deleteCandidate(String id) {
-    _candidates.removeWhere((c) => c.id == id);
-    notifyListeners();
+    _candidateRepository.deleteCandidate(id).then((_) => notifyListeners());
   }
 
   void addInterview(InterviewModel interview) {
@@ -422,12 +204,6 @@ class RecruitmentDataProvider extends ChangeNotifier {
   }
 
   // ===== JOBS MODULE ATS METHODS (PHASE 8.2) =====
-  // TODO: Jobs API integration.
-  // TODO: Pagination.
-  // TODO: Server-side filtering.
-  // TODO: Real-time job updates.
-  // TODO: Bookmark sync.
-
   Future<void> refreshJobs() async {
     await _jobRepository.refresh();
     notifyListeners();
@@ -472,210 +248,42 @@ class RecruitmentDataProvider extends ChangeNotifier {
   }
 
   // ===== CANDIDATES MODULE ATS METHODS (PHASE 8.3) =====
-  // TODO: Candidate API integration.
-  // TODO: Resume upload.
-  // TODO: Candidate notes sync.
-  // TODO: Interview scheduling API.
-  // TODO: Candidate stage update API.
-  // TODO: Export candidates.
-
   Future<void> refreshCandidates() async {
-    _isCandidatesLoading = true;
-    _isCandidatesError = false;
-    notifyListeners();
-
-    await Future.delayed(const Duration(milliseconds: 600));
-
-    if (_candidates.isEmpty) {
-      _candidates.addAll(_defaultCandidates);
-    }
-
-    _isCandidatesLoading = false;
+    await _candidateRepository.refresh();
     notifyListeners();
   }
 
   void simulateCandidatesLoading() {
-    _isCandidatesLoading = true;
-    _isCandidatesError = false;
-    notifyListeners();
-
-    Future.delayed(const Duration(seconds: 3), () {
-      if (_isCandidatesLoading) {
-        _isCandidatesLoading = false;
-        notifyListeners();
-      }
-    });
+    _candidateRepository.simulateLoading().then((_) => notifyListeners());
   }
 
   void simulateCandidatesError() {
-    _isCandidatesLoading = false;
-    _isCandidatesError = true;
-    notifyListeners();
+    _candidateRepository.simulateError().then((_) => notifyListeners());
   }
 
   void simulateCandidatesEmpty() {
-    _isCandidatesLoading = false;
-    _isCandidatesError = false;
-    _candidates.clear();
-    notifyListeners();
+    _candidateRepository.simulateEmpty().then((_) => notifyListeners());
   }
 
   void restoreCandidatesDefault({bool notify = true}) {
-    _isCandidatesLoading = false;
-    _isCandidatesError = false;
-    _candidates.clear();
-    _candidates.addAll(_defaultCandidates);
-    if (notify) notifyListeners();
-  }
-
-  void toggleBookmarkCandidate(String id) {
-    // TODO: Candidate notes sync & bookmark persistence.
-    final idx = _candidates.indexWhere((c) => c.id == id);
-    if (idx != -1) {
-      _candidates[idx] = _candidates[idx].copyWith(isBookmarked: !_candidates[idx].isBookmarked);
-      notifyListeners();
-    }
-  }
-
-  void updateCandidateStage(String id, String newStage) {
-    // TODO: Candidate stage update API.
-    final idx = _candidates.indexWhere((c) => c.id == id);
-    if (idx != -1) {
-      _candidates[idx] = _candidates[idx].copyWith(stage: newStage);
-      notifyListeners();
-    }
-  }
-
-  void bulkUpdateCandidateStage(List<String> ids, String newStage) {
-    // TODO: Candidate stage update API for bulk actions.
-    for (final id in ids) {
-      final idx = _candidates.indexWhere((c) => c.id == id);
-      if (idx != -1) {
-        _candidates[idx] = _candidates[idx].copyWith(stage: newStage);
-      }
-    }
-    notifyListeners();
-  }
-
-  void bulkDeleteCandidates(List<String> ids) {
-    _candidates.removeWhere((c) => ids.contains(c.id));
-    notifyListeners();
-  }
-
-  // ==========================================
-  // NOTIFICATIONS MODULE STATE MANAGEMENT
-  // ==========================================
-  
-  // TODO:
-  // Push notifications (FCM).
-
-  // TODO:
-  // Real-time notifications.
-
-  // TODO:
-  // Notification pagination.
-
-  // TODO:
-  // Read status synchronization.
-
-  // TODO:
-  // Deep linking.
-
-  void markAllNotificationsAsRead({bool notify = true}) {
-    for (int i = 0; i < _notifications.length; i++) {
-      _notifications[i] = _notifications[i].copyWith(isRead: true);
-    }
-    if (notify) notifyListeners();
-    _notificationRepository.markAllRead();
-  }
-
-  void toggleNotificationRead(String id, {bool? read}) {
-    final idx = _notifications.indexWhere((n) => n.id == id);
-    if (idx != -1) {
-      final targetRead = read ?? !_notifications[idx].isRead;
-      _notifications[idx] = _notifications[idx].copyWith(isRead: targetRead);
-      notifyListeners();
-      _notificationRepository.markRead(id, read: targetRead);
-    }
-  }
-
-  void deleteNotification(String id) {
-    _notifications.removeWhere((n) => n.id == id);
-    notifyListeners();
-    _notificationRepository.deleteNotification(id);
-  }
-
-  void bulkDeleteNotifications(Set<String> ids) {
-    _notifications.removeWhere((n) => ids.contains(n.id));
-    notifyListeners();
-    for (final id in ids) {
-      _notificationRepository.deleteNotification(id);
-    }
-  }
-
-  void bulkMarkReadNotifications(Set<String> ids) {
-    for (int i = 0; i < _notifications.length; i++) {
-      if (ids.contains(_notifications[i].id)) {
-        _notifications[i] = _notifications[i].copyWith(isRead: true);
-      }
-    }
-    notifyListeners();
-    for (final id in ids) {
-      _notificationRepository.markRead(id, read: true);
-    }
-  }
-
-  void clearAllNotifications() {
-    _notifications.clear();
-    notifyListeners();
-    _notificationRepository.clearAll();
-  }
-
-  void addNotification(NotificationItem item) {
-    _notifications.insert(0, item);
-    notifyListeners();
-    _notificationRepository.saveNotification(item);
-  }
-
-  Future<void> refreshNotifications() async {
-    _isNotificationsLoading = true;
-    _isNotificationsError = false;
-    notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 600));
-    final items = await _notificationRepository.loadNotifications(forceRefresh: true);
-    _isNotificationsLoading = false;
-    _notifications.clear();
-    _notifications.addAll(items);
-    notifyListeners();
-  }
-
-  void restoreNotificationsDefault({bool notify = true}) {
-    _isNotificationsLoading = false;
-    _isNotificationsError = false;
-    _notificationRepository.loadNotifications(forceRefresh: true).then((items) {
-      _notifications.clear();
-      _notifications.addAll(items);
+    _candidateRepository.restoreDefault().then((_) {
       if (notify) notifyListeners();
     });
   }
 
-  void simulateNotificationsLoading() {
-    _isNotificationsLoading = true;
-    _isNotificationsError = false;
-    notifyListeners();
+  void toggleBookmarkCandidate(String id) {
+    _candidateRepository.toggleBookmark(id).then((_) => notifyListeners());
   }
 
-  void simulateNotificationsError() {
-    _isNotificationsLoading = false;
-    _isNotificationsError = true;
-    notifyListeners();
+  void updateCandidateStage(String id, String newStage) {
+    _candidateRepository.updateCandidateStage(id, newStage).then((_) => notifyListeners());
   }
 
-  void simulateNotificationsEmpty() {
-    _isNotificationsLoading = false;
-    _isNotificationsError = false;
-    _notifications.clear();
-    notifyListeners();
-    _notificationRepository.clearAll();
+  void bulkUpdateCandidateStage(List<String> ids, String newStage) {
+    _candidateRepository.bulkUpdateCandidateStage(ids, newStage).then((_) => notifyListeners());
+  }
+
+  void bulkDeleteCandidates(List<String> ids) {
+    _candidateRepository.bulkDeleteCandidates(ids).then((_) => notifyListeners());
   }
 }

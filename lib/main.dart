@@ -15,7 +15,10 @@ import 'features/jobs/providers/job_provider.dart';
 import 'features/jobs/providers/job_filter_provider.dart';
 import 'features/dashboard/providers/dashboard_provider.dart';
 import 'features/profile/providers/profile_data_provider.dart';
-import 'features/splash/splash_screen.dart';
+import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
+import 'package:jobnest/features/candidates/providers/candidate_filter_provider.dart';
+import 'package:jobnest/features/notifications/providers/notification_provider.dart';
+import 'package:jobnest/features/splash/splash_screen.dart';
 
 void main() {
   runApp(
@@ -26,15 +29,22 @@ void main() {
         ChangeNotifierProvider(create: (_) => ProfileDataProvider()),
         ChangeNotifierProvider(create: (_) => JobFormProvider()),
         ChangeNotifierProvider(create: (_) => JobProvider()),
+        ChangeNotifierProvider(create: (_) => CandidateProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProxyProvider<JobProvider, JobFilterProvider>(
           create: (_) => JobFilterProvider(),
           update: (_, jobProvider, filterProvider) =>
               (filterProvider ?? JobFilterProvider())..updateJobs(jobProvider.jobs),
         ),
-        ChangeNotifierProxyProvider2<JobProvider, RecruitmentDataProvider, DashboardProvider>(
+        ChangeNotifierProxyProvider<CandidateProvider, CandidateFilterProvider>(
+          create: (_) => CandidateFilterProvider(),
+          update: (_, candidateProvider, filterProvider) =>
+              (filterProvider ?? CandidateFilterProvider())..updateCandidates(candidateProvider.candidates),
+        ),
+        ChangeNotifierProxyProvider3<JobProvider, RecruitmentDataProvider, NotificationProvider, DashboardProvider>(
           create: (_) => DashboardProvider(),
-          update: (_, jobProvider, recruitmentProvider, dashboardProvider) =>
-              (dashboardProvider ?? DashboardProvider())..updateDependencies(jobProvider, recruitmentProvider),
+          update: (_, jobProvider, recruitmentProvider, notificationProvider, dashboardProvider) =>
+              (dashboardProvider ?? DashboardProvider())..updateDependencies(jobProvider, recruitmentProvider, notificationProvider),
         ),
       ],
       child: const JobNestApp(),

@@ -17,9 +17,9 @@ import 'package:jobnest/features/candidates/widgets/candidates_empty_state.dart'
 import 'package:jobnest/features/candidates/widgets/candidates_error_state.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_grid_view.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_bulk_action_bar.dart';
+import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
 import 'package:jobnest/features/candidates/providers/candidate_selection_provider.dart';
 import 'package:jobnest/features/candidates/providers/candidate_filter_provider.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 
 class CandidatesScreen extends StatefulWidget {
@@ -44,7 +44,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
   }
 
   void _addDummyCandidate(BuildContext context) {
-    final provider = context.read<RecruitmentDataProvider>();
+    final provider = context.read<CandidateProvider>();
     final newId = 'cand_${DateTime.now().millisecondsSinceEpoch}';
     final newCandidate = CandidateModel(
       id: newId,
@@ -71,89 +71,13 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
     );
   }
 
-  List<CandidateModel> _getFilteredAndSortedCandidates(List<CandidateModel> allCandidates, CandidateFilterProvider filter) {
-    var list = allCandidates.where((c) {
-      // 1. Search filter
-      if (filter.searchQuery.isNotEmpty) {
-        final q = filter.searchQuery.toLowerCase();
-        final nameMatch = c.name.toLowerCase().contains(q);
-        final roleMatch = c.role.toLowerCase().contains(q);
-        final locMatch = c.location.toLowerCase().contains(q);
-        final compMatch = c.company.toLowerCase().contains(q);
-        final expMatch = c.experience.toLowerCase().contains(q);
-        final skillMatch = c.skills.any((s) => s.toLowerCase().contains(q));
-        if (!nameMatch && !roleMatch && !locMatch && !compMatch && !expMatch && !skillMatch) {
-          return false;
-        }
-      }
-
-      // 2. Pipeline Active Stage filter
-      if (filter.pipelineActiveStage != "All") {
-        if (c.stage.toLowerCase() != filter.pipelineActiveStage.toLowerCase()) {
-          return false;
-        }
-      }
-
-      // 3. Chip Filter
-      if (filter.selectedFilter != "All") {
-        final f = filter.selectedFilter.toLowerCase();
-        if (f == "shortlisted" || f == "interview" || f == "offer" || f == "hired" || f == "applied" || f == "screening" || f == "rejected") {
-          if (c.stage.toLowerCase() != f) return false;
-        } else if (f == "remote") {
-          if (!c.location.toLowerCase().contains("remote")) return false;
-        } else if (f.contains("years") || f.contains("year")) {
-          if (!c.experience.toLowerCase().contains(f.split(' ')[0])) return false;
-        } else if (f.contains("bangalore") || f.contains("delhi") || f.contains("mumbai")) {
-          if (!c.location.toLowerCase().contains(f)) return false;
-        } else if (f.contains("lpa")) {
-          if (!c.expectedSalary.toLowerCase().contains(f.split(' ')[0])) return false;
-        }
-      }
-
-      return true;
-    }).toList();
-
-    // 4. Sorting
-    list.sort((a, b) {
-      switch (filter.selectedSort) {
-        case "Oldest":
-          return a.id.compareTo(b.id);
-        case "Highest Experience":
-          int expA = int.tryParse(a.experience.split(' ')[0]) ?? 0;
-          int expB = int.tryParse(b.experience.split(' ')[0]) ?? 0;
-          return expB.compareTo(expA);
-        case "Lowest Experience":
-          int expA = int.tryParse(a.experience.split(' ')[0]) ?? 0;
-          int expB = int.tryParse(b.experience.split(' ')[0]) ?? 0;
-          return expA.compareTo(expB);
-        case "Highest Rating":
-          return b.rating.compareTo(a.rating);
-        case "Recently Updated":
-          if (b.isNew != a.isNew) return b.isNew ? 1 : -1;
-          return b.rating.compareTo(a.rating);
-        case "Newest":
-        default:
-          return b.id.compareTo(a.id);
-      }
-    });
-
-    return list;
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.read<RecruitmentDataProvider>();
+    final candidateProvider = context.read<CandidateProvider>();
     
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<CandidateSelectionProvider>(
-          create: (_) => CandidateSelectionProvider(),
-        ),
-        ChangeNotifierProvider<CandidateFilterProvider>(
-          create: (_) => CandidateFilterProvider(),
-        ),
-      ],
+    return ChangeNotifierProvider<CandidateSelectionProvider>(
+      create: (_) => CandidateSelectionProvider(),
       child: SafeArea(
         child: Scaffold(
           backgroundColor: theme.colorScheme.surface,
@@ -180,7 +104,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                   Positioned.fill(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        await provider.refreshCandidates();
+                        await candidateProvider.refreshCandidates();
                       },
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
@@ -212,7 +136,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
 
                                   // QA Testing Toolbar (Simulation Panel) - Hidden in release/demo mode
                                   if (kDebugMode) ...[
-                                    CandidatesSimulationPanel(provider: provider),
+                                    CandidatesSimulationPanel(provider: candidateProvider),
                                     AppSpacing.h24,
                                   ],
 
@@ -263,12 +187,16 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                                   ),
                                   const SizedBox(height: 28),
 
-                                  Selector<CandidateFilterProvider, String>(
-                                    selector: (_, filter) => filter.pipelineActiveStage,
-                                    builder: (context, activeStage, _) {
-                                      final filter = context.read<CandidateFilterProvider>();
+                                  Consumer<CandidateFilterProvider>(
+                                    builder: (context, filter, _) {
                                       return CandidatesPipeline(
-                                        activeStage: activeStage,
+                                        activeStage: filter.pipelineActiveStage,
+                                        totalCount: filter.totalCandidateCount,
+                                        appliedCount: filter.appliedCount,
+                                        screeningCount: filter.screeningCount,
+                                        interviewCount: filter.interviewCount,
+                                        offerCount: filter.offerCount,
+                                        hiredCount: filter.hiredCount,
                                         onStageSelected: filter.setPipelineActiveStage,
                                       );
                                     },
@@ -282,14 +210,14 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                                   AppSpacing.h32,
 
                                   // Candidate Grid Header & Grid Views
-                                  Consumer3<RecruitmentDataProvider, CandidateSelectionProvider, CandidateFilterProvider>(
+                                  Consumer3<CandidateProvider, CandidateSelectionProvider, CandidateFilterProvider>(
                                     builder: (context, provider, selection, filter, _) {
-                                      final filteredCandidates = _getFilteredAndSortedCandidates(provider.candidates, filter);
+                                      final filteredCandidates = filter.filteredCandidates;
                                       return Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           CandidatesGridHeader(
-                                            candidateCount: filteredCandidates.length,
+                                            candidateCount: filter.filteredCandidateCount,
                                             selectedCount: selection.selectedCandidateIds.length,
                                             isMultiSelectMode: selection.isMultiSelectMode,
                                             onSelectAllVisible: () => selection.selectAll(filteredCandidates.map((c) => c.id)),
@@ -302,14 +230,14 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                                             },
                                             onAddCandidate: () => _addDummyCandidate(context),
                                           ),
-                                          if (provider.isCandidatesLoading)
+                                          if (provider.isLoading)
                                             CandidatesSkeletonGrid(
                                               availableWidth: availableGridWidth,
                                               isMobile: isMobile,
                                               isTablet: isTablet,
                                               isDesktop: isDesktop,
                                             )
-                                          else if (provider.isCandidatesError)
+                                          else if (provider.isError)
                                             CandidatesErrorState(
                                               onRetry: () => provider.refreshCandidates(),
                                               onRestore: () => provider.restoreCandidatesDefault(),
@@ -360,7 +288,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                           child: CandidatesBulkActionBar(
                             selectedCandidateIds: selection.selectedCandidateIds,
                             onClearSelection: selection.clearSelection,
-                            provider: provider,
+                            provider: candidateProvider,
                             isMobile: isMobile,
                           ),
                         ),
@@ -376,4 +304,3 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
     );
   }
 }
-

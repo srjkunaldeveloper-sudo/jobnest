@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
 import 'package:jobnest/features/candidates/widgets/candidate_icon_button.dart';
 import 'package:jobnest/features/candidates/widgets/candidate_stage_badge.dart';
 
@@ -12,6 +10,7 @@ class ProfileHeader extends StatelessWidget {
   final String location;
   final String experience;
   final CandidateModel? candidate;
+  final VoidCallback? onBookmarkTap;
 
   const ProfileHeader({
     super.key,
@@ -20,12 +19,12 @@ class ProfileHeader extends StatelessWidget {
     required this.location,
     required this.experience,
     this.candidate,
+    this.onBookmarkTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = context.read<RecruitmentDataProvider>();
     final String company = candidate?.company ?? "TechCorp India";
     final String stage = candidate?.stage ?? "Screening";
     final String salary = candidate?.expectedSalary ?? "₹ 18 - 22 LPA";
@@ -110,14 +109,7 @@ class ProfileHeader extends StatelessWidget {
                     button: true,
                     child: CandidateIconButton(
                       icon: isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
-                      onTap: () {
-                        if (candidate != null) {
-                          provider.toggleBookmarkCandidate(candidate!.id);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(isBookmarked ? "Removed bookmark for $name" : "Bookmarked $name")),
-                          );
-                        }
-                      },
+                      onTap: onBookmarkTap ?? () {},
                       iconColor: isBookmarked ? theme.colorScheme.primary : null,
                       constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                     ),

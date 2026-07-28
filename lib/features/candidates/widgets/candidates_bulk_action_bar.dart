@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
-import 'package:jobnest/core/providers/recruitment_data_provider.dart';
+import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
 
 class CandidatesBulkActionBar extends StatelessWidget {
   final Set<String> selectedCandidateIds;
   final VoidCallback onClearSelection;
-  final RecruitmentDataProvider provider;
+  final CandidateProvider provider;
   final bool isMobile;
 
   const CandidatesBulkActionBar({

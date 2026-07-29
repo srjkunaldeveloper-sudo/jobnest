@@ -39,6 +39,11 @@ dependencies:
   provider: ^6.1.5+1
   flutter_svg: ^2.3.0
   pinput: ^6.0.2
+  dio: any
+  flutter_secure_storage: any
+  flutter_dotenv: any
+  connectivity_plus: any
+  logger: any
 
 dev_dependencies:
   flutter_test:

@@ -67,13 +67,13 @@ class _CandidatesAutoScreeningState extends State<CandidatesAutoScreening> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
+                Row(
                   children: [
-                    _buildRequirementChip(context, "Experience", "3+ Years", AppIcons.work_history_rounded),
-                    _buildRequirementChip(context, "Skills", "Flutter, Dart", AppIcons.code_rounded),
-                    _buildRequirementChip(context, "Education", "Bachelors", AppIcons.school_rounded),
+                    Expanded(child: _buildRequirementChip(context, "Experience", "3+ Years", AppIcons.work_history_rounded)),
+                    const SizedBox(width: 8),
+                    Expanded(child: _buildRequirementChip(context, "Skills", "Flutter, Dart", AppIcons.code_rounded)),
+                    const SizedBox(width: 8),
+                    Expanded(child: _buildRequirementChip(context, "Education", "Bachelors", AppIcons.school_rounded)),
                   ],
                 ),
               ],
@@ -127,7 +127,7 @@ class _CandidatesAutoScreeningState extends State<CandidatesAutoScreening> {
   Widget _buildRequirementChip(BuildContext context, String label, String value, IconData icon) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
@@ -137,27 +137,34 @@ class _CandidatesAutoScreeningState extends State<CandidatesAutoScreening> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16, color: theme.colorScheme.onSurfaceVariant),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontSize: 10,
-                  letterSpacing: 0.2,
+          const SizedBox(width: 6),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: 9,
+                    letterSpacing: 0.1,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                value,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onSurface,
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                    fontSize: 11,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

@@ -34,8 +34,10 @@ class CandidatesGridHeader extends StatelessWidget {
         spacing: 16,
         runSpacing: 12,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 12,
+            runSpacing: 8,
             children: [
               Text(
                 "All Candidates ($candidateCount)",
@@ -44,7 +46,6 @@ class CandidatesGridHeader extends StatelessWidget {
                   letterSpacing: -0.3,
                 ),
               ),
-              AppSpacing.w12,
               if (isMultiSelectMode || hasSelection)
                 TextButton.icon(
                   onPressed: onSelectAllVisible,
@@ -58,8 +59,10 @@ class CandidatesGridHeader extends StatelessWidget {
                 ),
             ],
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               TextButton.icon(
                 onPressed: onToggleMultiSelect,
@@ -69,7 +72,6 @@ class CandidatesGridHeader extends StatelessWidget {
                   foregroundColor: isMultiSelectMode ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              AppSpacing.w8,
               TextButton.icon(
                 onPressed: onAddCandidate,
                 icon: const Icon(AppIcons.person_add_rounded, size: 18),

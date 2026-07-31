@@ -32,22 +32,33 @@ class HomeHeader extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // LEFT: Avatar
-          Container(
-            height: 48,
-            width: 48,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                width: 1.5,
+          // LEFT: Avatar (User Profile)
+          Semantics(
+            label: "User Profile",
+            button: true,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onProfileTap,
+                customBorder: const CircleBorder(),
+                child: Container(
+                  height: 48,
+                  width: 48,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: theme.dividerColor,
+                      width: 1.5,
+                    ),
+                    color: theme.colorScheme.surfaceContainerHighest,
+                  ),
+                  child: Icon(
+                    Icons.person_rounded,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 24,
+                  ),
+                ),
               ),
-            ),
-            child: Icon(
-              Icons.work_rounded,
-              color: theme.colorScheme.primary,
-              size: 24,
             ),
           ),
           
@@ -109,34 +120,6 @@ class HomeHeader extends StatelessWidget {
                 tooltip: "Messages",
                 hasBadge: true,
                 onTap: () {},
-              ),
-              const SizedBox(width: 4),
-              Semantics(
-                label: "User Profile",
-                button: true,
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: onProfileTap,
-                    customBorder: const CircleBorder(),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: theme.dividerColor,
-                          width: 1.5,
-                        ),
-                        color: theme.colorScheme.surfaceContainerHighest,
-                      ),
-                      child: Icon(
-                        Icons.person_rounded,
-                        color: theme.colorScheme.onSurfaceVariant,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ),
               ),
             ],
           )

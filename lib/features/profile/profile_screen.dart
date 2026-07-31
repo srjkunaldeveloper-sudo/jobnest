@@ -96,31 +96,24 @@ class ProfileScreen extends StatelessWidget {
 
     final provider = context.watch<ProfileDataProvider>();
 
-    return AppPageScaffold(
-      title: "Recruiter Profile",
-      showBackButton: false, // It's a root tab in the bottom nav
-      actions: [
-        IconButton(
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Profile link copied to clipboard! (Dummy)")),
-            );
-          },
-          icon: const Icon(AppIcons.share_rounded),
-          tooltip: "Share Profile",
-          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800.0),
+            child: _buildBody(context, provider),
+          ),
         ),
-        if (kDebugMode) _buildQaSimulationMenu(context, provider),
-        const SizedBox(width: 8),
-      ],
-      body: _buildBody(context, provider),
+      ),
     );
   }
 
-  Widget _buildQaSimulationMenu(BuildContext context, ProfileDataProvider provider) {
+  Widget _buildQaSimulationMenu(BuildContext context, ProfileDataProvider provider, {bool compact = false}) {
     if (!kDebugMode) return const SizedBox.shrink();
     return PopupMenuButton<String>(
-      icon: const Icon(AppIcons.science_outlined),
+      icon: const Icon(AppIcons.science_outlined, size: 20),
+      padding: EdgeInsets.zero,
       tooltip: "QA Simulation Options",
       constraints: const BoxConstraints(minWidth: 200),
       onSelected: (value) {
@@ -205,6 +198,7 @@ class ProfileScreen extends StatelessWidget {
       onRefresh: () => provider.refreshProfile(),
       refreshSuccessMessage: "Recruiter profile synced with enterprise server",
       child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,80 +244,129 @@ class ProfileScreen extends StatelessWidget {
         : "SS";
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: Stack(
-            alignment: Alignment.bottomRight,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                CircleAvatar(
+                  radius: 36,
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                  child: Text(
+                    initials.toUpperCase(),
+                    style: AppText.h3.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                  ),
+                ),
+                Semantics(
+                  label: "Verified Recruiter Badge",
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      AppIcons.verified_rounded,
+                      color: Colors.blueAccent,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            _buildStatItem(context, "180", "Search\nappearances"),
+            AppSpacing.w12,
+            _buildStatItem(context, "45", "Recruiter\nactions"),
+            const SizedBox(width: 8),
+            IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Profile link copied to clipboard! (Dummy)")),
+                );
+              },
+              icon: const Icon(AppIcons.share_rounded, size: 20),
+              tooltip: "Share Profile",
+            ),
+            if (kDebugMode)
+              _buildQaSimulationMenu(context, provider, compact: true),
+          ],
+        ),
+        AppSpacing.h16,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePersonalInfoScreen()));
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
-                radius: 64,
-                backgroundColor: theme.colorScheme.primaryContainer,
+              Flexible(
                 child: Text(
-                  initials.toUpperCase(),
-                  style: AppText.h1.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                  provider.fullName,
+                  style: AppText.h2,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Semantics(
-                label: "Verified Recruiter Badge",
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    AppIcons.verified_rounded,
-                    color: Colors.blueAccent,
-                    size: 32,
-                  ),
-                ),
-              ),
+              AppSpacing.w8,
+              Icon(AppIcons.edit_outlined, size: 18, color: theme.colorScheme.primary),
             ],
           ),
         ),
-        AppSpacing.h16,
+        AppSpacing.h4,
         Text(
-          provider.fullName,
-          style: AppText.h2,
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        AppSpacing.h8,
-        Text(
-          "${provider.designation} at ${provider.companyName}",
+          provider.designation.isNotEmpty && provider.companyName.isNotEmpty 
+              ? "${provider.designation} at ${provider.companyName}" 
+              : provider.designation.isNotEmpty ? provider.designation : "Senior Recruiter",
           style: AppText.bodyMedium,
-          textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
         AppSpacing.h8,
+        Text(
+          "Profile last updated - 4d ago",
+          style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8)),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatItem(BuildContext context, String count, String label) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(AppIcons.email_outlined, size: 16, color: theme.colorScheme.primary),
-            AppSpacing.w8,
-            Flexible(
-              child: Text(
-                provider.email,
-                style: AppText.bodyMedium.copyWith(color: theme.colorScheme.primary),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+            Text(
+              count,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Container(
+              width: 6,
+              height: 6,
+              decoration: const BoxDecoration(
+                color: Colors.redAccent,
+                shape: BoxShape.circle,
               ),
             ),
           ],
         ),
-        AppSpacing.h24,
-        Center(
-          child: AppButton(
-            text: "Edit Recruiter Profile",
-            icon: AppIcons.edit_outlined,
-            variant: AppButtonVariant.secondary,
-            width: 280, // Fixed width for secondary settings action
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePersonalInfoScreen()));
-            },
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: theme.colorScheme.onSurface,
+            height: 1.2,
           ),
         ),
       ],

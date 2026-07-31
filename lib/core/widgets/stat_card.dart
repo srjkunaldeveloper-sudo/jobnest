@@ -76,8 +76,8 @@ class _StatCardState extends State<StatCard> {
             splashColor: theme.colorScheme.primary.withValues(alpha: 0.06),
             highlightColor: theme.colorScheme.primary.withValues(alpha: 0.04),
             child: Container(
-              height: 160,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              height: 120,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,14 +88,14 @@ class _StatCardState extends State<StatCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 56,
-                        height: 56,
+                        width: 40,
+                        height: 40,
                         decoration: BoxDecoration(
                           color: widget.color.withValues(alpha: 0.10),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
-                          child: Icon(widget.icon, color: widget.color, size: 26),
+                          child: Icon(widget.icon, color: widget.color, size: 20),
                         ),
                       ),
                       if (widget.trend.isNotEmpty)
@@ -103,8 +103,8 @@ class _StatCardState extends State<StatCard> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Container(
-                              height: 24,
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              height: 22,
+                              padding: const EdgeInsets.symmetric(horizontal: 6),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: (widget.isPositiveTrend
@@ -123,7 +123,7 @@ class _StatCardState extends State<StatCard> {
                                     color: widget.isPositiveTrend
                                         ? trendPositiveColor
                                         : trendNegativeColor,
-                                    size: 12,
+                                    size: 10,
                                   ),
                                   const SizedBox(width: 4),
                                   Flexible(
@@ -132,7 +132,7 @@ class _StatCardState extends State<StatCard> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 11,
                                         fontWeight: FontWeight.w700,
                                         color: widget.isPositiveTrend
                                             ? trendPositiveColor
@@ -158,9 +158,9 @@ class _StatCardState extends State<StatCard> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.headlineLarge?.copyWith(
-                          fontSize: 36,
+                          fontSize: 26,
                           fontWeight: FontWeight.w700,
-                          letterSpacing: -0.8,
+                          letterSpacing: -0.6,
                           height: 1.1,
                           color: theme.colorScheme.onSurface,
                         ),
@@ -173,7 +173,7 @@ class _StatCardState extends State<StatCard> {
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                          fontSize: 15,
+                          fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

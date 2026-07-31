@@ -244,8 +244,11 @@ class _CandidateListCardState extends State<CandidateListCard> {
                     const SizedBox(height: 14),
 
                     // Bottom Action Row: Checkbox (Independent), View Profile, Quick Actions & Overflow Menu
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      runSpacing: 12,
                       children: [
                         // Selection Checkbox (48dp touch target, independent from card navigation)
                         Semantics(
@@ -290,7 +293,9 @@ class _CandidateListCardState extends State<CandidateListCard> {
                         ),
 
                         // Actions: View Profile button & Overflow Menu
-                        Row(
+                        Wrap(
+                          spacing: 6,
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             OutlinedButton(
                               onPressed: _navigateToProfile,
@@ -301,7 +306,6 @@ class _CandidateListCardState extends State<CandidateListCard> {
                               ),
                               child: const Text("View Profile", style: TextStyle(fontWeight: FontWeight.bold)),
                             ),
-                            const SizedBox(width: 6),
 
                             // Bookmark Button (48dp touch target)
                             Semantics(

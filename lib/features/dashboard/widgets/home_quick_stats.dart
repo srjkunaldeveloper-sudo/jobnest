@@ -162,6 +162,17 @@ class HomeQuickStats extends StatelessWidget {
                       isPositiveTrend: selectedCount > 0,
                     ),
                   ),
+                  SizedBox(
+                    width: cardWidth,
+                    child: StatCard(
+                      title: "Today's Interviews", 
+                      count: "${provider.todayInterviewsCount}", 
+                      icon: Icons.event_available_rounded, 
+                      color: Colors.pinkAccent, 
+                      trend: provider.todayInterviewsCount > 0 ? "+2" : "0", 
+                      isPositiveTrend: provider.todayInterviewsCount > 0,
+                    ),
+                  ),
                 ],
               );
             },

@@ -60,11 +60,11 @@ class CandidatesBulkActionBar extends StatelessWidget {
   }) {
     return OutlinedButton.icon(
       onPressed: onPressed,
-      icon: Icon(icon, size: 18, color: iconColor),
-      label: Text(label, style: textColor != null ? TextStyle(color: textColor) : null),
+      icon: Icon(icon, size: 16, color: iconColor),
+      label: Text(label, style: TextStyle(color: textColor, fontWeight: FontWeight.w600, fontSize: 13)),
       style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         side: side,
       ),
     );
@@ -97,26 +97,29 @@ class CandidatesBulkActionBar extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   "${selectedCandidateIds.length}",
-                  style: TextStyle(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w600, fontSize: 13),
                 ),
               ),
               const SizedBox(width: 10),
-              Text(
-                "Selected for Bulk ATS Actions",
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              Expanded(
+                child: Text(
+                  "Selected for Bulk ATS Actions",
+                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              const Spacer(),
               TextButton.icon(
                 onPressed: onClearSelection,
-                icon: const Icon(AppIcons.close_rounded, size: 18),
-                label: const Text("Clear"),
+                icon: const Icon(AppIcons.close_rounded, size: 16),
+                label: const Text("Clear", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
               ),
             ],
           ),
@@ -131,13 +134,13 @@ class CandidatesBulkActionBar extends StatelessWidget {
                     _showSnackBar(context, "Scheduled batch interview invitations for ${selectedCandidateIds.length} candidates.");
                     onClearSelection();
                   },
-                  icon: const Icon(AppIcons.calendar_month_outlined, size: 18),
-                  label: const Text("Schedule Interview"),
+                  icon: const Icon(AppIcons.calendar_month_outlined, size: 16),
+                  label: const Text("Schedule Interview", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.colorScheme.primary,
                     foregroundColor: theme.colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                 ),
                 const SizedBox(width: 10),

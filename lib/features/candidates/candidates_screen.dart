@@ -106,6 +106,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                         await candidateProvider.refreshCandidates();
                       },
                       child: SingleChildScrollView(
+                        padding: const EdgeInsets.only(top: 24.0),
                         physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
                         child: Center(
                           child: ConstrainedBox(

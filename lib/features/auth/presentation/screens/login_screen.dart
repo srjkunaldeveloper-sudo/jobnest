@@ -30,16 +30,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+  
   bool _rememberMe = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
   void _handleLogin() async {
+    // Dismiss keyboard on submit
+    FocusScope.of(context).unfocus();
+
     if (_formKey.currentState?.validate() ?? false) {
       // Ensure we don't proceed if already loading
       if (widget.authProvider.state.status == AuthStatus.loading) return;
@@ -58,13 +66,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
+    final trimmedValue = value?.trim();
+    if (trimmedValue == null || trimmedValue.isEmpty) {
       return 'Email is required';
     }
     // Basic email validation regex
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Enter a valid email address';
+    if (!emailRegex.hasMatch(trimmedValue)) {
+      return 'Enter a valid corporate email address';
     }
     return null;
   }
@@ -74,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return 'Password is required';
     }
     if (value.length < 8) {
-      return 'Password must be at least 8 characters';
+      return 'Password must be at least 8 characters long';
     }
     return null;
   }
@@ -93,9 +102,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   final state = widget.authProvider.state;
                   final isLoading = state.status == AuthStatus.loading;
 
-                  return Form(
-                    key: _formKey,
-                    child: Column(
+                  return FocusTraversalGroup(
+                    policy: WidgetOrderTraversalPolicy(),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -173,6 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           icon: AppIcons.login,
                         ),
                       ],
+                    ),
                     ),
                   );
                 },

@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -164,7 +165,7 @@ class _OtpContentState extends State<OtpContent> {
               color: theme.colorScheme.surfaceContainerHighest,
             ),
             child: Icon(
-              Icons.arrow_back,
+              AppIcons.arrow_back,
               size: 20,
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -258,7 +259,7 @@ class _OtpContentState extends State<OtpContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.lock_outline,
+              AppIcons.lock_outline,
               size: 16,
               color: theme.colorScheme.onSurfaceVariant,
             ),

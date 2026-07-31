@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class ProfileRecentActivity extends StatelessWidget {
@@ -29,7 +30,7 @@ class ProfileRecentActivity extends StatelessWidget {
                 title: "Interview Completed",
                 subtitle: "Technical Round 1",
                 time: "Today, 11:30 AM",
-                icon: Icons.forum_rounded,
+                icon: AppIcons.forum_rounded,
                 isLast: false,
                 color: Colors.blueAccent,
               ),
@@ -38,7 +39,7 @@ class ProfileRecentActivity extends StatelessWidget {
                 title: "Shortlisted",
                 subtitle: "By Senior Recruiter",
                 time: "Yesterday, 2:15 PM",
-                icon: Icons.check_circle_rounded,
+                icon: AppIcons.check_circle_rounded,
                 isLast: false,
                 color: Colors.green,
               ),
@@ -47,7 +48,7 @@ class ProfileRecentActivity extends StatelessWidget {
                 title: "Candidate Applied",
                 subtitle: "Via JobNest Portal",
                 time: "15 Oct 2023, 10:00 AM",
-                icon: Icons.upload_file_rounded,
+                icon: AppIcons.upload_file_rounded,
                 isLast: true,
                 color: theme.colorScheme.onSurfaceVariant,
               ),

@@ -1,5 +1,9 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
 
 class AttendanceScreen extends StatelessWidget {
   const AttendanceScreen({super.key});
@@ -10,23 +14,15 @@ class AttendanceScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: Attendance API future me connect hogi.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("Attendance Dashboard"),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return AppPageScaffold(
+      title: "Attendance Dashboard",
+      body: SingleChildScrollView(
+        padding: AppSpacing.edgeInsetsAll24,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
                 _buildSummaryCards(context),
-                const SizedBox(height: 32),
+                AppSpacing.h32,
                 
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,18 +31,16 @@ class AttendanceScreen extends StatelessWidget {
                       flex: 2,
                       child: _buildRecentCheckIns(context),
                     ),
-                    const SizedBox(width: 24),
+                    AppSpacing.w24,
                     Expanded(
                       child: _buildAttendanceCalendarMock(context),
                     ),
                   ],
                 ),
-                const SizedBox(height: 48),
+                AppSpacing.h48,
               ],
             ),
           ),
-        ),
-      ),
     );
   }
 
@@ -62,10 +56,10 @@ class AttendanceScreen extends StatelessWidget {
           mainAxisSpacing: 16,
           childAspectRatio: 2.0,
           children: [
-            _buildStatCard(context, "Present", "102", Icons.check_circle_rounded, Colors.green),
-            _buildStatCard(context, "Absent", "12", Icons.cancel_rounded, Colors.redAccent),
-            _buildStatCard(context, "Late", "7", Icons.watch_later_rounded, Colors.orange),
-            _buildStatCard(context, "On Leave", "3", Icons.event_busy_rounded, Colors.blueGrey),
+            _buildStatCard(context, "Present", "102", AppIcons.check_circle_rounded, Colors.green),
+            _buildStatCard(context, "Absent", "12", AppIcons.cancel_rounded, Colors.redAccent),
+            _buildStatCard(context, "Late", "7", AppIcons.watch_later_rounded, Colors.orange),
+            _buildStatCard(context, "On Leave", "3", AppIcons.event_busy_rounded, Colors.blueGrey),
           ],
         );
       }
@@ -75,7 +69,7 @@ class AttendanceScreen extends StatelessWidget {
   Widget _buildStatCard(BuildContext context, String title, String value, IconData icon, Color color) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.edgeInsetsAll16,
       child: Row(
         children: [
           Container(
@@ -86,20 +80,18 @@ class AttendanceScreen extends StatelessWidget {
             ),
             child: Icon(icon, color: color, size: 28),
           ),
-          const SizedBox(width: 16),
+          AppSpacing.w16,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 value,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: AppText.h1,
               ),
               Text(
                 title,
-                style: theme.textTheme.labelMedium?.copyWith(
+                style: AppText.label.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
@@ -113,7 +105,7 @@ class AttendanceScreen extends StatelessWidget {
   Widget _buildRecentCheckIns(BuildContext context) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(24),
+      padding: AppSpacing.edgeInsetsAll24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -122,7 +114,7 @@ class AttendanceScreen extends StatelessWidget {
             children: [
               Text(
                 "Today's Check-ins",
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: AppText.h3,
               ),
               TextButton(
                 onPressed: () {},
@@ -130,7 +122,7 @@ class AttendanceScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           _buildCheckInItem(context, "Rahul Sharma", "09:05 AM", "Engineering", Colors.green, "On Time"),
           const Divider(),
           _buildCheckInItem(context, "Priya Singh", "09:30 AM", "HR & Admin", Colors.orange, "Late"),
@@ -151,22 +143,22 @@ class AttendanceScreen extends StatelessWidget {
         children: [
           CircleAvatar(
             backgroundColor: theme.colorScheme.primaryContainer,
-            child: Text(name[0], style: TextStyle(color: theme.colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold)),
+            child: Text(name[0], style: AppText.label.copyWith(color: theme.colorScheme.onPrimaryContainer)),
           ),
-          const SizedBox(width: 16),
+          AppSpacing.w16,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-                Text(dept, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                Text(name, style: AppText.h3.copyWith(fontSize: 16)),
+                Text(dept, style: AppText.caption.copyWith(color: theme.colorScheme.onSurfaceVariant)),
               ],
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(time, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text(time, style: AppText.h3.copyWith(fontSize: 16)),
               Container(
                 margin: const EdgeInsets.only(top: 4),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -176,9 +168,8 @@ class AttendanceScreen extends StatelessWidget {
                 ),
                 child: Text(
                   statusText,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: AppText.labelSmall.copyWith(
                     color: statusColor,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -192,15 +183,15 @@ class AttendanceScreen extends StatelessWidget {
   Widget _buildAttendanceCalendarMock(BuildContext context) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(24),
+      padding: AppSpacing.edgeInsetsAll24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "Weekly Overview",
-            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: AppText.h3,
           ),
-          const SizedBox(height: 24),
+          AppSpacing.h24,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -211,12 +202,12 @@ class AttendanceScreen extends StatelessWidget {
               _buildDayCircle(context, "Fri", theme.colorScheme.surfaceContainerHighest),
             ],
           ),
-          const SizedBox(height: 32),
+          AppSpacing.h32,
           Text(
             "Trend",
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            style: AppText.h3.copyWith(fontSize: 16),
           ),
-          const SizedBox(height: 8),
+          AppSpacing.h8,
           LinearProgressIndicator(
             value: 0.85,
             minHeight: 12,
@@ -224,10 +215,10 @@ class AttendanceScreen extends StatelessWidget {
             color: Colors.green,
             borderRadius: BorderRadius.circular(6),
           ),
-          const SizedBox(height: 8),
+          AppSpacing.h8,
           Text(
             "85% on-time attendance this week.",
-            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            style: AppText.caption.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
         ],
       ),
@@ -247,7 +238,7 @@ class AttendanceScreen extends StatelessWidget {
           ),
           child: Center(
             child: Icon(
-              color == Colors.green ? Icons.check_rounded : (color == Colors.orange ? Icons.warning_rounded : Icons.more_horiz_rounded),
+              color == Colors.green ? AppIcons.check_rounded : (color == Colors.orange ? AppIcons.warning_rounded : AppIcons.more_horiz_rounded),
               color: color == theme.colorScheme.surfaceContainerHighest ? theme.colorScheme.onSurfaceVariant : color,
               size: 20,
             ),

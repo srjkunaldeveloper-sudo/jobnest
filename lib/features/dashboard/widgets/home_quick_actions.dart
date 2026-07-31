@@ -28,37 +28,33 @@ class HomeQuickActions extends StatelessWidget {
             ),
           ),
           AppSpacing.h16,
-          // ===== BACKEND TODO =====
-          // TODO: Quick Actions actual navigation use karenge.
           if (isLoading)
             const AppShimmerLoading(
               width: double.infinity,
-              height: 140,
+              height: 160,
               borderRadius: BorderRadius.all(Radius.circular(16)),
             )
           else
             LayoutBuilder(
               builder: (context, constraints) {
-                double buttonWidth;
-                // Desktop: 4 Columns
+                // Responsive grid logic based on constraints
+                int columns = 2; // Perfect 2-column base grid
                 if (constraints.maxWidth > 900) {
-                  buttonWidth = (constraints.maxWidth - (16 * 3)) / 4;
-                } 
-                // Tablet: 3 Columns
-                else if (constraints.maxWidth > 600) {
-                  buttonWidth = (constraints.maxWidth - (16 * 2)) / 3;
-                } 
-                // Mobile: 2 Columns
-                else {
-                  buttonWidth = (constraints.maxWidth - 16) / 2;
+                  columns = 4;
+                } else if (constraints.maxWidth > 600) {
+                  columns = 3;
                 }
                 
+                final double gap = 16.0;
+                final double buttonWidth = (constraints.maxWidth - (gap * (columns - 1))) / columns;
+                
                 return Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
+                  spacing: gap, // Horizontal gap
+                  runSpacing: gap, // Vertical gap
                   children: actions.map((action) {
                     return SizedBox(
                       width: buttonWidth,
+                      height: 160, // Exact height constraint for every card
                       child: _QuickActionShortcut(
                         icon: action.icon,
                         title: action.title,
@@ -121,13 +117,14 @@ class _QuickActionShortcutState extends State<_QuickActionShortcut> {
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: _isHovered ? widget.color.withValues(alpha: 0.5) : theme.dividerColor.withValues(alpha: 0.5),
+              color: _isHovered ? widget.color.withValues(alpha: 0.5) : theme.dividerColor.withValues(alpha: 0.3),
+              width: 1, // Exact same border thickness
             ),
             boxShadow: [
               BoxShadow(
                 color: _isHovered ? widget.color.withValues(alpha: 0.1) : theme.shadowColor.withValues(alpha: 0.02),
-                blurRadius: _isHovered ? 8 : 4,
-                offset: Offset(0, _isHovered ? 4 : 2),
+                blurRadius: _isHovered ? 12 : 6,
+                offset: Offset(0, _isHovered ? 6 : 2),
               )
             ],
           ),
@@ -139,37 +136,59 @@ class _QuickActionShortcutState extends State<_QuickActionShortcut> {
               splashColor: widget.color.withValues(alpha: 0.1),
               highlightColor: widget.color.withValues(alpha: 0.05),
               child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 16),
+                child: Stack(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: widget.color.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Icon Container (kept original icon proportion, optimized container)
+                        Container(
+                          width: 56,
+                          height: 56,
+                          decoration: BoxDecoration(
+                            color: widget.color.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          alignment: Alignment.center, // Perfectly centered
+                          child: Icon(
+                            widget.icon,
+                            color: widget.color,
+                            size: 28, // Kept icon size
+                          ),
+                        ),
+                        const SizedBox(height: 10), // 8-10px gap
+                        Text(
+                          widget.title,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13, // Slightly reduced to prevent "Schedule Interview" from truncating
+                            height: 1.2,
+                            letterSpacing: -0.2,
+                          ),
+                          maxLines: 1,
+                          softWrap: false,
+                          overflow: TextOverflow.visible, // Must never overflow
+                        ),
+                        const SizedBox(height: 4), // 4-6px gap
+                        Text(
+                          widget.subtitle,
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            height: 1.2,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
                       child: Icon(
-                        widget.icon,
-                        color: widget.color,
-                        size: 24,
+                        Icons.arrow_forward_rounded,
+                        size: 20,
+                        color: _isHovered ? widget.color : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
                       ),
-                    ),
-                    AppSpacing.h16,
-                    Text(
-                      widget.title,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    AppSpacing.h4,
-                    Text(
-                      widget.subtitle,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

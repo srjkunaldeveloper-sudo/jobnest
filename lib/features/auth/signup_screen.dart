@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_button.dart';
 import 'package:jobnest/core/widgets/app_textfield.dart';
@@ -44,7 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: theme.colorScheme.onSurface),
+          icon: Icon(AppIcons.arrow_back, color: theme.colorScheme.onSurface),
           onPressed: _prevStep,
         ),
       ),
@@ -143,13 +144,13 @@ class _SignupScreenState extends State<SignupScreen> {
         const SizedBox(height: 8),
         Text("Let's get started with your details", style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         const SizedBox(height: 30),
-        _buildTextField("Full Name", Icons.person_outline),
+        _buildTextField("Full Name", AppIcons.person_outline),
         const SizedBox(height: 16),
-        _buildTextField("Work Email", Icons.email_outlined),
+        _buildTextField("Work Email", AppIcons.email_outlined),
         const SizedBox(height: 16),
-        _buildTextField("Mobile Number", Icons.phone_outlined, prefix: "+91 "),
+        _buildTextField("Mobile Number", AppIcons.phone_outlined, prefix: "+91 "),
         const SizedBox(height: 16),
-        _buildTextField("Password", Icons.lock_outline, isPassword: true),
+        _buildTextField("Password", AppIcons.lock_outline, isPassword: true),
         const SizedBox(height: 24),
         Center(
           child: Row(
@@ -189,13 +190,13 @@ class _SignupScreenState extends State<SignupScreen> {
         const SizedBox(height: 8),
         Text("Tell us about your company", style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         const SizedBox(height: 30),
-        _buildTextField("Company Name", Icons.business),
+        _buildTextField("Company Name", AppIcons.business),
         const SizedBox(height: 16),
-        _buildDropdownField("Industry Type", Icons.category_outlined),
+        _buildDropdownField("Industry Type", AppIcons.category_outlined),
         const SizedBox(height: 16),
-        _buildDropdownField("Company Size", Icons.groups_outlined),
+        _buildDropdownField("Company Size", AppIcons.groups_outlined),
         const SizedBox(height: 16),
-        _buildTextField("Company Website (optional)", Icons.language),
+        _buildTextField("Company Website (optional)", AppIcons.language),
       ],
     );
   }
@@ -209,11 +210,11 @@ class _SignupScreenState extends State<SignupScreen> {
         const SizedBox(height: 8),
         Text("What is your role in hiring?", style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         const SizedBox(height: 30),
-        _buildDropdownField("Role (HR / Recruiter / Founder)", Icons.badge_outlined),
+        _buildDropdownField("Role (HR / Recruiter / Founder)", AppIcons.badge_outlined),
         const SizedBox(height: 16),
-        _buildDropdownField("Hiring Type", Icons.work_outline),
+        _buildDropdownField("Hiring Type", AppIcons.work_outline),
         const SizedBox(height: 16),
-        _buildTextField("Location", Icons.location_on_outlined),
+        _buildTextField("Location", AppIcons.location_on_outlined),
       ],
     );
   }
@@ -229,11 +230,11 @@ class _SignupScreenState extends State<SignupScreen> {
         const SizedBox(height: 30),
         Text("Email OTP Verification", style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
-        _buildTextField("Enter Email OTP", Icons.mark_email_read_outlined),
+        _buildTextField("Enter Email OTP", AppIcons.mark_email_read_outlined),
         const SizedBox(height: 24),
         Text("Mobile OTP Verification", style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
-        _buildTextField("Enter Mobile OTP", Icons.sms_outlined),
+        _buildTextField("Enter Mobile OTP", AppIcons.sms_outlined),
       ],
     );
   }
@@ -251,7 +252,7 @@ class _SignupScreenState extends State<SignupScreen> {
             color: theme.colorScheme.primaryContainer,
             shape: BoxShape.circle,
           ),
-          child: Icon(Icons.check_circle, color: theme.colorScheme.primary, size: 80),
+          child: Icon(AppIcons.check_circle, color: theme.colorScheme.primary, size: 80),
         ),
         const SizedBox(height: 24),
         Text("Setup Complete!", style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),

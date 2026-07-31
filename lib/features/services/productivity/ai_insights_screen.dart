@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -19,7 +20,7 @@ class AiInsightsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(AppIcons.refresh_rounded),
             tooltip: "Refresh Insights",
           ),
           const SizedBox(width: 8),
@@ -46,7 +47,7 @@ class AiInsightsScreen extends StatelessWidget {
                 title: "Hiring Trend",
                 summary: "Engineering roles are taking 20% longer to close compared to last quarter.",
                 recommendation: "Increase referral bonuses for Senior Developer positions.",
-                icon: Icons.trending_up_rounded,
+                icon: AppIcons.trending_up_rounded,
                 color: Colors.orange,
                 confidence: 0.92,
               ),
@@ -56,7 +57,7 @@ class AiInsightsScreen extends StatelessWidget {
                 title: "Candidate Quality",
                 summary: "Candidates from 'LinkedIn' source are passing technical rounds at a 40% higher rate.",
                 recommendation: "Allocate more budget to LinkedIn sponsored jobs.",
-                icon: Icons.star_rounded,
+                icon: AppIcons.star_rounded,
                 color: Colors.green,
                 confidence: 0.88,
               ),
@@ -66,7 +67,7 @@ class AiInsightsScreen extends StatelessWidget {
                 title: "Hiring Bottlenecks",
                 summary: "The 'Technical Assessment' stage has an average waiting time of 5.2 days.",
                 recommendation: "Automate technical assessments using JobNest AI tools.",
-                icon: Icons.warning_rounded,
+                icon: AppIcons.warning_rounded,
                 color: Colors.redAccent,
                 confidence: 0.95,
               ),
@@ -76,7 +77,7 @@ class AiInsightsScreen extends StatelessWidget {
                 title: "Recruiter Productivity",
                 summary: "Morning outreach (9 AM - 11 AM) yields a 35% better candidate response rate.",
                 recommendation: "Schedule automated emails for morning delivery.",
-                icon: Icons.bolt_rounded,
+                icon: AppIcons.bolt_rounded,
                 color: Colors.blueAccent,
                 confidence: 0.85,
               ),
@@ -86,7 +87,7 @@ class AiInsightsScreen extends StatelessWidget {
                 title: "Job Performance",
                 summary: "The 'UI/UX Designer' posting has low visibility compared to similar roles.",
                 recommendation: "Optimize job description keywords for SEO.",
-                icon: Icons.work_rounded,
+                icon: AppIcons.work_rounded,
                 color: Colors.purpleAccent,
                 confidence: 0.78,
               ),
@@ -145,7 +146,7 @@ class AiInsightsScreen extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.auto_awesome_rounded, size: 14, color: theme.colorScheme.primary),
+                              Icon(AppIcons.auto_awesome_rounded, size: 14, color: theme.colorScheme.primary),
                               const SizedBox(width: 4),
                               Text(
                                 "${(confidence * 100).toInt()}% Confidence",
@@ -182,7 +183,7 @@ class AiInsightsScreen extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.lightbulb_outline_rounded, color: Colors.amber.shade700, size: 20),
+                Icon(AppIcons.lightbulb_outline_rounded, color: Colors.amber.shade700, size: 20),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

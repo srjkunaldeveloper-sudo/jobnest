@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
@@ -67,7 +68,7 @@ class CandidatesGridView extends StatelessWidget {
                 color: Theme.of(context).colorScheme.errorContainer,
                 borderRadius: AppRadius.medium,
               ),
-              child: Icon(Icons.archive_outlined, color: Theme.of(context).colorScheme.error),
+              child: Icon(AppIcons.archive_outlined, color: Theme.of(context).colorScheme.error),
             ),
             child: CandidateListCard(
               name: cand.name,

@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -89,7 +90,7 @@ class Step6Preview extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.warning_amber_rounded, size: 16, color: Colors.redAccent),
+                            const Icon(AppIcons.warning_amber_rounded, size: 16, color: Colors.redAccent),
                             const SizedBox(width: 4),
                             Text(
                               "Urgent",
@@ -109,9 +110,9 @@ class Step6Preview extends StatelessWidget {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    _buildIconLabel(context, Icons.work_rounded, form.employmentType),
-                    _buildIconLabel(context, Icons.laptop_mac_rounded, form.workMode),
-                    _buildIconLabel(context, Icons.monetization_on_rounded, form.formattedSalary),
+                    _buildIconLabel(context, AppIcons.work_rounded, form.employmentType),
+                    _buildIconLabel(context, AppIcons.laptop_mac_rounded, form.workMode),
+                    _buildIconLabel(context, AppIcons.monetization_on_rounded, form.formattedSalary),
                   ],
                 ),
                 AppSpacing.h24,

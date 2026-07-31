@@ -1,7 +1,14 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/features/profile/providers/profile_data_provider.dart';
+
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
+import 'package:jobnest/core/widgets/app_button.dart';
+import 'package:jobnest/core/widgets/app_textfield.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
 
 class ProfilePersonalInfoScreen extends StatefulWidget {
   const ProfilePersonalInfoScreen({super.key});
@@ -47,102 +54,80 @@ class _ProfilePersonalInfoScreenState extends State<ProfilePersonalInfoScreen> {
     // TODO: Fetch recruiter profile.
     // TODO: Update profile API.
     // TODO: Upload profile photo.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("Personal Information"),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-            child: AppCard(
-              padding: const EdgeInsets.all(24),
+    return AppPageScaffold(
+      title: "Personal Information",
+      showBackButton: true,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: AppCard(
+          padding: const EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Edit Recruiter Profile",
-                    style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                    style: AppText.h2,
                   ),
-                  const SizedBox(height: 8),
+                  AppSpacing.h8,
                   Text(
                     "Keep your contact details up to date for candidate correspondence.",
-                    style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                    style: AppText.bodyMedium,
                   ),
-                  const SizedBox(height: 24),
-                  _buildTextField(context, "Full Name", _nameCtrl, "e.g., Sonu Surya"),
-                  const SizedBox(height: 16),
-                  _buildTextField(context, "Email Address", _emailCtrl, "e.g., sonusurya@technova.com"),
-                  const SizedBox(height: 16),
-                  _buildTextField(context, "Phone Number", _phoneCtrl, "e.g., +91 98765 43210"),
-                  const SizedBox(height: 16),
-                  _buildTextField(context, "Designation / Role", _designationCtrl, "e.g., Senior Tech Recruiter"),
-                  const SizedBox(height: 16),
-                  _buildTextField(context, "Work Location", _locationCtrl, "e.g., Bangalore, India"),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 52,
-                    child: FilledButton.icon(
-                      onPressed: () {
-                        provider.updatePersonalInfo(
-                          name: _nameCtrl.text.trim(),
-                          newEmail: _emailCtrl.text.trim(),
-                          newPhone: _phoneCtrl.text.trim(),
-                          newDesignation: _designationCtrl.text.trim(),
-                          newLocation: _locationCtrl.text.trim(),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Personal profile updated successfully! (Local State)"),
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.save_rounded),
-                      style: FilledButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      label: const Text("Save Changes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    ),
+                  AppSpacing.h24,
+                  AppTextField(
+                    label: "Full Name",
+                    hint: "e.g., Sonu Surya",
+                    controller: _nameCtrl,
+                  ),
+                  AppSpacing.h16,
+                  AppTextField(
+                    label: "Email Address",
+                    hint: "e.g., sonusurya@technova.com",
+                    controller: _emailCtrl,
+                  ),
+                  AppSpacing.h16,
+                  AppTextField(
+                    label: "Phone Number",
+                    hint: "e.g., +91 98765 43210",
+                    controller: _phoneCtrl,
+                  ),
+                  AppSpacing.h16,
+                  AppTextField(
+                    label: "Designation / Role",
+                    hint: "e.g., Senior Tech Recruiter",
+                    controller: _designationCtrl,
+                  ),
+                  AppSpacing.h16,
+                  AppTextField(
+                    label: "Work Location",
+                    hint: "e.g., Bangalore, India",
+                    controller: _locationCtrl,
+                  ),
+                  AppSpacing.h32,
+                  AppButton(
+                    text: "Save Changes",
+                    icon: AppIcons.save_rounded,
+                    onPressed: () {
+                      provider.updatePersonalInfo(
+                        name: _nameCtrl.text.trim(),
+                        newEmail: _emailCtrl.text.trim(),
+                        newPhone: _phoneCtrl.text.trim(),
+                        newDesignation: _designationCtrl.text.trim(),
+                        newLocation: _locationCtrl.text.trim(),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Personal profile updated successfully! (Local State)"),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),
             ),
-          ),
-        ),
       ),
-    );
-  }
-
-  Widget _buildTextField(BuildContext context, String label, TextEditingController controller, String hint) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: hint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          ),
-        ),
-      ],
     );
   }
 }

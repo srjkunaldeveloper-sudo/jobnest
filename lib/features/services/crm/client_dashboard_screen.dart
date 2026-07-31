@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -39,10 +40,10 @@ class ClientDashboardScreen extends StatelessWidget {
                       mainAxisSpacing: 16,
                       childAspectRatio: 1.5,
                       children: [
-                        _buildMetricCard(context, "Active Clients", "42", Icons.business_rounded, Colors.blueAccent),
-                        _buildMetricCard(context, "Open Jobs", "156", Icons.work_rounded, Colors.green),
-                        _buildMetricCard(context, "Interviews", "89", Icons.forum_rounded, Colors.orange),
-                        _buildMetricCard(context, "Offers Made", "14", Icons.local_activity_rounded, Colors.purpleAccent),
+                        _buildMetricCard(context, "Active Clients", "42", AppIcons.business_rounded, Colors.blueAccent),
+                        _buildMetricCard(context, "Open Jobs", "156", AppIcons.work_rounded, Colors.green),
+                        _buildMetricCard(context, "Interviews", "89", AppIcons.forum_rounded, Colors.orange),
+                        _buildMetricCard(context, "Offers Made", "14", AppIcons.local_activity_rounded, Colors.purpleAccent),
                       ],
                     );
                   }
@@ -95,7 +96,7 @@ class ClientDashboardScreen extends StatelessWidget {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  const Icon(Icons.trending_up_rounded, color: Colors.green, size: 16),
+                  const Icon(AppIcons.trending_up_rounded, color: Colors.green, size: 16),
                   const SizedBox(width: 4),
                   Text(
                     "+12.5% from last month",
@@ -111,7 +112,7 @@ class ClientDashboardScreen extends StatelessWidget {
               color: Colors.green.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.attach_money_rounded, color: Colors.green, size: 48),
+            child: const Icon(AppIcons.attach_money_rounded, color: Colors.green, size: 48),
           ),
         ],
       ),
@@ -166,11 +167,11 @@ class ClientDashboardScreen extends StatelessWidget {
             style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 24),
-          _buildActivityItem(context, "New Contract Signed", "TechCorp Inc.", "2 hours ago", Icons.handshake_rounded, Colors.green),
+          _buildActivityItem(context, "New Contract Signed", "TechCorp Inc.", "2 hours ago", AppIcons.handshake_rounded, Colors.green),
           const Divider(),
-          _buildActivityItem(context, "Interview Scheduled", "Google - Sr. Engineer", "4 hours ago", Icons.event_rounded, Colors.blueAccent),
+          _buildActivityItem(context, "Interview Scheduled", "Google - Sr. Engineer", "4 hours ago", AppIcons.event_rounded, Colors.blueAccent),
           const Divider(),
-          _buildActivityItem(context, "Client Follow-up", "Amazon HR Team", "Yesterday", Icons.phone_in_talk_rounded, Colors.orange),
+          _buildActivityItem(context, "Client Follow-up", "Amazon HR Team", "Yesterday", AppIcons.phone_in_talk_rounded, Colors.orange),
         ],
       ),
     );

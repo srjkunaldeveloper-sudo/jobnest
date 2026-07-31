@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -38,8 +39,8 @@ class ProfileSubscriptionScreen extends StatelessWidget {
             onPressed: () => provider.toggleSubscriptionTrialState(),
             icon: Icon(
               provider.isSubscriptionTrial
-                  ? Icons.timer_rounded
-                  : Icons.timer_outlined,
+                  ? AppIcons.timer_rounded
+                  : AppIcons.timer_outlined,
               color: provider.isSubscriptionTrial
                   ? Colors.amber.shade800
                   : null,
@@ -52,8 +53,8 @@ class ProfileSubscriptionScreen extends StatelessWidget {
             onPressed: () => provider.toggleSubscriptionEmptyState(),
             icon: Icon(
               provider.isSubscriptionEmpty
-                  ? Icons.remove_shopping_cart_rounded
-                  : Icons.shopping_cart_checkout_outlined,
+                  ? AppIcons.remove_shopping_cart_rounded
+                  : AppIcons.shopping_cart_checkout_outlined,
               color: provider.isSubscriptionEmpty ? theme.colorScheme.error : null,
             ),
             tooltip: provider.isSubscriptionEmpty
@@ -95,7 +96,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        Icons.workspace_premium_outlined,
+                        AppIcons.workspace_premium_outlined,
                         size: 56,
                         color: theme.colorScheme.error,
                       ),
@@ -128,7 +129,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      icon: const Icon(Icons.flash_on_rounded),
+                      icon: const Icon(AppIcons.flash_on_rounded),
                       label: const Text(
                         "Choose a Plan",
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -282,7 +283,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.timer_rounded, color: Colors.amber.shade800, size: 28),
+              Icon(AppIcons.timer_rounded, color: Colors.amber.shade800, size: 28),
               const SizedBox(width: 14),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,7 +332,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
                   backgroundColor: Colors.amber.shade800,
                   foregroundColor: Colors.white,
                 ),
-                icon: const Icon(Icons.verified_rounded, size: 16),
+                icon: const Icon(AppIcons.verified_rounded, size: 16),
                 label: const Text("Upgrade Now"),
               ),
             ],
@@ -352,16 +353,16 @@ class ProfileSubscriptionScreen extends StatelessWidget {
     IconData statusIcon;
     if (status == "Active") {
       statusColor = Colors.green;
-      statusIcon = Icons.check_circle_rounded;
+      statusIcon = AppIcons.check_circle_rounded;
     } else if (status == "Trial") {
       statusColor = Colors.amber.shade800;
-      statusIcon = Icons.hourglass_top_rounded;
+      statusIcon = AppIcons.hourglass_top_rounded;
     } else if (status == "Expired") {
       statusColor = theme.colorScheme.error;
-      statusIcon = Icons.error_rounded;
+      statusIcon = AppIcons.error_rounded;
     } else {
       statusColor = theme.colorScheme.onSurfaceVariant;
-      statusIcon = Icons.cancel_rounded;
+      statusIcon = AppIcons.cancel_rounded;
     }
 
     return AppCard(
@@ -444,19 +445,19 @@ class ProfileSubscriptionScreen extends StatelessWidget {
                 theme,
                 "Active Since",
                 provider.activeSince,
-                Icons.calendar_today_outlined,
+                AppIcons.calendar_today_outlined,
               ),
               _buildStatCol(
                 theme,
                 "Renewal Date",
                 provider.renewalDate,
-                Icons.event_repeat_rounded,
+                AppIcons.event_repeat_rounded,
               ),
               _buildStatCol(
                 theme,
                 "Plan Expiry",
                 provider.planExpiry,
-                Icons.event_busy_outlined,
+                AppIcons.event_busy_outlined,
               ),
             ],
           ),
@@ -477,7 +478,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
                     ),
                   );
                 },
-                icon: const Icon(Icons.autorenew_rounded, size: 18),
+                icon: const Icon(AppIcons.autorenew_rounded, size: 18),
                 label: const Text("Renew Plan"),
               ),
               OutlinedButton.icon(
@@ -493,7 +494,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
                   );
                 },
                 icon: Icon(
-                  Icons.cancel_outlined,
+                  AppIcons.cancel_outlined,
                   size: 18,
                   color: theme.colorScheme.error,
                 ),
@@ -721,21 +722,21 @@ class ProfileSubscriptionScreen extends StatelessWidget {
               color: theme.colorScheme.outline.withValues(alpha: 0.15),
             ),
             const SizedBox(height: 14),
-            _buildPlanSpecRow(theme, Icons.people_outline, plan.recruiterSeats),
+            _buildPlanSpecRow(theme, AppIcons.people_outline, plan.recruiterSeats),
             const SizedBox(height: 8),
-            _buildPlanSpecRow(theme, Icons.work_outline, plan.jobPostingLimit),
+            _buildPlanSpecRow(theme, AppIcons.work_outline, plan.jobPostingLimit),
             const SizedBox(height: 8),
             _buildPlanSpecRow(
               theme,
-              Icons.folder_shared_outlined,
+              AppIcons.folder_shared_outlined,
               plan.candidateLimit,
             ),
             const SizedBox(height: 8),
-            _buildPlanSpecRow(theme, Icons.auto_awesome_outlined, plan.aiFeatures),
+            _buildPlanSpecRow(theme, AppIcons.auto_awesome_outlined, plan.aiFeatures),
             const SizedBox(height: 8),
             _buildPlanSpecRow(
               theme,
-              Icons.support_agent_outlined,
+              AppIcons.support_agent_outlined,
               plan.supportLevel,
             ),
             const SizedBox(height: 20),
@@ -957,7 +958,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.receipt_long_outlined,
+              Icon(AppIcons.receipt_long_outlined,
                   color: theme.colorScheme.primary),
               const SizedBox(width: 10),
               Text(
@@ -1016,7 +1017,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
                 color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(Icons.description_outlined,
+              child: Icon(AppIcons.description_outlined,
                   size: 20, color: theme.colorScheme.primary),
             ),
             const SizedBox(width: 12),
@@ -1067,7 +1068,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             IconButton(
-              icon: const Icon(Icons.download_rounded, size: 20),
+              icon: const Icon(AppIcons.download_rounded, size: 20),
               tooltip: "Download Invoice PDF",
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -1093,7 +1094,7 @@ class ProfileSubscriptionScreen extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: const Row(
           children: [
-            Icon(Icons.compare_arrows_rounded),
+            Icon(AppIcons.compare_arrows_rounded),
             SizedBox(width: 10),
             Expanded(child: Text("Enterprise Plan Matrix Comparison")),
           ],

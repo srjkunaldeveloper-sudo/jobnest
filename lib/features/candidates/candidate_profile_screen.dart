@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
@@ -63,7 +64,7 @@ class CandidateProfileScreen extends StatelessWidget {
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
+          icon: const Icon(AppIcons.arrow_back_rounded),
           onPressed: () => Navigator.pop(context),
         ),
       ),

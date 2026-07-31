@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
@@ -47,7 +48,7 @@ class JobDetailsScreen extends StatelessWidget {
           label: "Back to Job Requisitions",
           button: true,
           child: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
+            icon: const Icon(AppIcons.arrow_back_rounded),
             onPressed: () => Navigator.pop(context),
             constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
           ),
@@ -119,7 +120,7 @@ class JobDetailsScreen extends StatelessWidget {
               MaterialPageRoute(builder: (_) => CreateJobWizard(initialJob: jobToEdit)),
             );
           },
-          icon: const Icon(Icons.edit_rounded),
+          icon: const Icon(AppIcons.edit_rounded),
           label: const Text(
             "Edit Requisition",
             style: TextStyle(fontWeight: FontWeight.bold),

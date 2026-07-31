@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
@@ -13,7 +14,7 @@ import 'package:jobnest/features/profile/providers/profile_data_provider.dart';
 // ============================================================================
 
 class ProfileConstants {
-  // Spacing
+  // Spacing (Mapped to AppSpacing to maintain global consistency)
   static const double spacingXSmall = 4.0;
   static const double spacingSmall = 8.0;
   static const double spacingMedium = 16.0;
@@ -21,20 +22,20 @@ class ProfileConstants {
   static const double spacingXLarge = 32.0;
   static const double spacingXXLarge = 48.0;
 
-  // Border Radius
+  // Border Radius (Mapped to AppRadius for global consistency)
   static const double radiusSmallVal = 8.0;
   static const double radiusMediumVal = 12.0;
-  static const double radiusLargeVal = 24.0;
-  static final BorderRadius radiusSmall = BorderRadius.circular(radiusSmallVal);
-  static final BorderRadius radiusMedium = BorderRadius.circular(radiusMediumVal);
+  static const double radiusLargeVal = 16.0; // Updated from 24 to match AppRadius.large which is 16
+  static final BorderRadius radiusSmall = AppRadius.small;
+  static final BorderRadius radiusMedium = AppRadius.medium;
   static final BorderRadius radiusLarge = AppRadius.large;
 
-  // Padding
+  // Padding (Mapped to AppSpacing)
   static const EdgeInsets paddingSmall = EdgeInsets.all(8.0);
   static const EdgeInsets paddingMedium = EdgeInsets.all(16.0);
   static const EdgeInsets paddingLarge = EdgeInsets.all(24.0);
   static const EdgeInsets paddingHorizontal = EdgeInsets.symmetric(horizontal: 16.0);
-  static const EdgeInsets paddingVertical = EdgeInsets.symmetric(vertical: 20.0);
+  static const EdgeInsets paddingVertical = EdgeInsets.symmetric(vertical: 24.0); // Changed to 24 to match Spacing Tokens
 
   // Avatar Sizes
   static const double avatarSizeSmall = 32.0;
@@ -249,7 +250,7 @@ class ProfileSharedComponents {
             if (trailing != null)
               trailing
             else
-              Icon(Icons.arrow_forward_ios_rounded, size: 16, color: theme.colorScheme.onSurfaceVariant),
+              Icon(AppIcons.arrow_forward_ios_rounded, size: 16, color: theme.colorScheme.onSurfaceVariant),
           ],
         ),
       ),
@@ -339,7 +340,7 @@ class ProfileSharedComponents {
                     child: Padding(
                       padding: const EdgeInsets.all(4),
                       child: Icon(
-                        isCopied ? Icons.check_rounded : Icons.copy_rounded,
+                        isCopied ? AppIcons.check_rounded : AppIcons.copy_rounded,
                         size: 16,
                         color: isCopied ? Colors.green : theme.colorScheme.primary,
                       ),

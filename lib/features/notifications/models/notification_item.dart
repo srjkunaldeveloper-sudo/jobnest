@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 enum NotificationType {
@@ -99,32 +100,32 @@ class NotificationItem {
   IconData get icon {
     switch (type) {
       case NotificationType.jobPosted:
-        return Icons.work_outline_rounded;
+        return AppIcons.work_outline_rounded;
       case NotificationType.newApplicationReceived:
-        return Icons.person_add_alt_1_rounded;
+        return AppIcons.person_add_alt_1_rounded;
       case NotificationType.candidateShortlisted:
-        return Icons.star_rounded;
+        return AppIcons.star_rounded;
       case NotificationType.interviewScheduled:
       case NotificationType.interviewReminder:
-        return Icons.calendar_today_rounded;
+        return AppIcons.calendar_today_rounded;
       case NotificationType.interviewCancelled:
-        return Icons.event_busy_rounded;
+        return AppIcons.event_busy_rounded;
       case NotificationType.offerSent:
-        return Icons.send_rounded;
+        return AppIcons.send_rounded;
       case NotificationType.offerAccepted:
-        return Icons.check_circle_outline_rounded;
+        return AppIcons.check_circle_outline_rounded;
       case NotificationType.offerRejected:
-        return Icons.cancel_outlined;
+        return AppIcons.cancel_outlined;
       case NotificationType.aiRecommendation:
-        return Icons.auto_awesome_rounded;
+        return AppIcons.auto_awesome_rounded;
       case NotificationType.resumeProcessed:
-        return Icons.description_outlined;
+        return AppIcons.description_outlined;
       case NotificationType.systemAnnouncement:
-        return Icons.campaign_outlined;
+        return AppIcons.campaign_outlined;
       case NotificationType.profileUpdated:
-        return Icons.manage_accounts_outlined;
+        return AppIcons.manage_accounts_outlined;
       case NotificationType.subscriptionReminder:
-        return Icons.payment_rounded;
+        return AppIcons.payment_rounded;
     }
   }
 

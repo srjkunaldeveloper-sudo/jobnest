@@ -1,6 +1,8 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
-import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/constants/app_radius.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/features/candidates/candidate_profile_screen.dart';
 import 'package:jobnest/features/candidates/widgets/candidate_stage_badge.dart';
@@ -83,10 +85,9 @@ class _CandidateListCardState extends State<CandidateListCard> {
           children: stages.map((stg) {
             final isCur = stg.toLowerCase() == currentStage.toLowerCase();
             return ListTile(
-              leading: Icon(
-                isCur ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded,
-                color: isCur ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
-              ),
+              leading: isCur 
+                  ? Icon(AppIcons.check_rounded, color: theme.colorScheme.primary)
+                  : const SizedBox(width: 24),
               title: Text(stg, style: TextStyle(fontWeight: isCur ? FontWeight.bold : FontWeight.normal)),
               onTap: () {
                 Navigator.pop(ctx);
@@ -118,20 +119,27 @@ class _CandidateListCardState extends State<CandidateListCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         transform: Matrix4.translationValues(0, _isHovered ? -3 : 0, 0),
-        child: AppCard(
-          padding: EdgeInsets.zero,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: widget.isSelected
-                  ? Border.all(color: theme.colorScheme.primary, width: 2.0)
-                  : null,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: AppRadius.large,
+          border: widget.isSelected
+              ? Border.all(color: theme.colorScheme.primary, width: 2.0)
+              : Border.all(color: theme.dividerColor.withValues(alpha: 0.5), width: 1.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: _isHovered ? 0.08 : 0.02),
+              blurRadius: _isHovered ? 16 : 8,
+              offset: _isHovered ? const Offset(0, 8) : const Offset(0, 2),
             ),
-            child: InkWell(
-              onTap: _navigateToProfile,
-              borderRadius: BorderRadius.circular(20),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: _navigateToProfile,
+            borderRadius: AppRadius.large,
+            child: Padding(
+                padding: const EdgeInsets.all(24.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -145,13 +153,10 @@ class _CandidateListCardState extends State<CandidateListCard> {
                           backgroundColor: theme.colorScheme.primaryContainer,
                           child: Text(
                             widget.name.isNotEmpty ? widget.name[0].toUpperCase() : "?",
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              color: theme.colorScheme.onPrimaryContainer,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: AppText.h3.copyWith(color: theme.colorScheme.onPrimaryContainer),
                           ),
                         ),
-                        const SizedBox(width: 14),
+                        AppSpacing.w16,
 
                         // Full Name, Current Position & Company
                         Expanded(
@@ -160,20 +165,21 @@ class _CandidateListCardState extends State<CandidateListCard> {
                             children: [
                               Text(
                                 widget.name,
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
+                                style: AppText.h3,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(height: 4),
+                              AppSpacing.h4,
                               Text(
-                                "${widget.role} at $company",
-                                style: theme.textTheme.labelMedium?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                "${widget.role} • $company",
+                                style: AppText.bodyMedium.copyWith(color: theme.colorScheme.primary),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              AppSpacing.h4,
+                              Text(
+                                "${widget.experience} • ${widget.location}",
+                                style: AppText.bodyMedium,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -208,11 +214,11 @@ class _CandidateListCardState extends State<CandidateListCard> {
                       runSpacing: 10,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        _buildInfoItem(context, Icons.work_outline_rounded, widget.experience),
-                        _buildInfoItem(context, Icons.location_on_outlined, widget.location),
-                        _buildInfoItem(context, Icons.monetization_on_outlined, salary),
-                        _buildInfoItem(context, Icons.calendar_today_rounded, appliedDate),
-                        _buildInfoItem(context, Icons.star_rounded, "Rating: $rating", iconColor: Colors.amber.shade700),
+                        _buildInfoItem(context, AppIcons.work_outline_rounded, widget.experience),
+                        _buildInfoItem(context, AppIcons.location_on_outlined, widget.location),
+                        _buildInfoItem(context, AppIcons.monetization_on_outlined, salary),
+                        _buildInfoItem(context, AppIcons.calendar_today_rounded, appliedDate),
+                        _buildInfoItem(context, AppIcons.star_rounded, "Rating: $rating", iconColor: Colors.amber.shade700),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -260,8 +266,8 @@ class _CandidateListCardState extends State<CandidateListCard> {
                                 children: [
                                   Icon(
                                     widget.isSelected
-                                        ? Icons.check_box_rounded
-                                        : Icons.check_box_outline_blank_rounded,
+                                        ? AppIcons.check_box_rounded
+                                        : AppIcons.check_box_outline_blank_rounded,
                                     size: 22,
                                     color: widget.isSelected
                                         ? theme.colorScheme.primary
@@ -289,7 +295,7 @@ class _CandidateListCardState extends State<CandidateListCard> {
                             OutlinedButton(
                               onPressed: _navigateToProfile,
                               style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                 minimumSize: const Size(80, 40),
                               ),
@@ -308,7 +314,7 @@ class _CandidateListCardState extends State<CandidateListCard> {
                                   }
                                 },
                                 icon: Icon(
-                                  isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                                  isBookmarked ? AppIcons.bookmark_rounded : AppIcons.bookmark_border_rounded,
                                   size: 20,
                                   color: isBookmarked ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
                                 ),
@@ -357,7 +363,7 @@ class _CandidateListCardState extends State<CandidateListCard> {
                                   }
                                 },
                                 tooltip: "More Actions",
-                                icon: Icon(Icons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurface),
+                                icon: Icon(AppIcons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurface),
                                 constraints: const BoxConstraints(minWidth: 210),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                                 itemBuilder: (context) => [
@@ -365,7 +371,7 @@ class _CandidateListCardState extends State<CandidateListCard> {
                                     value: 'profile',
                                     child: Row(
                                       children: [
-                                        Icon(Icons.person_outline_rounded, size: 18),
+                                        Icon(AppIcons.person_outline_rounded, size: 18),
                                         SizedBox(width: 12),
                                         Text("View Profile"),
                                       ],
@@ -375,7 +381,7 @@ class _CandidateListCardState extends State<CandidateListCard> {
                                     value: 'schedule',
                                     child: Row(
                                       children: [
-                                        Icon(Icons.calendar_month_outlined, size: 18),
+                                        Icon(AppIcons.calendar_month_outlined, size: 18),
                                         SizedBox(width: 12),
                                         Text("Schedule Interview"),
                                       ],
@@ -385,7 +391,7 @@ class _CandidateListCardState extends State<CandidateListCard> {
                                     value: 'stage',
                                     child: Row(
                                       children: [
-                                        Icon(Icons.swap_horiz_rounded, size: 18),
+                                        Icon(AppIcons.swap_horiz_rounded, size: 18),
                                         SizedBox(width: 12),
                                         Text("Move Stage"),
                                       ],
@@ -395,7 +401,7 @@ class _CandidateListCardState extends State<CandidateListCard> {
                                     value: 'message',
                                     child: Row(
                                       children: [
-                                        Icon(Icons.chat_bubble_outline_rounded, size: 18),
+                                        Icon(AppIcons.chat_bubble_outline_rounded, size: 18),
                                         SizedBox(width: 12),
                                         Text("Send Message"),
                                       ],
@@ -406,7 +412,7 @@ class _CandidateListCardState extends State<CandidateListCard> {
                                     value: 'delete',
                                     child: Row(
                                       children: [
-                                        Icon(Icons.archive_outlined, size: 18, color: theme.colorScheme.error),
+                                        Icon(AppIcons.archive_outlined, size: 18, color: theme.colorScheme.error),
                                         const SizedBox(width: 12),
                                         Text("Archive Candidate", style: TextStyle(color: theme.colorScheme.error)),
                                       ],
@@ -425,10 +431,8 @@ class _CandidateListCardState extends State<CandidateListCard> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
-
   Widget _buildInfoItem(BuildContext context, IconData icon, String label, {Color? iconColor}) {
     final theme = Theme.of(context);
     return Row(

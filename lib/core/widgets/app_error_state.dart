@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class AppErrorState extends StatelessWidget {
@@ -22,7 +23,7 @@ class AppErrorState extends StatelessWidget {
     required this.onRetry,
     this.secondaryButtonText,
     this.onSecondaryAction,
-    this.iconData = Icons.cloud_off_rounded,
+    this.iconData = AppIcons.cloud_off_rounded,
     this.secondaryIconData,
     this.iconColor,
     this.iconSize = 56.0,
@@ -134,7 +135,7 @@ class AppErrorState extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.refresh_rounded, size: 18),
+            const Icon(AppIcons.refresh_rounded, size: 18),
             const SizedBox(width: 8),
             Flexible(
               child: Text(
@@ -154,7 +155,7 @@ class AppErrorState extends StatelessWidget {
       return primaryButton;
     }
 
-    final effectiveSecondaryIcon = secondaryIconData ?? Icons.restore_rounded;
+    final effectiveSecondaryIcon = secondaryIconData ?? AppIcons.restore_rounded;
     final secondaryButton = ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: 48,

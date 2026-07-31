@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -37,7 +38,7 @@ class CommunicationHubScreen extends StatelessWidget {
                   context,
                   title: "Offer Letter",
                   subject: "Job Offer from JobNest",
-                  icon: Icons.celebration_rounded,
+                  icon: AppIcons.celebration_rounded,
                   color: Colors.green,
                 ),
                 const SizedBox(height: 16),
@@ -45,7 +46,7 @@ class CommunicationHubScreen extends StatelessWidget {
                   context,
                   title: "Interview Invite",
                   subject: "Invitation: Technical Interview for Flutter Developer",
-                  icon: Icons.event_available_rounded,
+                  icon: AppIcons.event_available_rounded,
                   color: Colors.blueAccent,
                 ),
                 const SizedBox(height: 16),
@@ -53,7 +54,7 @@ class CommunicationHubScreen extends StatelessWidget {
                   context,
                   title: "Rejection Email",
                   subject: "Update regarding your application",
-                  icon: Icons.block_rounded,
+                  icon: AppIcons.block_rounded,
                   color: Colors.redAccent,
                 ),
                 const SizedBox(height: 16),
@@ -61,7 +62,7 @@ class CommunicationHubScreen extends StatelessWidget {
                   context,
                   title: "Interview Reminder",
                   subject: "Reminder: Upcoming Interview Today",
-                  icon: Icons.alarm_rounded,
+                  icon: AppIcons.alarm_rounded,
                   color: Colors.orangeAccent,
                 ),
                 const SizedBox(height: 48),
@@ -128,19 +129,19 @@ class CommunicationHubScreen extends StatelessWidget {
             children: [
               OutlinedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.visibility_rounded, size: 18),
+                icon: const Icon(AppIcons.visibility_rounded, size: 18),
                 label: const Text("Preview"),
               ),
               const SizedBox(width: 12),
               OutlinedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.edit_rounded, size: 18),
+                icon: const Icon(AppIcons.edit_rounded, size: 18),
                 label: const Text("Edit"),
               ),
               const SizedBox(width: 12),
               FilledButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.send_rounded, size: 18),
+                icon: const Icon(AppIcons.send_rounded, size: 18),
                 label: const Text("Send"),
                 style: FilledButton.styleFrom(
                   backgroundColor: color,

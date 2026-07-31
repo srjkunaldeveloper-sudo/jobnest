@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -23,66 +24,56 @@ class _CandidatesAutoScreeningState extends State<CandidatesAutoScreening> {
       children: [
         Row(
           children: [
-            const Icon(Icons.auto_awesome_rounded, color: Colors.deepPurpleAccent, size: 24),
-            const SizedBox(width: 12),
+            const Icon(AppIcons.auto_awesome_rounded, color: Colors.deepPurpleAccent, size: 20),
+            const SizedBox(width: 10),
             Text(
               "AI Auto Screening",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
                 letterSpacing: -0.3,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         AppCard(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SwitchListTile(
+              _buildCompactSwitchRow(
+                context,
+                title: "Enable Auto Screening",
+                subtitle: "Automatically filter out candidates that do not meet minimum requirements.",
                 value: _autoScreeningEnabled,
                 onChanged: (val) => setState(() => _autoScreeningEnabled = val),
-                title: Text(
-                  "Enable Auto Screening",
-                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                subtitle: const Text("Automatically filter out candidates that do not meet minimum requirements."),
-                activeTrackColor: Colors.deepPurpleAccent.withValues(alpha: 0.5),
-                activeThumbColor: Colors.deepPurpleAccent,
-                contentPadding: EdgeInsets.zero,
               ),
-              const Divider(),
-              SwitchListTile(
+              const SizedBox(height: 16),
+              _buildCompactSwitchRow(
+                context,
+                title: "Enable AI Ranking",
+                subtitle: "Sort candidates based on AI match score instead of application date.",
                 value: _aiRankingEnabled,
                 onChanged: (val) => setState(() => _aiRankingEnabled = val),
-                title: Text(
-                  "Enable AI Ranking",
-                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                subtitle: const Text("Sort candidates based on AI match score instead of application date."),
-                activeTrackColor: Colors.deepPurpleAccent.withValues(alpha: 0.5),
-                activeThumbColor: Colors.deepPurpleAccent,
-                contentPadding: EdgeInsets.zero,
               ),
               
               if (_autoScreeningEnabled) ...[
                 const SizedBox(height: 24),
                 Text(
                   "Minimum Requirements",
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
+                  spacing: 12,
+                  runSpacing: 12,
                   children: [
-                    _buildRequirementChip(context, "Experience", "3+ Years", Icons.work_history_rounded),
-                    _buildRequirementChip(context, "Skills", "Flutter, Dart", Icons.code_rounded),
-                    _buildRequirementChip(context, "Education", "Bachelors", Icons.school_rounded),
+                    _buildRequirementChip(context, "Experience", "3+ Years", AppIcons.work_history_rounded),
+                    _buildRequirementChip(context, "Skills", "Flutter, Dart", AppIcons.code_rounded),
+                    _buildRequirementChip(context, "Education", "Bachelors", AppIcons.school_rounded),
                   ],
                 ),
               ],
@@ -93,34 +84,77 @@ class _CandidatesAutoScreeningState extends State<CandidatesAutoScreening> {
     );
   }
 
+  Widget _buildCompactSwitchRow(BuildContext context, {required String title, required String subtitle, required bool value, required ValueChanged<bool> onChanged}) {
+    final theme = Theme.of(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 16),
+        Transform.scale(
+          scale: 0.8,
+          alignment: Alignment.topRight,
+          child: Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: Colors.white,
+            activeTrackColor: Colors.deepPurpleAccent,
+            inactiveTrackColor: theme.colorScheme.surfaceContainerHighest,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildRequirementChip(BuildContext context, String label, String value, IconData icon) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.5)),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.4)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 20, color: theme.colorScheme.primary),
-          const SizedBox(width: 12),
+          Icon(icon, size: 16, color: theme.colorScheme.onSurfaceVariant),
+          const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: theme.textTheme.labelMedium?.copyWith(
+                style: theme.textTheme.labelSmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
+                  fontSize: 10,
+                  letterSpacing: 0.2,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 2),
               Text(
                 value,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
             ],

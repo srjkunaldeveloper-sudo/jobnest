@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -29,7 +30,7 @@ class ProfileResumePreview extends StatelessWidget {
                   color: Colors.redAccent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Icons.picture_as_pdf_rounded, color: Colors.redAccent, size: 32),
+                child: const Icon(AppIcons.picture_as_pdf_rounded, color: Colors.redAccent, size: 32),
               ),
               const SizedBox(width: 20),
               Expanded(
@@ -43,7 +44,10 @@ class ProfileResumePreview extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Row(
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
                           "Uploaded on 12 Oct 2023",
@@ -51,12 +55,10 @@ class ProfileResumePreview extends StatelessWidget {
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
-                        const SizedBox(width: 8),
                         Text(
                           "•",
                           style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
                         ),
-                        const SizedBox(width: 8),
                         Text(
                           "1.2 MB",
                           style: theme.textTheme.labelMedium?.copyWith(
@@ -66,20 +68,21 @@ class ProfileResumePreview extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    Row(
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 12,
                       children: [
                         OutlinedButton.icon(
                           onPressed: () {},
-                          icon: const Icon(Icons.visibility_rounded, size: 18),
+                          icon: const Icon(AppIcons.visibility_rounded, size: 18),
                           label: const Text("Preview"),
                           style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                           ),
                         ),
-                        const SizedBox(width: 12),
                         OutlinedButton.icon(
                           onPressed: () {},
-                          icon: const Icon(Icons.download_rounded, size: 18),
+                          icon: const Icon(AppIcons.download_rounded, size: 18),
                           label: const Text("Download"),
                           style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

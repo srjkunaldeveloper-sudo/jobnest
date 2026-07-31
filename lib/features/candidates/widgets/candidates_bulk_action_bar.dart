@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/features/candidates/providers/candidate_provider.dart';
@@ -34,7 +35,7 @@ class CandidatesBulkActionBar extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: stages.map((stg) {
             return ListTile(
-              leading: Icon(Icons.swap_horiz_rounded, color: theme.colorScheme.primary),
+              leading: Icon(AppIcons.swap_horiz_rounded, color: theme.colorScheme.primary),
               title: Text("Move to $stg"),
               onTap: () {
                 Navigator.pop(ctx);
@@ -114,7 +115,7 @@ class CandidatesBulkActionBar extends StatelessWidget {
               const Spacer(),
               TextButton.icon(
                 onPressed: onClearSelection,
-                icon: const Icon(Icons.close_rounded, size: 18),
+                icon: const Icon(AppIcons.close_rounded, size: 18),
                 label: const Text("Clear"),
               ),
             ],
@@ -130,7 +131,7 @@ class CandidatesBulkActionBar extends StatelessWidget {
                     _showSnackBar(context, "Scheduled batch interview invitations for ${selectedCandidateIds.length} candidates.");
                     onClearSelection();
                   },
-                  icon: const Icon(Icons.calendar_month_outlined, size: 18),
+                  icon: const Icon(AppIcons.calendar_month_outlined, size: 18),
                   label: const Text("Schedule Interview"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.colorScheme.primary,
@@ -142,7 +143,7 @@ class CandidatesBulkActionBar extends StatelessWidget {
                 const SizedBox(width: 10),
                 _buildActionButton(
                   onPressed: () => _showBulkMoveStageDialog(context),
-                  icon: Icons.swap_horiz_rounded,
+                  icon: AppIcons.swap_horiz_rounded,
                   label: "Move Stage",
                 ),
                 const SizedBox(width: 10),
@@ -151,7 +152,7 @@ class CandidatesBulkActionBar extends StatelessWidget {
                     _showSnackBar(context, "Opening broadcast message composer for ${selectedCandidateIds.length} candidates.");
                     onClearSelection();
                   },
-                  icon: Icons.chat_bubble_outline_rounded,
+                  icon: AppIcons.chat_bubble_outline_rounded,
                   label: "Send Message",
                 ),
                 const SizedBox(width: 10),
@@ -160,7 +161,7 @@ class CandidatesBulkActionBar extends StatelessWidget {
                     _showSnackBar(context, "Exported profile summaries of ${selectedCandidateIds.length} candidates as PDF/CSV.");
                     onClearSelection();
                   },
-                  icon: Icons.download_rounded,
+                  icon: AppIcons.download_rounded,
                   label: "Export Profiles",
                 ),
                 const SizedBox(width: 10),
@@ -171,7 +172,7 @@ class CandidatesBulkActionBar extends StatelessWidget {
                     _showSnackBar(context, "Archived $count candidate profiles.");
                     onClearSelection();
                   },
-                  icon: Icons.archive_outlined,
+                  icon: AppIcons.archive_outlined,
                   label: "Archive",
                   iconColor: theme.colorScheme.error,
                   textColor: theme.colorScheme.error,

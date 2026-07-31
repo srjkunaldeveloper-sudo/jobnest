@@ -44,6 +44,8 @@ dependencies:
   flutter_dotenv: any
   connectivity_plus: any
   logger: any
+  lucide_icons: ^0.257.0
+  intl: ^0.20.3
 
 dev_dependencies:
   flutter_test:

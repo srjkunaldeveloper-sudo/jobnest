@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
@@ -34,8 +35,8 @@ class ProfileDialogs {
         : (isWarning ? Colors.amber.shade700 : theme.colorScheme.primary);
     final effectiveIcon = icon ??
         (isDanger
-            ? Icons.delete_outline_rounded
-            : (isWarning ? Icons.warning_amber_rounded : Icons.info_outline_rounded));
+            ? AppIcons.delete_outline_rounded
+            : (isWarning ? AppIcons.warning_amber_rounded : AppIcons.info_outline_rounded));
 
     return showDialog<T>(
       context: context,
@@ -119,7 +120,7 @@ class ProfileDialogs {
       primaryText: "Save Changes",
       secondaryText: "Discard",
       onPrimaryPressed: onSave,
-      icon: Icons.save_outlined,
+      icon: AppIcons.save_outlined,
     );
   }
 
@@ -132,7 +133,7 @@ class ProfileDialogs {
       secondaryText: "Keep Editing",
       onPrimaryPressed: onDiscard,
       isWarning: true,
-      icon: Icons.edit_off_outlined,
+      icon: AppIcons.edit_off_outlined,
     );
   }
 
@@ -145,7 +146,7 @@ class ProfileDialogs {
       secondaryText: "Cancel",
       onPrimaryPressed: onDelete,
       isDanger: true,
-      icon: Icons.delete_forever_outlined,
+      icon: AppIcons.delete_forever_outlined,
     );
   }
 
@@ -158,7 +159,7 @@ class ProfileDialogs {
       secondaryText: "Cancel",
       onPrimaryPressed: onLogout,
       isDanger: true,
-      icon: Icons.logout_rounded,
+      icon: AppIcons.logout_rounded,
     );
   }
 
@@ -171,7 +172,7 @@ class ProfileDialogs {
       secondaryText: "Cancel",
       onPrimaryPressed: onRemove,
       isDanger: true,
-      icon: Icons.person_remove_outlined,
+      icon: AppIcons.person_remove_outlined,
     );
   }
 
@@ -184,7 +185,7 @@ class ProfileDialogs {
       secondaryText: "Cancel",
       onPrimaryPressed: onDelete,
       isDanger: true,
-      icon: Icons.warning_rounded,
+      icon: AppIcons.warning_rounded,
     );
   }
 
@@ -197,7 +198,7 @@ class ProfileDialogs {
       secondaryText: "Cancel",
       onPrimaryPressed: onReset,
       isWarning: true,
-      icon: Icons.restore_rounded,
+      icon: AppIcons.restore_rounded,
     );
   }
 
@@ -210,7 +211,7 @@ class ProfileDialogs {
       secondaryText: "Keep Plan",
       onPrimaryPressed: onCancel,
       isWarning: true,
-      icon: Icons.cancel_outlined,
+      icon: AppIcons.cancel_outlined,
     );
   }
 
@@ -223,7 +224,7 @@ class ProfileDialogs {
       secondaryText: "Cancel",
       onPrimaryPressed: onRestore,
       isWarning: true,
-      icon: Icons.refresh_rounded,
+      icon: AppIcons.refresh_rounded,
     );
   }
 }
@@ -279,7 +280,7 @@ class ProfileBottomSheets {
                       ),
                       IconButton(
                         onPressed: () => Navigator.of(ctx).pop(),
-                        icon: const Icon(Icons.close_rounded),
+                        icon: const Icon(AppIcons.close_rounded),
                         tooltip: "Close",
                       ),
                     ],
@@ -461,7 +462,7 @@ class ProfileFormFields {
               items: items,
               onChanged: isDisabled ? null : onChanged,
               validator: validator ?? (isRequired ? (v) => ProfileValidators.validateDropdown(v, label) : null),
-              icon: const Icon(Icons.keyboard_arrow_down_rounded),
+              icon: const Icon(AppIcons.keyboard_arrow_down_rounded),
               decoration: InputDecoration(
                 hintText: hint,
                 helperText: helperText,
@@ -594,10 +595,10 @@ class _ProfileTextFieldStatefulState extends State<_ProfileTextFieldStateful> {
         child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
       );
     } else if (widget.isSuccess) {
-      suffix = const Icon(Icons.check_circle_rounded, color: Colors.green, size: 20);
+      suffix = const Icon(AppIcons.check_circle_rounded, color: Colors.green, size: 20);
     } else if (widget.isPassword) {
       suffix = IconButton(
-        icon: Icon(_obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 20),
+        icon: Icon(_obscureText ? AppIcons.visibility_off_outlined : AppIcons.visibility_outlined, size: 20),
         onPressed: () => setState(() => _obscureText = !_obscureText),
       );
     }
@@ -804,10 +805,10 @@ class ProfileSearchField extends StatelessWidget {
           onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: Icon(Icons.search_rounded, color: theme.colorScheme.onSurfaceVariant),
+            prefixIcon: Icon(AppIcons.search_rounded, color: theme.colorScheme.onSurfaceVariant),
             suffixIcon: value.text.isNotEmpty
                 ? IconButton(
-                    icon: const Icon(Icons.clear_rounded, size: 20),
+                    icon: const Icon(AppIcons.clear_rounded, size: 20),
                     onPressed: () {
                       controller.clear();
                       if (onClear != null) onClear!();
@@ -840,7 +841,7 @@ class ProfileEmptySearchDisplay extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.search_off_rounded, size: 48, color: theme.colorScheme.onSurfaceVariant),
+            Icon(AppIcons.search_off_rounded, size: 48, color: theme.colorScheme.onSurfaceVariant),
             const SizedBox(height: 16),
             Text(
               "No results found for \"$query\"",

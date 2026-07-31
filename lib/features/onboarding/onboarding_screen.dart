@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jobnest/core/services/preferences_manager.dart';
@@ -68,7 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
-                              Icons.work_rounded,
+                              AppIcons.work_rounded,
                               color: theme.colorScheme.onPrimary,
                               size: 18,
                             ),
@@ -298,7 +299,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
                             SizedBox(width: 6),
-                            Icon(Icons.arrow_forward_rounded, size: 18),
+                            Icon(AppIcons.arrow_forward_rounded, size: 18),
                           ],
                         ),
                       ),
@@ -343,7 +344,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
               ),
-              Icon(Icons.more_horiz_rounded,
+              Icon(AppIcons.more_horiz_rounded,
                   color: theme.colorScheme.onSurfaceVariant),
             ],
           ),
@@ -384,7 +385,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.check_circle_rounded,
+                    Icon(AppIcons.check_circle_rounded,
                         color: Colors.green, size: 14),
                     SizedBox(width: 4),
                     Text(
@@ -425,7 +426,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   color: theme.colorScheme.primary,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(Icons.auto_awesome_rounded,
+                child: Icon(AppIcons.auto_awesome_rounded,
                     color: theme.colorScheme.onPrimary, size: 20),
               ),
               const SizedBox(width: 12),
@@ -474,7 +475,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     Text("Skills Assessment",
                         style: theme.textTheme.bodyMedium
                             ?.copyWith(fontWeight: FontWeight.w600)),
-                    const Icon(Icons.verified_rounded,
+                    const Icon(AppIcons.verified_rounded,
                         color: Colors.blue, size: 16),
                   ],
                 ),
@@ -523,7 +524,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           Row(
             children: [
-              Icon(Icons.groups_rounded,
+              Icon(AppIcons.groups_rounded,
                   color: theme.colorScheme.primary, size: 24),
               const SizedBox(width: 10),
               Text("Hiring Consensus",

@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -101,14 +102,14 @@ class ResumeAnalyzerScreen extends StatelessWidget {
                               "Extensive cross-platform experience.",
                               "Proven leadership skills.",
                               "Clean architecture knowledge.",
-                            ], Icons.check_circle_outline_rounded, Colors.green),
+                            ], AppIcons.check_circle_outline_rounded, Colors.green),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
                             child: _buildList(context, "Weaknesses", [
                               "Lacks native iOS/Android experience.",
                               "No mention of CI/CD pipelines.",
-                            ], Icons.error_outline_rounded, Colors.orange),
+                            ], AppIcons.error_outline_rounded, Colors.orange),
                           ),
                         ],
                       ),
@@ -151,7 +152,7 @@ class ResumeAnalyzerScreen extends StatelessWidget {
                       flex: 2,
                       child: FilledButton.icon(
                         onPressed: () {},
-                        icon: const Icon(Icons.auto_awesome_rounded),
+                        icon: const Icon(AppIcons.auto_awesome_rounded),
                         label: const Text("Analyze Another Resume"),
                         style: FilledButton.styleFrom(
                           backgroundColor: Colors.deepPurpleAccent,
@@ -186,7 +187,7 @@ class ResumeAnalyzerScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(Icons.cloud_upload_rounded, size: 48, color: theme.colorScheme.primary),
+          Icon(AppIcons.cloud_upload_rounded, size: 48, color: theme.colorScheme.primary),
           const SizedBox(height: 16),
           Text(
             "Upload Resume (PDF, DOCX)",

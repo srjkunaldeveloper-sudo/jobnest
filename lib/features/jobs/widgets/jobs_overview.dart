@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +35,7 @@ class JobsOverview extends StatelessWidget {
                 child: StatCard(
                   title: "Active Jobs", 
                   count: filterProvider.activeJobsCount.toString(), 
-                  icon: Icons.work_outline_rounded, 
+                  icon: AppIcons.work_outline_rounded, 
                   color: Colors.blueAccent, 
                   trend: "+3", 
                   isPositiveTrend: true,
@@ -46,7 +47,7 @@ class JobsOverview extends StatelessWidget {
                 child: StatCard(
                   title: "Closed Jobs", 
                   count: filterProvider.closedJobsCount.toString(), 
-                  icon: Icons.done_all_rounded, 
+                  icon: AppIcons.done_all_rounded, 
                   color: Colors.teal, 
                   trend: "", 
                   onTap: () => filterProvider.setSelectedFilter("Closed"),
@@ -57,7 +58,7 @@ class JobsOverview extends StatelessWidget {
                 child: StatCard(
                   title: "Applications", 
                   count: filterProvider.totalApplications.toString(), 
-                  icon: Icons.description_outlined, 
+                  icon: AppIcons.description_outlined, 
                   color: Colors.orangeAccent, 
                   trend: "+12%", 
                   isPositiveTrend: true,
@@ -68,7 +69,7 @@ class JobsOverview extends StatelessWidget {
                 child: StatCard(
                   title: "Urgent Hiring", 
                   count: filterProvider.urgentJobsCount.toString(), 
-                  icon: Icons.warning_amber_rounded, 
+                  icon: AppIcons.warning_amber_rounded, 
                   color: Colors.redAccent, 
                   trend: "", 
                   onTap: () => filterProvider.setSelectedFilter("Hiring"),

@@ -7,8 +7,22 @@ import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
 import 'package:jobnest/features/dashboard/models/models.dart';
 import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
 
-class HomeAiAssistant extends StatelessWidget {
+
+class HomeAiAssistant extends StatefulWidget {
   const HomeAiAssistant({super.key});
+
+  @override
+  State<HomeAiAssistant> createState() => _HomeAiAssistantState();
+}
+
+class _HomeAiAssistantState extends State<HomeAiAssistant> {
+  final TextEditingController _controller = TextEditingController();
+  
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,185 +31,192 @@ class HomeAiAssistant extends StatelessWidget {
     final AiAssistantStateModel state = provider.aiAssistantState;
     final bool isLoading = provider.isDashboardLoading || state.isLoading;
     
+    if (isLoading) {
+      return const Padding(
+        padding: EdgeInsets.only(bottom: 20.0),
+        child: AppShimmerLoading(
+          width: double.infinity,
+          height: 180,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+      );
+    }
+    
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.auto_awesome_rounded,
-                color: Colors.deepPurpleAccent,
-                size: 24,
+      padding: const EdgeInsets.only(bottom: 20.0), // Bottom padding 20px
+      child: AppCard(
+        padding: const EdgeInsets.all(16), // Overall card padding reduced to 16px
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Row
+            Row(
+              children: [
+                const Icon(
+                  Icons.auto_awesome_rounded,
+                  color: Colors.deepPurpleAccent,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  "AI Hiring Assistant",
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                // Small "AI" badge
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.deepPurpleAccent.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    "AI",
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: Colors.deepPurpleAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4), // Header -> Description 4px
+            // Small description
+            Text(
+              "Ask AI to help with hiring, screening, or drafting.",
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
               ),
-              AppSpacing.w8,
-              Text(
-                "AI Hiring Assistant",
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.3,
+            ),
+            const SizedBox(height: 16), // Description -> Input 16px
+            // ONE search/input row
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: theme.dividerColor.withValues(alpha: 0.6),
+                  width: 1.0,
                 ),
               ),
-            ],
-          ),
-          AppSpacing.h4,
-          Text(
-            "Ask AI to help with recruitment tasks.",
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          AppSpacing.h16,
-          // ===== BACKEND TODO =====
-          // TODO: AI backend connect karna hai yaha par (e.g. OpenAI or Gemini).
-          if (isLoading)
-            const AppShimmerLoading(
-              width: double.infinity,
-              height: 220,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            )
-          else
-            AppCard(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  // Input Field
-                  Container(
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surface,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: theme.dividerColor,
+                  Icon(
+                    Icons.auto_awesome_rounded,
+                    size: 18,
+                    color: Colors.deepPurpleAccent.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      textAlignVertical: TextAlignVertical.center,
+                      onSubmitted: (val) {
+                        if (val.trim().isNotEmpty) {
+                          provider.submitAiPrompt(val);
+                          _controller.clear();
+                        }
+                      },
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        filled: false,
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                        isDense: true,
+                        hintText: "Ask AI to help with hiring...",
+                        hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                        ),
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        AppSpacing.w16,
-                        const Icon(Icons.chat_bubble_outline_rounded, size: 20),
-                        AppSpacing.w12,
-                        Expanded(
-                          child: TextField(
-                            onSubmitted: (val) {
-                              if (val.trim().isNotEmpty) {
-                                provider.submitAiPrompt(val);
-                              }
-                            },
-                            decoration: InputDecoration(
-                              hintText: "Ask AI anything...",
-                              hintStyle: TextStyle(
-                                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                                fontSize: 14,
-                              ),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.send_rounded, color: Colors.deepPurpleAccent),
-                          onPressed: () {
-                            provider.submitAiPrompt("Find candidates");
-                          },
-                        ),
-                      ],
-                    ),
                   ),
-                  AppSpacing.h16,
-                  // Suggested Chips
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: state.suggestedPrompts
-                        .map((prompt) => _buildAiChip(context, prompt, provider))
-                        .toList(),
-                  ),
-                  AppSpacing.h24,
-                  const Divider(),
-                  AppSpacing.h16,
-                  // Recent AI Suggestions
-                  Text(
-                    "Recent AI Suggestions",
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: Icon(
+                      Icons.arrow_upward_rounded,
+                      size: 20,
+                      color: theme.colorScheme.onSurface,
                     ),
-                  ),
-                  AppSpacing.h12,
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurpleAccent.withValues(alpha: 0.05),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Colors.deepPurpleAccent.withValues(alpha: 0.2),
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(
-                          Icons.lightbulb_outline_rounded,
-                          color: Colors.deepPurpleAccent,
-                          size: 20,
-                        ),
-                        AppSpacing.w12,
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.recentSuggestionTitle,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
-                                ),
-                              ),
-                              AppSpacing.h8,
-                              Row(
-                                children: [
-                                  const Icon(Icons.arrow_right_alt_rounded, size: 16, color: Colors.deepPurple),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    state.recentSuggestionAction,
-                                    style: theme.textTheme.labelLarge?.copyWith(
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    onPressed: () {
+                      if (_controller.text.trim().isNotEmpty) {
+                        provider.submitAiPrompt(_controller.text);
+                        _controller.clear();
+                      }
+                    },
                   ),
                 ],
               ),
             ),
-        ],
+            const SizedBox(height: 16), // Input -> Chips 16px
+            // Suggestion chips
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                "Find Developers",
+                "Interview Questions",
+                "Generate JD",
+                "Screen Resume",
+                "Hiring Email",
+                "Offer Letter",
+              ].map((text) => _buildCompactChip(context, text, provider)).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildAiChip(BuildContext context, String text, DashboardProvider provider) {
+  Widget _buildCompactChip(BuildContext context, String text, DashboardProvider provider) {
     final theme = Theme.of(context);
-    return ActionChip(
-      label: Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          color: theme.colorScheme.onSurface,
+    return Material(
+      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      borderRadius: BorderRadius.circular(999), // Pill shape
+      child: InkWell(
+        borderRadius: BorderRadius.circular(999),
+        onTap: () {
+          provider.submitAiPrompt(text);
+        },
+        child: Container(
+          height: 30, // Height 30px
+          padding: const EdgeInsets.symmetric(horizontal: 12), // Horizontal padding 12px
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3), width: 1.0), // 1px subtle border
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                text,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontSize: 13, // 13px
+                  color: theme.colorScheme.onSurface,
+                  fontWeight: FontWeight.w500, // Medium
+                  letterSpacing: 0, // Normal letter spacing
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
-      ),
-      onPressed: () {
-        provider.submitAiPrompt(text);
-      },
     );
   }
 }

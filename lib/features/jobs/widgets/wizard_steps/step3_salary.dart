@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -44,7 +45,7 @@ class Step3Salary extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.insights_rounded, color: Colors.deepPurpleAccent),
+                const Icon(AppIcons.insights_rounded, color: Colors.deepPurpleAccent),
                 AppSpacing.w16,
                 Expanded(
                   child: Column(

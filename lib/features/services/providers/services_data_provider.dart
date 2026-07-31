@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/features/services/models/service_item.dart';
 import 'package:jobnest/features/services/tools/resume_analyzer_screen.dart';
@@ -183,7 +184,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_resume_analyzer",
         title: "Resume Analyzer AI",
         description: "Automatically extract skills and rank candidates based on deep learning matching.",
-        icon: Icons.document_scanner_rounded,
+        icon: AppIcons.document_scanner_rounded,
         color: Colors.deepPurpleAccent,
         categories: ["AI Tools", "Recruitment"],
         benefits: [
@@ -201,7 +202,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_interview_assistant",
         title: "Interview Assistant",
         description: "Real-time question generation and post-interview candidate competency scoring.",
-        icon: Icons.forum_rounded,
+        icon: AppIcons.forum_rounded,
         color: Colors.blueAccent,
         categories: ["AI Tools", "Recruitment", "Communication"],
         benefits: [
@@ -220,7 +221,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_screening_setup",
         title: "Screening Setup",
         description: "Automate asynchronous one-way video screening workflows for high-volume roles.",
-        icon: Icons.video_camera_front_rounded,
+        icon: AppIcons.video_camera_front_rounded,
         color: Colors.green,
         categories: ["Recruitment", "Automation"],
         benefits: [
@@ -236,7 +237,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_communication_hub",
         title: "Communication Hub",
         description: "Unified enterprise portal for candidate email threads, SMS, and WhatsApp messaging.",
-        icon: Icons.email_rounded,
+        icon: AppIcons.email_rounded,
         color: Colors.indigo,
         categories: ["Communication", "CRM"],
         benefits: [
@@ -254,7 +255,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_decision_support",
         title: "Decision Support",
         description: "Compare shortlisted candidates side-by-side with objective AI hiring metrics.",
-        icon: Icons.balance_rounded,
+        icon: AppIcons.balance_rounded,
         color: Colors.orangeAccent,
         categories: ["AI Tools", "Recruitment", "Reports"],
         benefits: [
@@ -272,7 +273,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_job_templates",
         title: "Job Templates",
         description: "Access 500+ pre-built SEO-optimized Job Descriptions and email sequence formats.",
-        icon: Icons.post_add_rounded,
+        icon: AppIcons.post_add_rounded,
         color: Colors.teal,
         categories: ["Recruitment", "Templates"],
         benefits: [
@@ -289,7 +290,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_employee_mgmt",
         title: "Employee Management",
         description: "Seamless onboarding workflows and lifecycle tracking for newly hired talent.",
-        icon: Icons.manage_accounts_rounded,
+        icon: AppIcons.manage_accounts_rounded,
         color: Colors.redAccent,
         categories: ["HRMS", "Productivity"],
         benefits: [
@@ -305,7 +306,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_attendance",
         title: "Attendance Tracker",
         description: "Real-time time tracking, biometric integration, and leave management system.",
-        icon: Icons.access_time_filled_rounded,
+        icon: AppIcons.access_time_filled_rounded,
         color: Colors.pink,
         categories: ["HRMS", "Productivity"],
         benefits: [
@@ -321,7 +322,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_task_manager",
         title: "Recruiter Task Manager",
         description: "Internal recruiter to-do lists, priority alerts, and collaborative hiring workflows.",
-        icon: Icons.checklist_rounded,
+        icon: AppIcons.checklist_rounded,
         color: Colors.amber.shade800,
         categories: ["Productivity", "HRMS"],
         benefits: [
@@ -337,7 +338,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_client_dashboard",
         title: "Client Dashboard",
         description: "Holistic overview of active client accounts, revenue pipelines, and hiring SLAs.",
-        icon: Icons.dashboard_customize_rounded,
+        icon: AppIcons.dashboard_customize_rounded,
         color: Colors.cyan.shade700,
         categories: ["CRM", "Reports"],
         benefits: [
@@ -353,7 +354,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_client_mgmt",
         title: "Client Management",
         description: "Complete database of client accounts, contracts, terms, and hiring manager notes.",
-        icon: Icons.business_rounded,
+        icon: AppIcons.business_rounded,
         color: Colors.blueAccent,
         categories: ["CRM"],
         benefits: [
@@ -369,7 +370,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_hiring_pipeline",
         title: "Hiring Pipeline CRM",
         description: "Visual Kanban board for tracking open deals, client requisitions, and submissions.",
-        icon: Icons.view_kanban_rounded,
+        icon: AppIcons.view_kanban_rounded,
         color: Colors.purpleAccent.shade700,
         categories: ["CRM", "Recruitment"],
         benefits: [
@@ -385,7 +386,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_communications",
         title: "Client Communications",
         description: "Timeline audit trail of all client interactions, emails, calls, and meeting notes.",
-        icon: Icons.forum_rounded,
+        icon: AppIcons.forum_rounded,
         color: Colors.indigo,
         categories: ["CRM", "Communication"],
         benefits: [
@@ -401,7 +402,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_follow_ups",
         title: "Automated Follow Ups",
         description: "Smart automated reminders for pending candidate feedback and recruiter to-dos.",
-        icon: Icons.task_alt_rounded,
+        icon: AppIcons.task_alt_rounded,
         color: Colors.teal,
         categories: ["CRM", "Productivity"],
         benefits: [
@@ -417,7 +418,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_custom_reports",
         title: "Custom Reports & BI",
         description: "Export presentation-ready recruitment analytics to PDF, Excel, and CSV formats.",
-        icon: Icons.summarize_rounded,
+        icon: AppIcons.summarize_rounded,
         color: Colors.brown,
         categories: ["Reports", "Productivity"],
         benefits: [
@@ -433,7 +434,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_automation_engine",
         title: "Automation Engine",
         description: "Build trigger-based workflow rules and email sequences without writing code.",
-        icon: Icons.auto_mode_rounded,
+        icon: AppIcons.auto_mode_rounded,
         color: Colors.deepOrangeAccent,
         categories: ["Automation", "Productivity", "AI Tools"],
         benefits: [
@@ -450,7 +451,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_ai_insights",
         title: "AI Predictive Insights",
         description: "Predictive hiring analytics, talent supply forecasting, and salary benchmarking.",
-        icon: Icons.psychology_rounded,
+        icon: AppIcons.psychology_rounded,
         color: Colors.amber.shade700,
         categories: ["AI Tools", "Reports"],
         benefits: [
@@ -467,7 +468,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_activity_logs",
         title: "Enterprise Activity Logs",
         description: "Comprehensive immutable audit trail of all system events and recruiter actions.",
-        icon: Icons.history_rounded,
+        icon: AppIcons.history_rounded,
         color: Colors.blueGrey,
         categories: ["Reports", "Productivity"],
         benefits: [
@@ -483,7 +484,7 @@ class ServicesDataProvider extends ChangeNotifier {
         id: "srv_settings",
         title: "Services & Tool Settings",
         description: "Configure notification channels, SMTP servers, ATS integrations, and permissions.",
-        icon: Icons.settings_rounded,
+        icon: AppIcons.settings_rounded,
         color: Colors.grey.shade700,
         categories: ["Productivity"],
         benefits: [

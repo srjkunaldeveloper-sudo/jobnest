@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -125,7 +126,7 @@ class DetailsPipeline extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: Colors.white, width: 1.5),
       ),
-      child: Icon(Icons.person, size: 14, color: color),
+      child: Icon(AppIcons.person, size: 14, color: color),
     );
   }
 }

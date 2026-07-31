@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -13,7 +14,7 @@ class ProfileAiResumeAnalysis extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.document_scanner_rounded, color: Colors.deepPurpleAccent, size: 24),
+            const Icon(AppIcons.document_scanner_rounded, color: Colors.deepPurpleAccent, size: 24),
             const SizedBox(width: 12),
             Text(
               "AI Resume Analysis",
@@ -162,7 +163,7 @@ class ProfileAiResumeAnalysis extends StatelessWidget {
   Widget _buildBullet(BuildContext context, String text, bool isStrength) {
     final theme = Theme.of(context);
     final iconColor = isStrength ? Colors.green : Colors.orange;
-    final iconData = isStrength ? Icons.check_circle_rounded : Icons.remove_circle_outline_rounded;
+    final iconData = isStrength ? AppIcons.check_circle_rounded : AppIcons.remove_circle_outline_rounded;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(

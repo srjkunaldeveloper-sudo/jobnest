@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -19,7 +20,7 @@ class FollowUpsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.add_task_rounded),
+            icon: const Icon(AppIcons.add_task_rounded),
             tooltip: "New Follow-up",
           ),
           const SizedBox(width: 8),
@@ -120,7 +121,7 @@ class FollowUpsScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.calendar_today_rounded, size: 16, color: theme.colorScheme.primary),
+                  Icon(AppIcons.calendar_today_rounded, size: 16, color: theme.colorScheme.primary),
                   const SizedBox(width: 8),
                   Text(
                     dueDate,
@@ -160,13 +161,13 @@ class FollowUpsScreen extends StatelessWidget {
             children: [
               OutlinedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.edit_outlined, size: 18),
+                icon: const Icon(AppIcons.edit_outlined, size: 18),
                 label: const Text("Edit"),
               ),
               const SizedBox(width: 12),
               FilledButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.check_circle_outline_rounded, size: 18),
+                icon: const Icon(AppIcons.check_circle_outline_rounded, size: 18),
                 label: const Text("Mark Complete"),
               ),
             ],

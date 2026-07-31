@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
@@ -147,7 +148,7 @@ class _HubSubTile extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Icon(
-                Icons.arrow_forward_ios_rounded,
+                AppIcons.arrow_forward_ios_rounded,
                 size: 14,
                 color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
               ),
@@ -181,7 +182,7 @@ class JobTemplatesPlaceholderScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.post_add_rounded, size: 64, color: theme.colorScheme.primary),
+                Icon(AppIcons.post_add_rounded, size: 64, color: theme.colorScheme.primary),
                 const SizedBox(height: 24),
                 Text(
                   "Enterprise Template Library",
@@ -197,7 +198,7 @@ class JobTemplatesPlaceholderScreen extends StatelessWidget {
                 const SizedBox(height: 32),
                 ElevatedButton.icon(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back_rounded, size: 18),
+                  icon: const Icon(AppIcons.arrow_back_rounded, size: 18),
                   label: const Text("Return to Services Hub"),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
@@ -228,42 +229,42 @@ class ServicesAiToolsSection extends StatelessWidget {
       (
         "Resume Analyzer",
         "AI Candidate Ranking",
-        Icons.document_scanner_rounded,
+        AppIcons.document_scanner_rounded,
         Colors.deepPurpleAccent,
         const ResumeAnalyzerScreen(),
       ),
       (
         "Interview Assistant",
         "Live Q&A & Scoring",
-        Icons.forum_rounded,
+        AppIcons.forum_rounded,
         Colors.blueAccent,
         const InterviewAssistantScreen(),
       ),
       (
         "Screening Setup",
         "One-Way Video Setup",
-        Icons.video_camera_front_rounded,
+        AppIcons.video_camera_front_rounded,
         Colors.green,
         const ScreeningSetupScreen(),
       ),
       (
         "Communication Hub",
         "Unified Messaging",
-        Icons.email_rounded,
+        AppIcons.email_rounded,
         Colors.indigo,
         const CommunicationHubScreen(),
       ),
       (
         "Decision Support",
         "Comparative Metric Scorecards",
-        Icons.balance_rounded,
+        AppIcons.balance_rounded,
         Colors.orangeAccent,
         const DecisionSupportScreen(),
       ),
       (
         "Templates",
         "500+ SEO Templates",
-        Icons.post_add_rounded,
+        AppIcons.post_add_rounded,
         Colors.teal,
         const JobTemplatesPlaceholderScreen(),
       ),
@@ -333,35 +334,35 @@ class ServicesHrmsSection extends StatelessWidget {
       (
         "Employee Management",
         "248 Active",
-        Icons.people_alt_rounded,
+        AppIcons.people_alt_rounded,
         Colors.redAccent,
         const EmployeeManagementScreen(),
       ),
       (
         "Attendance",
         "98.4% On-time",
-        Icons.access_time_filled_rounded,
+        AppIcons.access_time_filled_rounded,
         Colors.pink,
         const AttendanceScreen(),
       ),
       (
         "Task Management",
         "14 Pending",
-        Icons.checklist_rounded,
+        AppIcons.checklist_rounded,
         Colors.amber.shade800,
         const TaskManagerScreen(),
       ),
       (
         "Performance",
         "Q3 Reviews Open",
-        Icons.trending_up_rounded,
+        AppIcons.trending_up_rounded,
         Colors.teal,
         const PerformanceDashboardScreen(),
       ),
       (
         "Reports",
         "12 Monthly Reports",
-        Icons.analytics_rounded,
+        AppIcons.analytics_rounded,
         Colors.indigo,
         const ReportsDashboardScreen(),
       ),
@@ -383,7 +384,7 @@ class ServicesHrmsSection extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.manage_accounts_rounded, color: theme.colorScheme.primary, size: 24),
+                  Icon(AppIcons.manage_accounts_rounded, color: theme.colorScheme.primary, size: 24),
                   const SizedBox(width: 10),
                   Text(
                     "Enterprise HRMS Portal",
@@ -445,35 +446,35 @@ class ServicesCrmSection extends StatelessWidget {
       (
         "Candidates",
         "1,420 In Pool",
-        Icons.person_search_rounded,
+        AppIcons.person_search_rounded,
         Colors.blueAccent,
         const ClientDashboardScreen(),
       ),
       (
         "Clients",
         "38 Accounts",
-        Icons.business_rounded,
+        AppIcons.business_rounded,
         Colors.cyan.shade700,
         const ClientManagementScreen(),
       ),
       (
         "Pipeline",
         "24 Open Deals",
-        Icons.view_kanban_rounded,
+        AppIcons.view_kanban_rounded,
         Colors.purpleAccent.shade700,
         const CrmPipelineScreen(),
       ),
       (
         "Communication",
         "84 Unread",
-        Icons.forum_rounded,
+        AppIcons.forum_rounded,
         Colors.indigo,
         const CommunicationTimelineScreen(),
       ),
       (
         "Requirements",
         "16 Active Reqs",
-        Icons.assignment_rounded,
+        AppIcons.assignment_rounded,
         Colors.orange,
         const FollowUpsScreen(),
       ),
@@ -495,7 +496,7 @@ class ServicesCrmSection extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.handshake_rounded, color: theme.colorScheme.primary, size: 24),
+                  Icon(AppIcons.handshake_rounded, color: theme.colorScheme.primary, size: 24),
                   const SizedBox(width: 10),
                   Text(
                     "Recruitment CRM & Pipeline",
@@ -557,28 +558,28 @@ class ServicesAutomationSection extends StatelessWidget {
       (
         "AI Recommendations",
         "6 Suggestions",
-        Icons.auto_awesome_rounded,
+        AppIcons.auto_awesome_rounded,
         Colors.amber.shade800,
         const AiInsightsScreen(),
       ),
       (
         "Alerts",
         "3 Critical",
-        Icons.notifications_active_rounded,
+        AppIcons.notifications_active_rounded,
         Colors.redAccent,
         const WorkflowAutomationScreen(),
       ),
       (
         "Automation Rules",
         "12 Active Rules",
-        Icons.rule_rounded,
+        AppIcons.rule_rounded,
         Colors.deepOrangeAccent,
         const WorkflowAutomationScreen(),
       ),
       (
         "Weekly Reports",
         "Generated Mon",
-        Icons.calendar_today_rounded,
+        AppIcons.calendar_today_rounded,
         Colors.teal,
         const ReportsDashboardScreen(),
       ),
@@ -600,7 +601,7 @@ class ServicesAutomationSection extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.auto_mode_rounded, color: theme.colorScheme.primary, size: 24),
+                  Icon(AppIcons.auto_mode_rounded, color: theme.colorScheme.primary, size: 24),
                   const SizedBox(width: 10),
                   Text(
                     "Workflow Automation Engine",
@@ -662,28 +663,28 @@ class ServicesReportsSection extends StatelessWidget {
       (
         "AI Reports",
         "4 Reports",
-        Icons.psychology_rounded,
+        AppIcons.psychology_rounded,
         Colors.deepPurpleAccent,
         const AiInsightsScreen(),
       ),
       (
         "HRMS Reports",
         "8 Reports",
-        Icons.people_outline_rounded,
+        AppIcons.people_outline_rounded,
         Colors.pink,
         const ReportsDashboardScreen(),
       ),
       (
         "CRM Reports",
         "6 Reports",
-        Icons.bar_chart_rounded,
+        AppIcons.bar_chart_rounded,
         Colors.blueAccent,
         const ClientDashboardScreen(),
       ),
       (
         "Usage Analytics",
         "99.8% Uptime",
-        Icons.data_usage_rounded,
+        AppIcons.data_usage_rounded,
         Colors.green,
         const ActivityLogsScreen(),
       ),
@@ -705,7 +706,7 @@ class ServicesReportsSection extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.summarize_rounded, color: theme.colorScheme.primary, size: 24),
+                  Icon(AppIcons.summarize_rounded, color: theme.colorScheme.primary, size: 24),
                   const SizedBox(width: 10),
                   Text(
                     "Enterprise Analytics Hub",

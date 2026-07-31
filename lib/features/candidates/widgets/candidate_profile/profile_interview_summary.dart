@@ -1,5 +1,8 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
 
 class ProfileInterviewSummary extends StatelessWidget {
   const ProfileInterviewSummary({super.key});
@@ -13,19 +16,19 @@ class ProfileInterviewSummary extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.rate_review_rounded, color: Colors.deepPurpleAccent, size: 24),
-            const SizedBox(width: 12),
+            const Icon(AppIcons.rate_review_rounded, color: Colors.deepPurpleAccent, size: 24),
+            AppSpacing.w12,
             Text(
               "Interview Summary",
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: AppText.h3,
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        AppSpacing.h16,
         // ===== BACKEND TODO =====
         // TODO: Interview Summary backend se generate hogi.
         AppCard(
-          padding: const EdgeInsets.all(24),
+          padding: AppSpacing.edgeInsetsAll24,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -39,26 +42,24 @@ class ProfileInterviewSummary extends StatelessWidget {
                       children: [
                         Text(
                           "Overall Performance",
-                          style: theme.textTheme.labelMedium?.copyWith(
+                          style: AppText.label.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        AppSpacing.h8,
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.baseline,
                           textBaseline: TextBaseline.alphabetic,
                           children: [
                             Text(
                               "8.5",
-                              style: theme.textTheme.headlineLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
+                              style: AppText.h1.copyWith(
                                 color: Colors.deepPurpleAccent,
                               ),
                             ),
                             Text(
                               " / 10",
-                              style: theme.textTheme.titleMedium?.copyWith(
+                              style: AppText.h3.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
                             ),
@@ -73,24 +74,23 @@ class ProfileInterviewSummary extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildRatingRow(context, "Technical Rating", 9.0),
-                        const SizedBox(height: 8),
+                        AppSpacing.h8,
                         _buildRatingRow(context, "Communication", 8.0),
-                        const SizedBox(height: 8),
+                        AppSpacing.h8,
                         _buildRatingRow(context, "Confidence", 8.5),
                       ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              AppSpacing.h24,
               const Divider(),
-              const SizedBox(height: 24),
+              AppSpacing.h24,
               Row(
                 children: [
                   Text(
                     "AI Recommendation",
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                    style: AppText.h3.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -103,9 +103,8 @@ class ProfileInterviewSummary extends StatelessWidget {
                     ),
                     child: Text(
                       "HIRE",
-                      style: theme.textTheme.labelLarge?.copyWith(
+                      style: AppText.label.copyWith(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
                         letterSpacing: 1.5,
                       ),
                     ),
@@ -126,19 +125,17 @@ class ProfileInterviewSummary extends StatelessWidget {
       children: [
         Text(
           label,
-          style: theme.textTheme.labelMedium?.copyWith(
+          style: AppText.label.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
         Row(
           children: [
-            const Icon(Icons.star_rounded, size: 16, color: Colors.orangeAccent),
-            const SizedBox(width: 4),
+            const Icon(AppIcons.star_rounded, size: 16, color: Colors.orangeAccent),
+            AppSpacing.w4,
             Text(
               rating.toStringAsFixed(1),
-              style: theme.textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppText.label,
             ),
           ],
         ),

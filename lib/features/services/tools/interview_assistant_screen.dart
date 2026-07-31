@@ -1,5 +1,10 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
+import 'package:jobnest/core/widgets/app_textfield.dart';
 
 class InterviewAssistantScreen extends StatelessWidget {
   const InterviewAssistantScreen({super.key});
@@ -10,77 +15,60 @@ class InterviewAssistantScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: LLM future me interview questions generate karega.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("AI Interview Assistant"),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppCard(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return AppPageScaffold(
+      title: "AI Interview Assistant",
+      body: SingleChildScrollView(
+        padding: AppSpacing.edgeInsetsAll24,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppCard(
+              padding: AppSpacing.edgeInsetsAll24,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Context Setup",
+                    style: AppText.h3,
+                  ),
+                  AppSpacing.h16,
+                  Row(
                     children: [
-                      Text(
-                        "Context Setup",
-                        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      const Expanded(
+                        child: AppTextField(
+                          label: "Job Role",
+                          hint: "e.g., Flutter Developer",
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                labelText: "Job Role",
-                                hintText: "e.g., Flutter Developer",
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                labelText: "Experience Level",
-                                hintText: "e.g., 3-5 Years",
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                              ),
-                            ),
-                          ),
-                        ],
+                      AppSpacing.w16,
+                      const Expanded(
+                        child: AppTextField(
+                          label: "Experience Level",
+                          hint: "e.g., 3-5 Years",
+                        ),
                       ),
-                      const SizedBox(height: 16),
+                    ],
+                  ),
+                  AppSpacing.h16,
                       FilledButton.icon(
                         onPressed: () {},
-                        icon: const Icon(Icons.generating_tokens_rounded),
+                        icon: const Icon(AppIcons.generating_tokens_rounded),
                         label: const Text("Generate New Questions"),
                         style: FilledButton.styleFrom(
                           minimumSize: const Size(double.infinity, 48),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 32),
-                
-                Text(
-                  "Generated Questions",
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                const SizedBox(height: 16),
+                ],
+              ),
+            ),
+            AppSpacing.h32,
+            
+            Text(
+              "Generated Questions",
+              style: AppText.h2,
+            ),
+            AppSpacing.h16,
                 
                 AppCard(
                   padding: EdgeInsets.zero,
@@ -89,7 +77,7 @@ class InterviewAssistantScreen extends StatelessWidget {
                       _buildCategory(
                         context,
                         "Technical Round",
-                        Icons.code_rounded,
+                        AppIcons.code_rounded,
                         [
                           "Can you explain the difference between Provider and BLoC?",
                           "How do you handle memory leaks in Flutter applications?",
@@ -100,7 +88,7 @@ class InterviewAssistantScreen extends StatelessWidget {
                       _buildCategory(
                         context,
                         "Behavioral Round",
-                        Icons.psychology_rounded,
+                        AppIcons.psychology_rounded,
                         [
                           "Tell me about a time you had a disagreement with a designer.",
                         ],
@@ -109,7 +97,7 @@ class InterviewAssistantScreen extends StatelessWidget {
                       _buildCategory(
                         context,
                         "Scenario Based",
-                        Icons.extension_rounded,
+                        AppIcons.extension_rounded,
                         [
                           "If the API is taking too long to respond, how would you design the UI state?",
                         ],
@@ -118,7 +106,7 @@ class InterviewAssistantScreen extends StatelessWidget {
                       _buildCategory(
                         context,
                         "HR Round",
-                        Icons.groups_rounded,
+                        AppIcons.groups_rounded,
                         [
                           "What are your salary expectations for this role?",
                         ],
@@ -126,10 +114,8 @@ class InterviewAssistantScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 48),
-              ],
-            ),
-          ),
+            AppSpacing.h48,
+          ],
         ),
       ),
     );
@@ -142,7 +128,7 @@ class InterviewAssistantScreen extends StatelessWidget {
       leading: Icon(icon, color: theme.colorScheme.primary),
       title: Text(
         title,
-        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        style: AppText.h3.copyWith(fontSize: 16),
       ),
       children: [
         Padding(
@@ -153,21 +139,20 @@ class InterviewAssistantScreen extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.help_outline_rounded, size: 16, color: theme.colorScheme.onSurfaceVariant),
-                  const SizedBox(width: 12),
+                  Icon(AppIcons.help_outline_rounded, size: 16, color: theme.colorScheme.onSurfaceVariant),
+                  AppSpacing.w12,
                   Expanded(
                     child: Text(
                       q,
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: AppText.bodyMedium.copyWith(
                         color: theme.colorScheme.onSurface,
-                        height: 1.4,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  AppSpacing.w12,
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.content_copy_rounded, size: 16),
+                    icon: const Icon(AppIcons.content_copy_rounded, size: 16),
                     tooltip: "Copy Question",
                     constraints: const BoxConstraints(),
                     padding: const EdgeInsets.all(4),

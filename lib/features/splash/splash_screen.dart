@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
 
@@ -164,7 +165,7 @@ class _SplashScreenState extends State<SplashScreen>
         _controller.forward();
         _initStartupFlow();
       },
-      iconData: Icons.error_outline_rounded,
+      iconData: AppIcons.error_outline_rounded,
     );
   }
 
@@ -197,7 +198,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ],
                   ),
                   child: Icon(
-                    Icons.work_rounded,
+                    AppIcons.work_rounded,
                     color: theme.colorScheme.onPrimary,
                     size: 44,
                   ),

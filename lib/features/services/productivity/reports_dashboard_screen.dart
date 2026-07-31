@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -36,11 +37,11 @@ class ReportsDashboardScreen extends StatelessWidget {
                       mainAxisSpacing: 16,
                       childAspectRatio: 1.2,
                       children: [
-                        _buildMetricCard(context, "Applications", "1,240", Icons.description_rounded, Colors.blueAccent),
-                        _buildMetricCard(context, "Interviews", "312", Icons.forum_rounded, Colors.orange),
-                        _buildMetricCard(context, "Offers", "45", Icons.local_activity_rounded, Colors.purpleAccent),
-                        _buildMetricCard(context, "Hiring Rate", "14.4%", Icons.percent_rounded, Colors.green),
-                        _buildMetricCard(context, "Time To Hire", "18 Days", Icons.timer_rounded, Colors.redAccent),
+                        _buildMetricCard(context, "Applications", "1,240", AppIcons.description_rounded, Colors.blueAccent),
+                        _buildMetricCard(context, "Interviews", "312", AppIcons.forum_rounded, Colors.orange),
+                        _buildMetricCard(context, "Offers", "45", AppIcons.local_activity_rounded, Colors.purpleAccent),
+                        _buildMetricCard(context, "Hiring Rate", "14.4%", AppIcons.percent_rounded, Colors.green),
+                        _buildMetricCard(context, "Time To Hire", "18 Days", AppIcons.timer_rounded, Colors.redAccent),
                       ],
                     );
                   }
@@ -125,7 +126,7 @@ class ReportsDashboardScreen extends StatelessWidget {
               ),
               OutlinedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.download_rounded, size: 16),
+                icon: const Icon(AppIcons.download_rounded, size: 16),
                 label: const Text("Export"),
               ),
             ],

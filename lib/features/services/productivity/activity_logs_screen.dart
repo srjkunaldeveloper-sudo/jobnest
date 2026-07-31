@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -19,7 +20,7 @@ class ActivityLogsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.download_rounded),
+            icon: const Icon(AppIcons.download_rounded),
             tooltip: "Export Logs",
           ),
           const SizedBox(width: 8),
@@ -41,7 +42,7 @@ class ActivityLogsScreen extends StatelessWidget {
                 title: "Offer Released",
                 subtitle: "Offer letter generated and sent to Rahul Sharma for 'Senior UI Designer'.",
                 time: "Today, 02:30 PM",
-                icon: Icons.local_activity_rounded,
+                icon: AppIcons.local_activity_rounded,
                 color: Colors.purpleAccent,
                 isFirst: true,
                 isLast: false,
@@ -51,7 +52,7 @@ class ActivityLogsScreen extends StatelessWidget {
                 title: "Interview Scheduled",
                 subtitle: "Technical round scheduled for Priya Singh with TechCorp.",
                 time: "Today, 11:15 AM",
-                icon: Icons.event_rounded,
+                icon: AppIcons.event_rounded,
                 color: Colors.orange,
                 isFirst: false,
                 isLast: false,
@@ -61,7 +62,7 @@ class ActivityLogsScreen extends StatelessWidget {
                 title: "Job Published",
                 subtitle: "New posting 'Backend Engineer - Python' published to job boards.",
                 time: "Yesterday, 4:45 PM",
-                icon: Icons.publish_rounded,
+                icon: AppIcons.publish_rounded,
                 color: Colors.green,
                 isFirst: false,
                 isLast: false,
@@ -71,7 +72,7 @@ class ActivityLogsScreen extends StatelessWidget {
                 title: "Candidate Added",
                 subtitle: "Amit Patel was added to the candidate pool via LinkedIn integration.",
                 time: "Yesterday, 10:05 AM",
-                icon: Icons.person_add_rounded,
+                icon: AppIcons.person_add_rounded,
                 color: Colors.blueAccent,
                 isFirst: false,
                 isLast: false,
@@ -81,7 +82,7 @@ class ActivityLogsScreen extends StatelessWidget {
                 title: "Recruiter Logged In",
                 subtitle: "System login successful from new IP address (Mumbai).",
                 time: "Oct 10, 08:30 AM",
-                icon: Icons.login_rounded,
+                icon: AppIcons.login_rounded,
                 color: theme.colorScheme.onSurfaceVariant,
                 isFirst: false,
                 isLast: true,

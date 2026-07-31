@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -73,8 +74,8 @@ class _ProfileDataManagementScreenState
             },
             icon: Icon(
               provider.isBackupEmpty
-                  ? Icons.cloud_off_rounded
-                  : Icons.cloud_done_rounded,
+                  ? AppIcons.cloud_off_rounded
+                  : AppIcons.cloud_done_rounded,
               color: provider.isBackupEmpty
                   ? theme.colorScheme.error
                   : theme.colorScheme.primary,
@@ -97,7 +98,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Enterprise Data Overview",
                   "Live metrics of your recruitment assets, database footprint, and cloud archives.",
-                  Icons.analytics_outlined,
+                  AppIcons.analytics_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildDataOverviewCard(context, provider),
@@ -108,7 +109,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Storage Management & Allocation",
                   "Monitor server storage consumption and asset breakdown across your organization.",
-                  Icons.storage_rounded,
+                  AppIcons.storage_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildStorageManagementCard(context, provider),
@@ -119,7 +120,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Cloud Backup & Disaster Recovery",
                   "Create point-in-time snapshots of your hiring pipelines and restore archived states.",
-                  Icons.backup_outlined,
+                  AppIcons.backup_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildBackupRestoreCard(context, provider),
@@ -130,7 +131,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Data Export & Portability",
                   "Export portable archives of your enterprise recruitment records in standard formats.",
-                  Icons.download_rounded,
+                  AppIcons.download_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildExportDataCard(context),
@@ -141,7 +142,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Automated Data Retention Policies",
                   "Configure lifecycle rules for purging old applications and archiving closed requisitions.",
-                  Icons.auto_delete_outlined,
+                  AppIcons.auto_delete_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildRetentionCard(context, provider),
@@ -152,7 +153,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Privacy & Compliance Controls (GDPR)",
                   "Manage telemetry collection, anonymized diagnostics, and product usage statistics.",
-                  Icons.privacy_tip_outlined,
+                  AppIcons.privacy_tip_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildPrivacyControlsCard(context, provider),
@@ -163,7 +164,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Download Center",
                   "Access pre-compiled compliance reports, billing histories, and candidate summaries.",
-                  Icons.folder_shared_outlined,
+                  AppIcons.folder_shared_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildDownloadCenterCard(context),
@@ -174,7 +175,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Account Data Tools & Maintenance",
                   "Manage local device caches, request GDPR data copies, and purge temporary exports.",
-                  Icons.build_circle_outlined,
+                  AppIcons.build_circle_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildAccountDataCard(context),
@@ -185,7 +186,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "System Reset Options",
                   "Restore module configurations to factory defaults without affecting candidate data.",
-                  Icons.restart_alt_rounded,
+                  AppIcons.restart_alt_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildResetOptionsCard(context, provider),
@@ -196,7 +197,7 @@ class _ProfileDataManagementScreenState
                   theme,
                   "Danger Zone",
                   "Irreversible destructive operations that permanently purge records from servers.",
-                  Icons.warning_amber_rounded,
+                  AppIcons.warning_amber_rounded,
                   isDanger: true,
                 ),
                 const SizedBox(height: 14),
@@ -255,35 +256,35 @@ class _ProfileDataManagementScreenState
         title: "Total Jobs",
         value: "48",
         subtitle: "Active & archived requisitions",
-        icon: Icons.work_outline_rounded,
+        icon: AppIcons.work_outline_rounded,
         color: Colors.blue,
       ),
       _OverviewMetric(
         title: "Total Candidates",
         value: "1,240",
         subtitle: "In talent pipeline database",
-        icon: Icons.people_alt_outlined,
+        icon: AppIcons.people_alt_outlined,
         color: Colors.purple,
       ),
       _OverviewMetric(
         title: "Interviews Logged",
         value: "156",
         subtitle: "Completed scorecard sessions",
-        icon: Icons.calendar_today_rounded,
+        icon: AppIcons.calendar_today_rounded,
         color: Colors.amber.shade700,
       ),
       _OverviewMetric(
         title: "Team Members",
         value: "12",
         subtitle: "Licensed recruiters & HR",
-        icon: Icons.group_outlined,
+        icon: AppIcons.group_outlined,
         color: Colors.green,
       ),
       _OverviewMetric(
         title: "Storage Used",
         value: "3.4 GB",
         subtitle: "Of 10.0 GB enterprise quota",
-        icon: Icons.cloud_done_outlined,
+        icon: AppIcons.cloud_done_outlined,
         color: Colors.teal,
       ),
       _OverviewMetric(
@@ -292,7 +293,7 @@ class _ProfileDataManagementScreenState
         subtitle: provider.isBackupEmpty
             ? "No backups recorded"
             : provider.lastBackupDate,
-        icon: Icons.backup_outlined,
+        icon: AppIcons.backup_outlined,
         color: provider.isBackupEmpty ? theme.colorScheme.error : Colors.indigo,
       ),
     ];
@@ -375,7 +376,7 @@ class _ProfileDataManagementScreenState
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.pie_chart_outline_rounded,
+                  Icon(AppIcons.pie_chart_outline_rounded,
                       color: theme.colorScheme.primary, size: 24),
                   const SizedBox(width: 10),
                   Text(
@@ -554,7 +555,7 @@ class _ProfileDataManagementScreenState
                 color: theme.colorScheme.error.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.cloud_off_rounded,
+              child: Icon(AppIcons.cloud_off_rounded,
                   size: 40, color: theme.colorScheme.error),
             ),
             const SizedBox(height: 16),
@@ -579,7 +580,7 @@ class _ProfileDataManagementScreenState
                 provider.toggleBackupEmptyState();
                 _showFeedback(context, "Initial backup archive created successfully!");
               },
-              icon: const Icon(Icons.cloud_upload_rounded),
+              icon: const Icon(AppIcons.cloud_upload_rounded),
               label: const Text("Create First Backup"),
               style: FilledButton.styleFrom(
                 padding:
@@ -611,7 +612,7 @@ class _ProfileDataManagementScreenState
                       color: Colors.green.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.cloud_done_rounded,
+                    child: const Icon(AppIcons.cloud_done_rounded,
                         color: Colors.green, size: 28),
                   ),
                   const SizedBox(width: 16),
@@ -657,7 +658,7 @@ class _ProfileDataManagementScreenState
                     child: DropdownButton<String>(
                       value: provider.backupFrequency,
                       underline: const SizedBox(),
-                      icon: const Icon(Icons.arrow_drop_down_rounded),
+                      icon: const Icon(AppIcons.arrow_drop_down_rounded),
                       items: ["Daily", "Weekly", "Monthly", "Manual Only"]
                           .map((f) => DropdownMenuItem(
                                 value: f,
@@ -693,7 +694,7 @@ class _ProfileDataManagementScreenState
                 onPressed: () {
                   _showFeedback(context, "Initiating immediate cloud backup snapshot...");
                 },
-                icon: const Icon(Icons.backup_rounded, size: 18),
+                icon: const Icon(AppIcons.backup_rounded, size: 18),
                 label: const Text("Create New Backup"),
               ),
               OutlinedButton.icon(
@@ -708,14 +709,14 @@ class _ProfileDataManagementScreenState
                     },
                   );
                 },
-                icon: const Icon(Icons.restore_rounded, size: 18),
+                icon: const Icon(AppIcons.restore_rounded, size: 18),
                 label: const Text("Restore Backup"),
               ),
               OutlinedButton.icon(
                 onPressed: () {
                   _showFeedback(context, "Downloading backup archive (jobnest_backup_2026.zip)");
                 },
-                icon: const Icon(Icons.download_rounded, size: 18),
+                icon: const Icon(AppIcons.download_rounded, size: 18),
                 label: const Text("Download Backup"),
               ),
             ],
@@ -795,8 +796,8 @@ class _ProfileDataManagementScreenState
                     children: [
                       Icon(
                         isFull
-                            ? Icons.folder_zip_rounded
-                            : Icons.insert_drive_file_outlined,
+                            ? AppIcons.folder_zip_rounded
+                            : AppIcons.insert_drive_file_outlined,
                         size: 20,
                         color: isFull
                             ? theme.colorScheme.primary
@@ -816,7 +817,7 @@ class _ProfileDataManagementScreenState
                     onPressed: () {
                       _showFeedback(context, "Exporting '$title' as $_selectedExportFormat");
                     },
-                    icon: const Icon(Icons.download_rounded, size: 16),
+                    icon: const Icon(AppIcons.download_rounded, size: 16),
                     label: Text("Export ${_selectedExportFormat.split(' ')[0]}"),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -930,7 +931,7 @@ class _ProfileDataManagementScreenState
           child: DropdownButton<String>(
             value: currentVal,
             underline: const SizedBox(),
-            icon: const Icon(Icons.arrow_drop_down_rounded),
+            icon: const Icon(AppIcons.arrow_drop_down_rounded),
             items: _retentionOptions
                 .map((opt) => DropdownMenuItem(
                       value: opt,
@@ -1059,31 +1060,31 @@ class _ProfileDataManagementScreenState
           title: "Company Overview Report",
           filename: "company_overview_report.pdf",
           size: "1.2 MB",
-          icon: Icons.picture_as_pdf_rounded,
+          icon: AppIcons.picture_as_pdf_rounded,
           color: Colors.red),
       _DownloadItem(
           title: "Q2 Recruitment Diagnostics Report",
           filename: "q2_hiring_diagnostics.xlsx",
           size: "840 KB",
-          icon: Icons.table_chart_rounded,
+          icon: AppIcons.table_chart_rounded,
           color: Colors.green),
       _DownloadItem(
           title: "Complete Candidate Pipeline Summary",
           filename: "talent_pipeline_summary.csv",
           size: "2.4 MB",
-          icon: Icons.insert_drive_file_rounded,
+          icon: AppIcons.insert_drive_file_rounded,
           color: Colors.blue),
       _DownloadItem(
           title: "Enterprise Billing History & Invoices",
           filename: "invoices_archive_2026.pdf",
           size: "3.1 MB",
-          icon: Icons.receipt_long_rounded,
+          icon: AppIcons.receipt_long_rounded,
           color: Colors.purple),
       _DownloadItem(
           title: "Verification & Trust Compliance Badge",
           filename: "trust_verification_badge.pdf",
           size: "520 KB",
-          icon: Icons.verified_rounded,
+          icon: AppIcons.verified_rounded,
           color: Colors.teal),
     ];
 
@@ -1143,7 +1144,7 @@ class _ProfileDataManagementScreenState
                     _showFeedback(
                         context, "Downloading '${item.filename}' (${item.size})");
                   },
-                  icon: const Icon(Icons.download_rounded, size: 18),
+                  icon: const Icon(AppIcons.download_rounded, size: 18),
                   tooltip: "Download ${item.title}",
                 ),
               ],
@@ -1162,7 +1163,7 @@ class _ProfileDataManagementScreenState
         description:
             "Generate an exhaustive, downloadable archive containing all personal info, login logs, and scorecard notes.",
         btnLabel: "Request Copy",
-        icon: Icons.assignment_returned_outlined,
+        icon: AppIcons.assignment_returned_outlined,
         onAction: () => _showFeedback(context, "GDPR Data Copy request queued. You will receive an email link shortly."),
       ),
       _DataTool(
@@ -1170,7 +1171,7 @@ class _ProfileDataManagementScreenState
         description:
             "Purge temporary export archives and compiled spreadsheet packages generated on server storage.",
         btnLabel: "Delete Exports",
-        icon: Icons.delete_sweep_outlined,
+        icon: AppIcons.delete_sweep_outlined,
         onAction: () => _showFeedback(context, "All temporary export archives purged from server storage."),
       ),
       _DataTool(
@@ -1178,7 +1179,7 @@ class _ProfileDataManagementScreenState
         description:
             "Review closed job postings in cold storage or permanently remove them from the enterprise database.",
         btnLabel: "Manage Archive",
-        icon: Icons.inventory_2_outlined,
+        icon: AppIcons.inventory_2_outlined,
         onAction: () => _showFeedback(context, "Opening cold storage archive explorer..."),
       ),
       _DataTool(
@@ -1186,7 +1187,7 @@ class _ProfileDataManagementScreenState
         description:
             "Clear temporary image thumbnails, resume previews, and offline search indexes from this device.",
         btnLabel: "Clear Cache",
-        icon: Icons.layers_clear_outlined,
+        icon: AppIcons.layers_clear_outlined,
         onAction: () => _showFeedback(context, "Local device cache cleared successfully (142 MB freed)."),
       ),
     ];
@@ -1454,7 +1455,7 @@ class _ProfileDataManagementScreenState
           children: [
             Row(
               children: [
-                Icon(Icons.delete_forever_rounded, color: errorColor, size: 26),
+                Icon(AppIcons.delete_forever_rounded, color: errorColor, size: 26),
                 const SizedBox(width: 10),
                 Text(
                   "Permanent Enterprise Data Deletion",
@@ -1494,7 +1495,7 @@ class _ProfileDataManagementScreenState
                       isDestructive: true,
                     );
                   },
-                  icon: Icon(Icons.person_remove_rounded,
+                  icon: Icon(AppIcons.person_remove_rounded,
                       color: errorColor, size: 18),
                   label: Text("Delete All Recruiter Data",
                       style: TextStyle(color: errorColor)),
@@ -1516,7 +1517,7 @@ class _ProfileDataManagementScreenState
                       isDestructive: true,
                     );
                   },
-                  icon: Icon(Icons.business_rounded,
+                  icon: Icon(AppIcons.business_rounded,
                       color: errorColor, size: 18),
                   label: Text("Delete Company Data",
                       style: TextStyle(color: errorColor)),
@@ -1538,7 +1539,7 @@ class _ProfileDataManagementScreenState
                       isDestructive: true,
                     );
                   },
-                  icon: const Icon(Icons.delete_forever_rounded, size: 18),
+                  icon: const Icon(AppIcons.delete_forever_rounded, size: 18),
                   label: const Text(
                     "Delete Account Permanently",
                     style: TextStyle(fontWeight: FontWeight.bold),

@@ -1,5 +1,8 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
 
 class ProfileAiInterviewAssistant extends StatelessWidget {
   const ProfileAiInterviewAssistant({super.key});
@@ -13,15 +16,15 @@ class ProfileAiInterviewAssistant extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.forum_rounded, color: Colors.blueAccent, size: 24),
-            const SizedBox(width: 12),
+            const Icon(AppIcons.forum_rounded, color: Colors.blueAccent, size: 24),
+            AppSpacing.w12,
             Text(
               "AI Interview Assistant",
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: AppText.h3,
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        AppSpacing.h16,
         // ===== BACKEND TODO =====
         // TODO: AI Interview Questions LLM backend generate karega.
         AppCard(
@@ -31,7 +34,7 @@ class ProfileAiInterviewAssistant extends StatelessWidget {
               _buildCategoryTile(
                 context,
                 title: "Technical Questions",
-                icon: Icons.code_rounded,
+                icon: AppIcons.code_rounded,
                 isExpanded: true,
                 questions: [
                   "Can you explain how the BLoC pattern differs from Provider, and when you would choose one over the other?",
@@ -43,7 +46,7 @@ class ProfileAiInterviewAssistant extends StatelessWidget {
               _buildCategoryTile(
                 context,
                 title: "Behavioral Questions",
-                icon: Icons.psychology_rounded,
+                icon: AppIcons.psychology_rounded,
                 isExpanded: false,
                 questions: [
                   "Tell me about a time you had a disagreement with a UI/UX designer. How did you resolve it?",
@@ -53,7 +56,7 @@ class ProfileAiInterviewAssistant extends StatelessWidget {
               _buildCategoryTile(
                 context,
                 title: "HR Questions",
-                icon: Icons.groups_rounded,
+                icon: AppIcons.groups_rounded,
                 isExpanded: false,
                 questions: [
                   "Why are you looking to leave your current role after 2.5 years?",
@@ -82,9 +85,7 @@ class ProfileAiInterviewAssistant extends StatelessWidget {
       leading: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
       title: Text(
         title,
-        style: theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
+        style: AppText.h3.copyWith(fontSize: 16),
       ),
       children: [
         Padding(
@@ -104,21 +105,20 @@ class ProfileAiInterviewAssistant extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.help_outline_rounded, size: 16, color: theme.colorScheme.primary),
-          const SizedBox(width: 12),
+          Icon(AppIcons.help_outline_rounded, size: 16, color: theme.colorScheme.primary),
+          AppSpacing.w12,
           Expanded(
             child: Text(
               question,
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: AppText.bodyMedium.copyWith(
                 color: theme.colorScheme.onSurface,
-                height: 1.4,
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          AppSpacing.w12,
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.content_copy_rounded, size: 16),
+            icon: const Icon(AppIcons.content_copy_rounded, size: 16),
             tooltip: "Copy Question",
             splashRadius: 20,
             constraints: const BoxConstraints(),

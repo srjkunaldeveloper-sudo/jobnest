@@ -98,11 +98,15 @@ class HomeDailyTasks extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        "$completedTasks of $totalTasks tasks completed",
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          "$completedTasks of $totalTasks tasks completed",
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.right,
                         ),
                       ),
                     ],

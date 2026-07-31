@@ -1,5 +1,8 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
 
 class ProfileInterviewScheduler extends StatelessWidget {
   const ProfileInterviewScheduler({super.key});
@@ -13,19 +16,19 @@ class ProfileInterviewScheduler extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.calendar_month_rounded, color: Colors.blueAccent, size: 24),
-            const SizedBox(width: 12),
+            const Icon(AppIcons.calendar_month_rounded, color: Colors.blueAccent, size: 24),
+            AppSpacing.w12,
             Text(
               "Interview Scheduler",
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: AppText.h3,
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        AppSpacing.h16,
         // ===== BACKEND TODO =====
         // TODO: Interview Scheduler calendar API se connect hoga.
         AppCard(
-          padding: const EdgeInsets.all(24),
+          padding: AppSpacing.edgeInsetsAll24,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,31 +41,29 @@ class ProfileInterviewScheduler extends StatelessWidget {
                       children: [
                         Text(
                           "Technical Round 1",
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppText.h3.copyWith(fontSize: 16),
                         ),
-                        const SizedBox(height: 16),
+                        AppSpacing.h16,
                         Row(
                           children: [
-                            const Icon(Icons.calendar_today_rounded, size: 16, color: Colors.blueAccent),
-                            const SizedBox(width: 8),
+                            const Icon(AppIcons.calendar_today_rounded, size: 16, color: Colors.blueAccent),
+                            AppSpacing.w8,
                             Text(
                               "28 Oct 2023",
-                              style: theme.textTheme.labelMedium?.copyWith(
+                              style: AppText.label.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        AppSpacing.h12,
                         Row(
                           children: [
-                            const Icon(Icons.access_time_rounded, size: 16, color: Colors.blueAccent),
-                            const SizedBox(width: 8),
+                            const Icon(AppIcons.access_time_rounded, size: 16, color: Colors.blueAccent),
+                            AppSpacing.w8,
                             Text(
                               "10:30 AM - 11:30 AM (IST)",
-                              style: theme.textTheme.labelMedium?.copyWith(
+                              style: AppText.label.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -81,13 +82,12 @@ class ProfileInterviewScheduler extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.videocam_rounded, size: 16, color: Colors.blueAccent),
-                        const SizedBox(width: 8),
+                        const Icon(AppIcons.videocam_rounded, size: 16, color: Colors.blueAccent),
+                        AppSpacing.w8,
                         Text(
                           "Google Meet",
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: AppText.labelSmall.copyWith(
                             color: Colors.blueAccent,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
@@ -95,26 +95,26 @@ class ProfileInterviewScheduler extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              AppSpacing.h24,
               const Divider(),
-              const SizedBox(height: 20),
+              AppSpacing.h20,
               Row(
                 children: [
                   Expanded(
                     child: FilledButton.tonalIcon(
                       onPressed: () {},
-                      icon: const Icon(Icons.edit_calendar_rounded, size: 18),
+                      icon: const Icon(AppIcons.edit_calendar_rounded, size: 18),
                       label: const Text("Reschedule"),
                       style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  AppSpacing.w16,
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.close_rounded, size: 18),
+                      icon: const Icon(AppIcons.close_rounded, size: 18),
                       label: const Text("Cancel"),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.redAccent,

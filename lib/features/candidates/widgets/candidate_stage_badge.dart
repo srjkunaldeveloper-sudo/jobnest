@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class CandidateStageBadge extends StatelessWidget {
@@ -23,13 +24,13 @@ class CandidateStageBadge extends StatelessWidget {
 
   static IconData getStageIcon(String stage) {
     final s = stage.toLowerCase();
-    if (s == "applied") return Icons.inbox_rounded;
-    if (s == "screening") return Icons.fact_check_outlined;
-    if (s == "interview") return Icons.people_alt_outlined;
-    if (s == "offer") return Icons.verified_outlined;
-    if (s == "hired") return Icons.check_circle_rounded;
-    if (s == "rejected") return Icons.cancel_outlined;
-    return Icons.group_outlined;
+    if (s == "applied") return AppIcons.inbox_rounded;
+    if (s == "screening") return AppIcons.fact_check_outlined;
+    if (s == "interview") return AppIcons.people_alt_outlined;
+    if (s == "offer") return AppIcons.verified_outlined;
+    if (s == "hired") return AppIcons.check_circle_rounded;
+    if (s == "rejected") return AppIcons.cancel_outlined;
+    return AppIcons.group_outlined;
   }
 
   @override

@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -26,7 +27,7 @@ class PasswordSuccessContent extends StatelessWidget {
             color: Colors.green.withValues(alpha: 0.1),
           ),
           child: const Icon(
-            Icons.check_circle_rounded,
+            AppIcons.check_circle_rounded,
             color: Colors.green,
             size: 48,
           ),

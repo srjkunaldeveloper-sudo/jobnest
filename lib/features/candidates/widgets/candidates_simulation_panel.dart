@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
@@ -46,7 +47,7 @@ class CandidatesSimulationPanel extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            Icon(Icons.science_outlined, size: 18, color: theme.colorScheme.primary),
+            Icon(AppIcons.science_outlined, size: 18, color: theme.colorScheme.primary),
             AppSpacing.w8,
             Text(
               "QA State Test:",
@@ -58,14 +59,14 @@ class CandidatesSimulationPanel extends StatelessWidget {
             AppSpacing.w12,
             _buildSimButton(
               onPressed: () => provider.simulateCandidatesLoading(),
-              icon: Icons.hourglass_empty_rounded,
+              icon: AppIcons.hourglass_empty_rounded,
               label: "Loading Skeleton",
               sideColor: theme.colorScheme.primary,
             ),
             AppSpacing.w8,
             _buildSimButton(
               onPressed: () => provider.simulateCandidatesError(),
-              icon: Icons.error_outline_rounded,
+              icon: AppIcons.error_outline_rounded,
               label: "Error State",
               sideColor: theme.colorScheme.error,
               foregroundColor: theme.colorScheme.error,
@@ -73,14 +74,14 @@ class CandidatesSimulationPanel extends StatelessWidget {
             AppSpacing.w8,
             _buildSimButton(
               onPressed: () => provider.simulateCandidatesEmpty(),
-              icon: Icons.inbox_rounded,
+              icon: AppIcons.inbox_rounded,
               label: "Empty State",
               sideColor: theme.colorScheme.primary,
             ),
             AppSpacing.w8,
             _buildSimButton(
               onPressed: () => provider.restoreCandidatesDefault(),
-              icon: Icons.restore_rounded,
+              icon: AppIcons.restore_rounded,
               label: "Restore Data",
               sideColor: theme.colorScheme.primary,
             ),

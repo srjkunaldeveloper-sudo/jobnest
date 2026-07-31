@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_empty_state.dart';
@@ -334,56 +335,56 @@ class ProfileEmptyStateDisplay extends StatelessWidget {
     switch (type) {
       case ProfileEmptyType.teamMembers:
         return _EmptyStateConfig(
-          icon: Icons.group_off_rounded,
+          icon: AppIcons.group_off_rounded,
           title: "No Team Members",
           description: "You haven't invited any recruiters or hiring managers to this organization yet.",
           primaryText: "Invite Member",
         );
       case ProfileEmptyType.companyMedia:
         return _EmptyStateConfig(
-          icon: Icons.photo_library_outlined,
+          icon: AppIcons.photo_library_outlined,
           title: "No Company Media",
           description: "Upload workplace photos and culture videos to showcase your brand to top candidates.",
           primaryText: "Upload Media",
         );
       case ProfileEmptyType.billingHistory:
         return _EmptyStateConfig(
-          icon: Icons.receipt_long_outlined,
+          icon: AppIcons.receipt_long_outlined,
           title: "No Billing History",
           description: "No subscription invoices or payment transactions were found for this billing cycle.",
           primaryText: "View Current Plan",
         );
       case ProfileEmptyType.trustedDevices:
         return _EmptyStateConfig(
-          icon: Icons.devices_other_rounded,
+          icon: AppIcons.devices_other_rounded,
           title: "No Trusted Devices",
           description: "You have not registered any biometric devices or hardware keys for 2FA verification.",
           primaryText: "Register Device",
         );
       case ProfileEmptyType.supportTickets:
         return _EmptyStateConfig(
-          icon: Icons.support_agent_rounded,
+          icon: AppIcons.support_agent_rounded,
           title: "No Support Tickets",
           description: "You have no active or archived customer support inquiries with the JobNest helpdesk.",
           primaryText: "Create Ticket",
         );
       case ProfileEmptyType.verificationRecords:
         return _EmptyStateConfig(
-          icon: Icons.verified_user_outlined,
+          icon: AppIcons.verified_user_outlined,
           title: "No Verification Records",
           description: "Your corporate identity and recruiter credentials have not been submitted for verification.",
           primaryText: "Start Verification",
         );
       case ProfileEmptyType.savedPreferences:
         return _EmptyStateConfig(
-          icon: Icons.tune_rounded,
+          icon: AppIcons.tune_rounded,
           title: "No Saved Preferences",
           description: "You haven't configured default job requirements or custom hiring templates yet.",
           primaryText: "Configure Defaults",
         );
       case ProfileEmptyType.custom:
         return _EmptyStateConfig(
-          icon: Icons.inbox_outlined,
+          icon: AppIcons.inbox_outlined,
           title: "No Data Found",
           description: "There are no records available to display in this section.",
           primaryText: "Refresh",
@@ -477,31 +478,31 @@ class ProfileErrorStateDisplay extends StatelessWidget {
     switch (type) {
       case ProfileErrorType.network:
         return _ErrorStateConfig(
-          icon: Icons.wifi_off_rounded,
+          icon: AppIcons.wifi_off_rounded,
           title: "Network Error",
           description: "Unable to connect to JobNest enterprise cloud. Please check your network connection and try again.",
         );
       case ProfileErrorType.server:
         return _ErrorStateConfig(
-          icon: Icons.dns_rounded,
+          icon: AppIcons.dns_rounded,
           title: "Server Error",
           description: "Our enterprise servers encountered a temporary service disruption while syncing your profile.",
         );
       case ProfileErrorType.permission:
         return _ErrorStateConfig(
-          icon: Icons.lock_outline_rounded,
+          icon: AppIcons.lock_outline_rounded,
           title: "Permission Error",
           description: "You do not have administrative permissions to view or edit this organization's security settings.",
         );
       case ProfileErrorType.unavailable:
         return _ErrorStateConfig(
-          icon: Icons.cloud_off_rounded,
+          icon: AppIcons.cloud_off_rounded,
           title: "Data Unavailable",
           description: "The requested profile configuration is currently unavailable or has been archived.",
         );
       case ProfileErrorType.unknown:
         return _ErrorStateConfig(
-          icon: Icons.error_outline_rounded,
+          icon: AppIcons.error_outline_rounded,
           title: "Unknown Error",
           description: "An unexpected exception occurred while processing your request. Please retry or contact support.",
         );
@@ -556,7 +557,7 @@ class ProfileSuccessNotifier {
                 color: Colors.green.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.check_circle_rounded, color: Colors.green, size: 20),
+              child: const Icon(AppIcons.check_circle_rounded, color: Colors.green, size: 20),
             ),
             const SizedBox(width: 12),
             Expanded(

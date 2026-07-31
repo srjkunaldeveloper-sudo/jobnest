@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -29,7 +30,7 @@ class DetailsAiInsights extends StatelessWidget {
                   color: Colors.deepPurpleAccent.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.auto_awesome_rounded, color: Colors.deepPurpleAccent, size: 24),
+                child: const Icon(AppIcons.auto_awesome_rounded, color: Colors.deepPurpleAccent, size: 24),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -53,7 +54,7 @@ class DetailsAiInsights extends StatelessWidget {
                     const SizedBox(height: 16),
                     OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.edit_rounded, size: 18, color: Colors.deepPurpleAccent),
+                      icon: const Icon(AppIcons.edit_rounded, size: 18, color: Colors.deepPurpleAccent),
                       label: const Text(
                         "Update Salary Range",
                         style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.bold),

@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -39,7 +40,7 @@ class Step1BasicDetails extends StatelessWidget {
           _buildTextField(
             context,
             "Job Title *",
-            Icons.title_rounded,
+            AppIcons.title_rounded,
             "e.g. Senior Frontend Developer",
             controller: form.jobTitleController,
           ),
@@ -50,7 +51,7 @@ class Step1BasicDetails extends StatelessWidget {
           _buildTextField(
             context,
             "Company Name *",
-            Icons.business_rounded,
+            AppIcons.business_rounded,
             "e.g. TechCorp India",
             controller: form.companyController,
           ),
@@ -59,7 +60,7 @@ class Step1BasicDetails extends StatelessWidget {
           _buildTextField(
             context,
             "Location *",
-            Icons.location_on_rounded,
+            AppIcons.location_on_rounded,
             "e.g. Bangalore, India",
             controller: form.locationController,
           ),
@@ -77,7 +78,7 @@ class Step1BasicDetails extends StatelessWidget {
                 child: _buildDropdown(
                   context,
                   "Job Type *",
-                  Icons.work_rounded,
+                  AppIcons.work_rounded,
                   ["Full Time", "Part Time", "Contract", "Internship"],
                   value: form.employmentType,
                   onChanged: (val) {
@@ -90,7 +91,7 @@ class Step1BasicDetails extends StatelessWidget {
                 child: _buildDropdown(
                   context,
                   "Work Mode *",
-                  Icons.laptop_mac_rounded,
+                  AppIcons.laptop_mac_rounded,
                   ["Office", "Remote", "Hybrid"],
                   value: form.workMode,
                   onChanged: (val) {
@@ -108,7 +109,7 @@ class Step1BasicDetails extends StatelessWidget {
                 child: _buildDropdown(
                   context,
                   "Working Days",
-                  Icons.calendar_month_rounded,
+                  AppIcons.calendar_month_rounded,
                   ["5 Days", "6 Days", "Flexible"],
                   value: form.workingDays,
                   onChanged: (val) {
@@ -121,7 +122,7 @@ class Step1BasicDetails extends StatelessWidget {
                 child: _buildDropdown(
                   context,
                   "Working Hours",
-                  Icons.access_time_rounded,
+                  AppIcons.access_time_rounded,
                   ["Standard (9-5)", "Flexible", "Shift Based"],
                   value: form.workingHours,
                   onChanged: (val) {

@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
@@ -266,7 +267,7 @@ class NotificationCard extends StatelessWidget {
           padding: const EdgeInsets.only(left: 24.0),
           child: const Row(
             children: [
-              Icon(Icons.mark_email_read_rounded, color: Colors.white, size: 24),
+              Icon(AppIcons.mark_email_read_rounded, color: Colors.white, size: 24),
               SizedBox(width: 8),
               Text(
                 "Mark Read",
@@ -298,7 +299,7 @@ class NotificationCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8),
-              Icon(Icons.delete_outline_rounded, color: Colors.white, size: 24),
+              Icon(AppIcons.delete_outline_rounded, color: Colors.white, size: 24),
             ],
           ),
         ),

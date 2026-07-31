@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class CandidatesAdvancedFilters extends StatelessWidget {
@@ -28,7 +29,7 @@ class CandidatesAdvancedFilters extends StatelessWidget {
                   style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close_rounded),
+                  icon: const Icon(AppIcons.close_rounded),
                   onPressed: () => Navigator.pop(context),
                 ),
               ],

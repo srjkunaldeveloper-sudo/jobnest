@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -59,7 +60,7 @@ class DecisionSupportScreen extends StatelessWidget {
                                 "Strong technical background.",
                                 "Immediate joiner."
                               ], 
-                              Icons.add_circle_outline_rounded, 
+                              AppIcons.add_circle_outline_rounded, 
                               Colors.green
                             ),
                           ),
@@ -72,7 +73,7 @@ class DecisionSupportScreen extends StatelessWidget {
                                 "Salary expectation slightly high.",
                                 "Requires remote work option."
                               ], 
-                              Icons.remove_circle_outline_rounded, 
+                              AppIcons.remove_circle_outline_rounded, 
                               Colors.orange
                             ),
                           ),
@@ -99,7 +100,7 @@ class DecisionSupportScreen extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.verified_rounded, color: Colors.green, size: 28),
+                            const Icon(AppIcons.verified_rounded, color: Colors.green, size: 28),
                             const SizedBox(width: 16),
                             Expanded(
                               child: Text(

@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -76,7 +77,7 @@ class _ForgotPasswordContentState extends State<ForgotPasswordContent> {
               color: theme.colorScheme.surfaceContainerHighest,
             ),
             child: Icon(
-              Icons.arrow_back,
+              AppIcons.arrow_back,
               size: 20,
               color: theme.colorScheme.onSurfaceVariant,
             ),

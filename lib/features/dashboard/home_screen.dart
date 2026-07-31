@@ -1,7 +1,9 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:jobnest/core/constants/app_colors.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
@@ -25,7 +27,7 @@ class HomeScreen extends StatelessWidget {
   final VoidCallback? onNavigateToCandidates;
   final VoidCallback? onNavigateToInterviews;
 
-  const HomeScreen({
+  HomeScreen({
     super.key,
     this.onProfileTap,
     this.onNavigateToJobs,
@@ -40,68 +42,80 @@ class HomeScreen extends StatelessWidget {
     final bool isError = provider.isDashboardError;
 
     return Scaffold(
+      backgroundColor: AppColors.lightBackground, // Depth canvas — cards lift against this
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => provider.refreshDashboard(),
           color: theme.colorScheme.primary,
           backgroundColor: theme.colorScheme.surface,
           displacement: 40,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(
-              parent: BouncingScrollPhysics(),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Section 1: Header
-                HomeHeader(onProfileTap: onProfileTap),
-                
-                // Section 2 & 3: Search & Quick Search Chips
-                const HomeSearch(),
-                
-                // Section 7: Error State Handling
-                if (isError)
-                  _buildErrorState(context, provider)
-                else ...[
-                  // Section 4 & 6: Today's Focus (Graceful empty handling & interactive rows)
-                  HomeFocus(
-                    onNavigateToJobs: onNavigateToJobs,
-                    onNavigateToCandidates: onNavigateToCandidates,
-                    onNavigateToInterviews: onNavigateToInterviews,
-                  ),
-                  
-                  // Section 5 & 6: Quick Stats (Shimmer loading & empty metrics banner)
-                  const HomeQuickStats(),
-                  
-                  // Section 5: Analytics
-                  const HomeAnalytics(),
-                  
-                  // Section 5: AI Assistant
-                  const HomeAiAssistant(),
-                  
-                  // Section 5 & 9: Quick Actions (Accessibility & shimmer)
-                  const HomeQuickActions(),
-                  
-                  // Section 5 & 6: Daily Tasks
-                  const HomeDailyTasks(),
-                  
-                  // Section 5 & 6: Activity Timeline
-                  const HomeActivityTimeline(),
-                  
-                  // Section 5: Smart Notifications
-                  const HomeSmartNotifications(),
-                  
-                  // Section 5: Hiring Probability
-                  const HomeHiringProbability(),
-                ],
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // 8pt spacing system — responsive padding per breakpoint
+              final double hPad = constraints.maxWidth > 800
+                  ? 24.0
+                  : constraints.maxWidth > 480
+                      ? 20.0
+                      : 16.0;
+              final double vPad = constraints.maxWidth > 800 ? 24.0 : 20.0;
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Section 1: Header
+                    HomeHeader(onProfileTap: onProfileTap),
 
-                AppSpacing.h16,
-                // Enterprise QA State Simulation Footer
-                _buildQaSimulationFooter(context, provider),
-                const SizedBox(height: 32),
-              ],
-            ),
+                    // Section 2 & 3: Search & Quick Search Chips
+                    HomeSearch(),
+
+                    // Section 7: Error State Handling
+                    if (isError)
+                      _buildErrorState(context, provider)
+                    else ...[
+                      // Section 4 & 6: Today's Focus (Graceful empty handling & interactive rows)
+                      HomeFocus(
+                        onNavigateToJobs: onNavigateToJobs,
+                        onNavigateToCandidates: onNavigateToCandidates,
+                        onNavigateToInterviews: onNavigateToInterviews,
+                      ),
+
+                      // Section 5 & 6: Quick Stats (Shimmer loading & empty metrics banner)
+                      HomeQuickStats(),
+
+                      // Section 5: Analytics
+                      HomeAnalytics(),
+
+                      // Section 5: AI Assistant
+                      HomeAiAssistant(),
+
+                      // Section 5 & 9: Quick Actions (Accessibility & shimmer)
+                      HomeQuickActions(),
+
+                      // Section 5 & 6: Daily Tasks
+                      HomeDailyTasks(),
+
+                      // Section 5 & 6: Activity Timeline
+                      HomeActivityTimeline(),
+
+                      // Section 5: Smart Notifications
+                      HomeSmartNotifications(),
+
+                      // Section 5: Hiring Probability
+                      HomeHiringProbability(),
+                    ],
+
+                    AppSpacing.h16,
+                    // Enterprise QA State Simulation Footer
+                    _buildQaSimulationFooter(context, provider),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -120,7 +134,7 @@ class HomeScreen extends StatelessWidget {
           onRetry: () => provider.refreshDashboard(),
           secondaryButtonText: "Restore Offline Pipeline",
           onSecondaryAction: () => provider.restoreDefault(),
-          iconData: Icons.cloud_off_rounded,
+          iconData: AppIcons.cloud_off_rounded,
         ),
       ),
     );
@@ -158,7 +172,7 @@ class HomeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
-                  Icons.dns_rounded,
+                  AppIcons.dns_rounded,
                   color: statusColor,
                   size: 18,
                 ),
@@ -196,28 +210,28 @@ class HomeScreen extends StatelessWidget {
               _buildQaChip(
                 context,
                 label: "Default Pipeline",
-                icon: Icons.restore_rounded,
+                icon: AppIcons.restore_rounded,
                 isActive: !provider.isDashboardLoading && !provider.isDashboardError && provider.jobs.isNotEmpty,
                 onTap: () => provider.restoreDefault(),
               ),
               _buildQaChip(
                 context,
                 label: "Skeleton Loading",
-                icon: Icons.hourglass_top_rounded,
+                icon: AppIcons.hourglass_top_rounded,
                 isActive: provider.isDashboardLoading,
                 onTap: () => provider.simulateLoading(),
               ),
               _buildQaChip(
                 context,
                 label: "Empty State",
-                icon: Icons.inbox_rounded,
+                icon: AppIcons.inbox_rounded,
                 isActive: !provider.isDashboardLoading && !provider.isDashboardError && provider.jobs.isEmpty && provider.candidates.isEmpty,
                 onTap: () => provider.simulateEmpty(),
               ),
               _buildQaChip(
                 context,
                 label: "Network Error",
-                icon: Icons.wifi_off_rounded,
+                icon: AppIcons.wifi_off_rounded,
                 isActive: provider.isDashboardError,
                 onTap: () => provider.simulateError(),
               ),

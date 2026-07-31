@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -77,7 +78,7 @@ class _CreateNewPasswordContentState extends State<CreateNewPasswordContent> {
       child: Row(
         children: [
           Icon(
-            isValid ? Icons.check_circle : Icons.radio_button_unchecked,
+            isValid ? AppIcons.check_circle : AppIcons.radio_button_unchecked,
             size: 18,
             color: isValid ? Colors.green : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
@@ -110,7 +111,7 @@ class _CreateNewPasswordContentState extends State<CreateNewPasswordContent> {
               color: theme.colorScheme.surfaceContainerHighest,
             ),
             child: Icon(
-              Icons.arrow_back,
+              AppIcons.arrow_back,
               size: 20,
               color: theme.colorScheme.onSurfaceVariant,
             ),

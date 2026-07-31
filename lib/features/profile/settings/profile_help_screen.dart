@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -88,8 +89,8 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
             },
             icon: Icon(
               provider.isSupportHistoryEmpty
-                  ? Icons.confirmation_number_outlined
-                  : Icons.confirmation_number_rounded,
+                  ? AppIcons.confirmation_number_outlined
+                  : AppIcons.confirmation_number_rounded,
               color: provider.isSupportHistoryEmpty
                   ? theme.colorScheme.error
                   : theme.colorScheme.primary,
@@ -112,7 +113,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Enterprise Support Overview",
                   "Real-time SLA status, priority response times, and active ticket diagnostics.",
-                  Icons.support_agent_rounded,
+                  AppIcons.support_agent_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildSupportOverviewCard(context, provider),
@@ -123,7 +124,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Support Quick Actions",
                   "Connect instantly with priority recruiter specialists and community channels.",
-                  Icons.bolt_rounded,
+                  AppIcons.bolt_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildQuickActionsCard(context),
@@ -134,7 +135,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Knowledge Base Categories",
                   "Browse specialized documentation across all JobNest enterprise modules.",
-                  Icons.category_outlined,
+                  AppIcons.category_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildHelpCategoriesCard(context),
@@ -145,7 +146,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Frequently Asked Questions",
                   "Quick answers to common recruiter workflows and platform administration.",
-                  Icons.question_answer_outlined,
+                  AppIcons.question_answer_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildFaqSection(context),
@@ -156,7 +157,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Interactive Guides & Tutorials",
                   "Step-by-step masterclasses to maximize your talent acquisition velocity.",
-                  Icons.menu_book_rounded,
+                  AppIcons.menu_book_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildGuidesSection(context),
@@ -167,7 +168,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Support Ticket History",
                   "Track active enterprise inquiries, SLA status, and engineering resolutions.",
-                  Icons.confirmation_number_outlined,
+                  AppIcons.confirmation_number_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildSupportTicketsSection(context, provider),
@@ -178,7 +179,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Report a Problem",
                   "Submit priority support inquiries directly to our enterprise engineering desk.",
-                  Icons.bug_report_outlined,
+                  AppIcons.bug_report_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildReportProblemCard(context, provider),
@@ -189,7 +190,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Suggest a Feature Request",
                   "Share your vision to shape the future roadmap of JobNest Enterprise.",
-                  Icons.lightbulb_outline_rounded,
+                  AppIcons.lightbulb_outline_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildFeatureRequestCard(context),
@@ -200,7 +201,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Application & System Information",
                   "Version diagnostics, deployment environment, and build telemetry.",
-                  Icons.info_outline_rounded,
+                  AppIcons.info_outline_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildAppInfoCard(context),
@@ -211,7 +212,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Legal Agreements & Compliance",
                   "Review enterprise data privacy agreements, SOC2 compliance, and licensing.",
-                  Icons.gavel_outlined,
+                  AppIcons.gavel_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildLegalCard(context),
@@ -222,7 +223,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   theme,
                   "Rate JobNest Enterprise",
                   "Share your review on product review portals or refer fellow recruiters.",
-                  Icons.star_outline_rounded,
+                  AppIcons.star_outline_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildRateAppCard(context),
@@ -281,14 +282,14 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
         title: "Support Status",
         value: "24x7 Priority",
         subtitle: "Enterprise SLA Active",
-        icon: Icons.verified_user_rounded,
+        icon: AppIcons.verified_user_rounded,
         color: Colors.green,
       ),
       _OverviewMetric(
         title: "Avg Response Time",
         value: "< 15 Mins",
         subtitle: "Dedicated recruiter desk",
-        icon: Icons.timer_rounded,
+        icon: AppIcons.timer_rounded,
         color: Colors.blue,
       ),
       _OverviewMetric(
@@ -297,14 +298,14 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
         subtitle: provider.isSupportHistoryEmpty
             ? "No open support inquiries"
             : "Inquiries in progress",
-        icon: Icons.confirmation_number_rounded,
+        icon: AppIcons.confirmation_number_rounded,
         color: Colors.purple,
       ),
       _OverviewMetric(
         title: "Knowledge Base",
         value: "45+ Guides",
         subtitle: "Updated for v4.2 GA",
-        icon: Icons.auto_stories_rounded,
+        icon: AppIcons.auto_stories_rounded,
         color: Colors.amber.shade700,
       ),
     ];
@@ -372,14 +373,14 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
       _QuickActionItem(
         title: "Contact Support",
         subtitle: "Priority chat & helpline",
-        icon: Icons.headset_mic_rounded,
+        icon: AppIcons.headset_mic_rounded,
         color: Colors.blue,
         onTap: () => _showContactSupportSheet(context),
       ),
       _QuickActionItem(
         title: "Live Chat",
         subtitle: "Connect with specialist",
-        icon: Icons.chat_bubble_rounded,
+        icon: AppIcons.chat_bubble_rounded,
         color: Colors.green,
         onTap: () => _showFeedback(
             context, "Connecting to live enterprise chat specialist..."),
@@ -387,14 +388,14 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
       _QuickActionItem(
         title: "Raise Ticket",
         subtitle: "Submit formal inquiry",
-        icon: Icons.confirmation_number_rounded,
+        icon: AppIcons.confirmation_number_rounded,
         color: Colors.purple,
         onTap: () => _showContactSupportSheet(context),
       ),
       _QuickActionItem(
         title: "Email Support",
         subtitle: "support@jobnest.com",
-        icon: Icons.email_rounded,
+        icon: AppIcons.email_rounded,
         color: Colors.orange,
         onTap: () => _showFeedback(
             context, "Opening email client for enterprise-support@jobnest.com"),
@@ -402,7 +403,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
       _QuickActionItem(
         title: "Call Support",
         subtitle: "+1 (800) 555-NEST",
-        icon: Icons.phone_in_talk_rounded,
+        icon: AppIcons.phone_in_talk_rounded,
         color: Colors.teal,
         onTap: () => _showFeedback(
             context, "Calling priority helpline +1 (800) 555-NEST..."),
@@ -410,7 +411,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
       _QuickActionItem(
         title: "Community Forum",
         subtitle: "Peer recruiter network",
-        icon: Icons.forum_rounded,
+        icon: AppIcons.forum_rounded,
         color: Colors.indigo,
         onTap: () => _showFeedback(
             context, "Opening JobNest Enterprise Recruiter Community Forum"),
@@ -465,7 +466,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                         ],
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios_rounded,
+                    Icon(AppIcons.arrow_forward_ios_rounded,
                         size: 14,
                         color: Theme.of(context).colorScheme.onSurfaceVariant),
                   ],
@@ -498,7 +499,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
             runSpacing: 10,
             children: _helpCategories.map((category) {
               return ActionChip(
-                avatar: Icon(Icons.folder_open_rounded,
+                avatar: Icon(AppIcons.folder_open_rounded,
                     size: 16, color: theme.colorScheme.primary),
                 label: Text(
                   category,
@@ -578,7 +579,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                         .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(Icons.help_outline_rounded,
+                  child: Icon(AppIcons.help_outline_rounded,
                       color: Theme.of(context).colorScheme.primary, size: 20),
                 ),
                 title: Text(
@@ -657,7 +658,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                       color: Colors.indigo.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.menu_book_rounded,
+                    child: const Icon(AppIcons.menu_book_rounded,
                         color: Colors.indigo, size: 24),
                   ),
                   const SizedBox(width: 14),
@@ -705,7 +706,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_rounded, size: 18),
+                  const Icon(AppIcons.arrow_forward_rounded, size: 18),
                 ],
               ),
             ),
@@ -732,7 +733,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                 color: theme.colorScheme.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.confirmation_number_outlined,
+              child: Icon(AppIcons.confirmation_number_outlined,
                   size: 40, color: theme.colorScheme.primary),
             ),
             const SizedBox(height: 16),
@@ -754,7 +755,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
             const SizedBox(height: 24),
             FilledButton.icon(
               onPressed: () => _showContactSupportSheet(context),
-              icon: const Icon(Icons.headset_mic_rounded),
+              icon: const Icon(AppIcons.headset_mic_rounded),
               label: const Text("Contact Support"),
               style: FilledButton.styleFrom(
                 padding:
@@ -782,7 +783,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
               ),
               TextButton.icon(
                 onPressed: () => _showContactSupportSheet(context),
-                icon: const Icon(Icons.add_circle_outline_rounded, size: 16),
+                icon: const Icon(AppIcons.add_circle_outline_rounded, size: 16),
                 label: const Text("Raise New Ticket"),
               ),
             ],
@@ -956,7 +957,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
               value: _problemCategory,
               isExpanded: true,
               underline: const SizedBox(),
-              icon: const Icon(Icons.arrow_drop_down_rounded),
+              icon: const Icon(AppIcons.arrow_drop_down_rounded),
               items: _helpCategories
                   .map((c) => DropdownMenuItem(
                         value: c,
@@ -1017,7 +1018,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   );
                 },
                 icon: Icon(
-                    _hasAttachment ? Icons.check_circle_rounded : Icons.attach_file_rounded,
+                    _hasAttachment ? AppIcons.check_circle_rounded : AppIcons.attach_file_rounded,
                     size: 18,
                     color: _hasAttachment ? Colors.green : null),
                 label: Text(
@@ -1044,7 +1045,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   _showFeedback(
                       context, "Support ticket submitted successfully!");
                 },
-                icon: const Icon(Icons.send_rounded, size: 18),
+                icon: const Icon(AppIcons.send_rounded, size: 18),
                 label: const Text("Submit Support Report",
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 style: FilledButton.styleFrom(
@@ -1140,7 +1141,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                 _showFeedback(context,
                     "Feature request submitted to JobNest Engineering! Thank you.");
               },
-              icon: const Icon(Icons.lightbulb_rounded, size: 18),
+              icon: const Icon(AppIcons.lightbulb_rounded, size: 18),
               label: const Text("Submit Feature Suggestion",
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
@@ -1208,22 +1209,22 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
       {
         "title": "Privacy Policy & GDPR Compliance",
         "subtitle": "SOC2 Type II, GDPR, CCPA data protection protocols",
-        "icon": Icons.privacy_tip_outlined
+        "icon": AppIcons.privacy_tip_outlined
       },
       {
         "title": "Terms & Conditions (MSA)",
         "subtitle": "Enterprise Master Services Agreement and terms of use",
-        "icon": Icons.description_outlined
+        "icon": AppIcons.description_outlined
       },
       {
         "title": "Open Source Licenses",
         "subtitle": "Third-party software attributions and MIT/Apache 2.0 notices",
-        "icon": Icons.code_rounded
+        "icon": AppIcons.code_rounded
       },
       {
         "title": "About JobNest Inc.",
         "subtitle": "Corporate headquarters, leadership, and investor relations",
-        "icon": Icons.business_rounded
+        "icon": AppIcons.business_rounded
       },
     ];
 
@@ -1255,7 +1256,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
             subtitle: Text(item["subtitle"] as String,
                 style: TextStyle(
                     fontSize: 12, color: theme.colorScheme.onSurfaceVariant)),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+            trailing: const Icon(AppIcons.arrow_forward_ios_rounded, size: 16),
             onTap: () {
               _showLegalSheet(context, item["title"] as String);
             },
@@ -1297,7 +1298,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   _showFeedback(context, "Rated JobNest $starNum stars!");
                 },
                 icon: Icon(
-                  isLit ? Icons.star_rounded : Icons.star_outline_rounded,
+                  isLit ? AppIcons.star_rounded : AppIcons.star_outline_rounded,
                   color: Colors.amber.shade700,
                   size: 36,
                 ),
@@ -1315,7 +1316,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   _showFeedback(context,
                       "Opening app review portal (Thank you for your review!)");
                 },
-                icon: const Icon(Icons.rate_review_rounded, size: 18),
+                icon: const Icon(AppIcons.rate_review_rounded, size: 18),
                 label: const Text("Write an Enterprise Review"),
               ),
               OutlinedButton.icon(
@@ -1323,7 +1324,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   _showFeedback(context,
                       "Copied JobNest Enterprise referral link to clipboard!");
                 },
-                icon: const Icon(Icons.share_rounded, size: 18),
+                icon: const Icon(AppIcons.share_rounded, size: 18),
                 label: const Text("Share App with Team"),
               ),
             ],
@@ -1353,11 +1354,11 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
         child: Column(
           children: [
             ListTile(
-              leading: const Icon(Icons.article_outlined, color: Colors.blue),
+              leading: const Icon(AppIcons.article_outlined, color: Colors.blue),
               title: Text("Best practices for $category in v4.2",
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               subtitle: const Text("Updated 3 days ago • Enterprise Guide"),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+              trailing: const Icon(AppIcons.arrow_forward_ios_rounded, size: 14),
               onTap: () {
                 Navigator.pop(ctx);
                 _showArticleDialog(context, "Best practices for $category in v4.2", category);
@@ -1365,11 +1366,11 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
             ),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.article_outlined, color: Colors.purple),
+              leading: const Icon(AppIcons.article_outlined, color: Colors.purple),
               title: Text("Troubleshooting common $category errors",
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               subtitle: const Text("Updated 1 week ago • Technical Reference"),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+              trailing: const Icon(AppIcons.arrow_forward_ios_rounded, size: 14),
               onTap: () {
                 Navigator.pop(ctx);
                 _showArticleDialog(context, "Troubleshooting common $category errors", category);
@@ -1377,11 +1378,11 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
             ),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.article_outlined, color: Colors.green),
+              leading: const Icon(AppIcons.article_outlined, color: Colors.green),
               title: Text("Automating $category workflows with AI",
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               subtitle: const Text("Updated yesterday • Advanced Tutorial"),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+              trailing: const Icon(AppIcons.arrow_forward_ios_rounded, size: 14),
               onTap: () {
                 Navigator.pop(ctx);
                 _showArticleDialog(context, "Automating $category workflows with AI", category);
@@ -1400,7 +1401,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
       builder: (ctx) => AlertDialog(
         title: Row(
           children: [
-            const Icon(Icons.menu_book_rounded, color: Colors.indigo),
+            const Icon(AppIcons.menu_book_rounded, color: Colors.indigo),
             const SizedBox(width: 10),
             Expanded(child: Text(title)),
           ],
@@ -1442,7 +1443,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
               Navigator.pop(ctx);
               _showFeedback(context, "Bookmarked '$title' to your reading list!");
             },
-            icon: const Icon(Icons.bookmark_add_rounded, size: 16),
+            icon: const Icon(AppIcons.bookmark_add_rounded, size: 16),
             label: const Text("Bookmark Article"),
           ),
         ],
@@ -1460,7 +1461,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
         child: Column(
           children: [
             ListTile(
-              leading: const Icon(Icons.email_rounded, color: Colors.blueAccent),
+              leading: const Icon(AppIcons.email_rounded, color: Colors.blueAccent),
               title: const Text("Email Priority Desk",
                   style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: const Text("enterprise-support@jobnest.com"),
@@ -1475,7 +1476,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
             const Divider(),
             ListTile(
               leading:
-                  const Icon(Icons.phone_in_talk_rounded, color: Colors.green),
+                  const Icon(AppIcons.phone_in_talk_rounded, color: Colors.green),
               title: const Text("24/7 Telephone Helpline",
                   style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: const Text("+1 (800) 555-NEST • Global Recruiter Desk"),
@@ -1490,7 +1491,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
             const Divider(),
             ListTile(
               leading:
-                  const Icon(Icons.chat_bubble_rounded, color: Colors.purpleAccent),
+                  const Icon(AppIcons.chat_bubble_rounded, color: Colors.purpleAccent),
               title: const Text("Live Specialist Chat",
                   style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle:
@@ -1523,7 +1524,7 @@ class _ProfileHelpScreenState extends State<ProfileHelpScreen> {
                   _showFeedback(
                       context, "Connecting to live support specialist... (Dummy)");
                 },
-                icon: const Icon(Icons.chat_rounded),
+                icon: const Icon(AppIcons.chat_rounded),
                 label: const Text("Start Live Chat Now",
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ),
@@ -1658,7 +1659,7 @@ class _BottomSheetContainer extends StatelessWidget {
                             ?.copyWith(fontWeight: FontWeight.bold)),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close_rounded),
+                    icon: const Icon(AppIcons.close_rounded),
                     constraints:
                         const BoxConstraints(minWidth: 48, minHeight: 48),
                     onPressed: () => Navigator.pop(context),

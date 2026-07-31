@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
@@ -108,7 +109,7 @@ class ProfileHeader extends StatelessWidget {
                     label: isBookmarked ? "Remove Bookmark" : "Bookmark Candidate",
                     button: true,
                     child: CandidateIconButton(
-                      icon: isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                      icon: isBookmarked ? AppIcons.bookmark_rounded : AppIcons.bookmark_border_rounded,
                       onTap: onBookmarkTap ?? () {},
                       iconColor: isBookmarked ? theme.colorScheme.primary : null,
                       constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
@@ -119,7 +120,7 @@ class ProfileHeader extends StatelessWidget {
                     label: "Share Candidate Profile",
                     button: true,
                     child: CandidateIconButton(
-                      icon: Icons.share_rounded,
+                      icon: AppIcons.share_rounded,
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Profile link copied to clipboard for $name.")),
@@ -133,7 +134,7 @@ class ProfileHeader extends StatelessWidget {
                     label: "More Options",
                     button: true,
                     child: CandidateIconButton(
-                      icon: Icons.more_vert_rounded,
+                      icon: AppIcons.more_vert_rounded,
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Additional enterprise options...")),
@@ -151,10 +152,10 @@ class ProfileHeader extends StatelessWidget {
             spacing: 16,
             runSpacing: 12,
             children: [
-              _buildInfoChip(context, Icons.event_available_rounded, "Immediate Joiner / 15 Days"),
-              _buildInfoChip(context, Icons.account_balance_wallet_rounded, "Expected Salary: $salary"),
-              _buildInfoChip(context, Icons.star_rounded, "Rating: ${candidate?.rating ?? 4.8} / 5.0", color: Colors.amber.shade700),
-              _buildInfoChip(context, Icons.work_history_rounded, "Stage: $stage", color: theme.colorScheme.primary),
+              _buildInfoChip(context, AppIcons.event_available_rounded, "Immediate Joiner / 15 Days"),
+              _buildInfoChip(context, AppIcons.account_balance_wallet_rounded, "Expected Salary: $salary"),
+              _buildInfoChip(context, AppIcons.star_rounded, "Rating: ${candidate?.rating ?? 4.8} / 5.0", color: Colors.amber.shade700),
+              _buildInfoChip(context, AppIcons.work_history_rounded, "Stage: $stage", color: theme.colorScheme.primary),
             ],
           ),
         ],

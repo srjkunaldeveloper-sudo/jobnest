@@ -1,5 +1,10 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
+import 'package:jobnest/core/widgets/app_chip.dart';
 
 class EmployeeManagementScreen extends StatelessWidget {
   const EmployeeManagementScreen({super.key});
@@ -10,23 +15,15 @@ class EmployeeManagementScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: Employee list backend se fetch hogi.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("Employee Management"),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return AppPageScaffold(
+      title: "Employee Management",
+      body: SingleChildScrollView(
+        padding: AppSpacing.edgeInsetsAll24,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
                 _buildOverviewMetrics(context),
-                const SizedBox(height: 32),
+                AppSpacing.h32,
                 
                 Row(
                   children: [
@@ -42,15 +39,15 @@ class EmployeeManagementScreen extends StatelessWidget {
                           decoration: InputDecoration(
                             hintText: "Search Employees...",
                             border: InputBorder.none,
-                            icon: Icon(Icons.search_rounded, color: theme.colorScheme.primary),
+                            icon: Icon(AppIcons.search_rounded, color: theme.colorScheme.primary),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    AppSpacing.w16,
                     OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.filter_list_rounded, size: 18),
+                      icon: const Icon(AppIcons.filter_list_rounded, size: 18),
                       label: const Text("Filters"),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -59,32 +56,30 @@ class EmployeeManagementScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                AppSpacing.h16,
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
                       _buildChip(context, "All", true),
-                      const SizedBox(width: 8),
+                      AppSpacing.w8,
                       _buildChip(context, "Engineering", false),
-                      const SizedBox(width: 8),
+                      AppSpacing.w8,
                       _buildChip(context, "HR & Admin", false),
-                      const SizedBox(width: 8),
+                      AppSpacing.w8,
                       _buildChip(context, "Sales", false),
-                      const SizedBox(width: 8),
+                      AppSpacing.w8,
                       _buildChip(context, "Marketing", false),
                     ],
                   ),
                 ),
-                const SizedBox(height: 32),
+                AppSpacing.h32,
                 
                 Text(
                   "Employee Directory",
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppText.h3,
                 ),
-                const SizedBox(height: 16),
+                AppSpacing.h16,
                 
                 _buildEmployeeCard(
                   context,
@@ -95,7 +90,7 @@ class EmployeeManagementScreen extends StatelessWidget {
                   status: "Active",
                   color: Colors.green,
                 ),
-                const SizedBox(height: 16),
+                AppSpacing.h16,
                 _buildEmployeeCard(
                   context,
                   name: "Priya Singh",
@@ -105,7 +100,7 @@ class EmployeeManagementScreen extends StatelessWidget {
                   status: "On Leave",
                   color: Colors.orange,
                 ),
-                const SizedBox(height: 16),
+                AppSpacing.h16,
                 _buildEmployeeCard(
                   context,
                   name: "Amit Patel",
@@ -115,12 +110,10 @@ class EmployeeManagementScreen extends StatelessWidget {
                   status: "Active",
                   color: Colors.green,
                 ),
-                const SizedBox(height: 48),
+                AppSpacing.h48,
               ],
             ),
           ),
-        ),
-      ),
     );
   }
 
@@ -128,15 +121,15 @@ class EmployeeManagementScreen extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _buildMetricCard(context, "Total Employees", "124", Icons.people_rounded, Colors.blueAccent),
+          child: _buildMetricCard(context, "Total Employees", "124", AppIcons.people_rounded, Colors.blueAccent),
         ),
-        const SizedBox(width: 16),
+        AppSpacing.w16,
         Expanded(
-          child: _buildMetricCard(context, "New Joinees (Month)", "8", Icons.person_add_rounded, Colors.green),
+          child: _buildMetricCard(context, "New Joinees (Month)", "8", AppIcons.person_add_rounded, Colors.green),
         ),
-        const SizedBox(width: 16),
+        AppSpacing.w16,
         Expanded(
-          child: _buildMetricCard(context, "On Leave Today", "3", Icons.event_busy_rounded, Colors.orange),
+          child: _buildMetricCard(context, "On Leave Today", "3", AppIcons.event_busy_rounded, Colors.orange),
         ),
       ],
     );
@@ -145,7 +138,7 @@ class EmployeeManagementScreen extends StatelessWidget {
   Widget _buildMetricCard(BuildContext context, String title, String value, IconData icon, Color color) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(20),
+      padding: AppSpacing.edgeInsetsAll24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -162,17 +155,15 @@ class EmployeeManagementScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           Text(
             value,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppText.h1,
           ),
-          const SizedBox(height: 4),
+          AppSpacing.h4,
           Text(
             title,
-            style: theme.textTheme.labelMedium?.copyWith(
+            style: AppText.label.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -182,24 +173,11 @@ class EmployeeManagementScreen extends StatelessWidget {
   }
 
   Widget _buildChip(BuildContext context, String label, bool isSelected) {
-    final theme = Theme.of(context);
-    return ChoiceChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (_) {},
-      showCheckmark: false,
-      backgroundColor: theme.colorScheme.surface,
-      selectedColor: theme.colorScheme.primaryContainer,
-      labelStyle: theme.textTheme.labelMedium?.copyWith(
-        color: isSelected ? theme.colorScheme.onPrimaryContainer : theme.colorScheme.onSurface,
-        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(
-          color: isSelected ? theme.colorScheme.primary : theme.dividerColor,
-        ),
-      ),
+    return AppChip(
+      label: label,
+      type: AppChipType.filter,
+      isSelected: isSelected,
+      onSelected: () {},
     );
   }
 
@@ -214,7 +192,7 @@ class EmployeeManagementScreen extends StatelessWidget {
   }) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(20),
+      padding: AppSpacing.edgeInsetsAll24,
       child: Column(
         children: [
           Row(
@@ -224,25 +202,24 @@ class EmployeeManagementScreen extends StatelessWidget {
                 backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
                 child: Text(
                   name[0],
-                  style: theme.textTheme.titleLarge?.copyWith(
+                  style: AppText.h3.copyWith(
                     color: theme.colorScheme.primary,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              AppSpacing.w16,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       name,
-                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: AppText.h3.copyWith(fontSize: 16),
                     ),
-                    const SizedBox(height: 4),
+                    AppSpacing.h4,
                     Text(
                       designation,
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: AppText.bodyMedium.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
@@ -291,17 +268,17 @@ class EmployeeManagementScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.remove_red_eye_outlined, size: 20),
+                    icon: const Icon(AppIcons.remove_red_eye_outlined, size: 20),
                     tooltip: "View",
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.edit_outlined, size: 20),
+                    icon: const Icon(AppIcons.edit_outlined, size: 20),
                     tooltip: "Edit",
                   ),
                   OutlinedButton.icon(
                     onPressed: () {},
-                    icon: const Icon(Icons.add_task_rounded, size: 16),
+                    icon: const Icon(AppIcons.add_task_rounded, size: 16),
                     label: const Text("Task"),
                   ),
                 ],

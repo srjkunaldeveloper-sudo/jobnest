@@ -1,3 +1,5 @@
+import '../../../core/constants/app_icons.dart';
+import '../../../core/widgets/app_searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,84 +51,13 @@ class _JobsSearchAndFiltersState extends State<JobsSearchAndFilters> {
           // Search Field (Instant Local Filtering)
           // ===== BACKEND TODO =====
           // TODO: Search API connect karni hai (Debounce logic required).
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: theme.dividerColor.withValues(alpha: 0.5),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.shadowColor.withValues(alpha: 0.02),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                )
-              ],
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.search_rounded, color: theme.colorScheme.onSurfaceVariant),
-                AppSpacing.w12,
-                Expanded(
-                  child: Semantics(
-                    label: "Search Requisitions by title, location, or skill",
-                    textField: true,
-                    child: TextField(
-                      controller: _controller,
-                      onChanged: (val) => filterProvider.setSearchQuery(val),
-                      decoration: InputDecoration(
-                        hintText: "Search jobs, locations, skills...",
-                        hintStyle: TextStyle(
-                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                          fontSize: 14,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-                if (_controller.text.isNotEmpty)
-                  Semantics(
-                    label: "Clear Search Query",
-                    button: true,
-                    child: IconButton(
-                      icon: Icon(Icons.close_rounded, size: 18, color: theme.colorScheme.onSurfaceVariant),
-                      onPressed: () {
-                        _controller.clear();
-                        filterProvider.setSearchQuery("");
-                      },
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                      splashRadius: 20,
-                    ),
-                  ),
-                AppSpacing.w12,
-                Container(
-                  width: 1,
-                  height: 24,
-                  color: theme.dividerColor,
-                ),
-                AppSpacing.w12,
-                Semantics(
-                  label: "Voice Search (Beta)",
-                  button: true,
-                  child: IconButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Listening for ATS voice query... (Beta)")),
-                      );
-                    },
-                    icon: Icon(Icons.mic_none_rounded, color: theme.colorScheme.primary),
-                    constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                    splashRadius: 24,
-                  ),
-                ),
-              ],
-            ),
+          AppSearchBar(
+            controller: _controller,
+            onChanged: filterProvider.setSearchQuery,
+            onClear: () => filterProvider.setSearchQuery(""),
+            hintText: "Search jobs, locations...",
           ),
-          AppSpacing.h16,
+          const SizedBox(height: 16),
           // Filters and Sorting
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -182,7 +113,7 @@ class _JobsSearchAndFiltersState extends State<JobsSearchAndFilters> {
             child: Row(
               children: [
                 Icon(
-                  isSelected ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded,
+                  isSelected ? AppIcons.radio_button_checked_rounded : AppIcons.radio_button_unchecked_rounded,
                   size: 18,
                   color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
                 ),
@@ -216,7 +147,7 @@ class _JobsSearchAndFiltersState extends State<JobsSearchAndFilters> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                Icons.sort_rounded,
+                AppIcons.sort_rounded,
                 size: 16,
                 color: filterProvider.selectedSort != "Newest" ? theme.colorScheme.primary : theme.colorScheme.onSurface,
               ),
@@ -230,7 +161,7 @@ class _JobsSearchAndFiltersState extends State<JobsSearchAndFilters> {
               ),
               const SizedBox(width: 4),
               Icon(
-                Icons.keyboard_arrow_down_rounded,
+                AppIcons.keyboard_arrow_down_rounded,
                 size: 16,
                 color: filterProvider.selectedSort != "Newest" ? theme.colorScheme.primary : theme.colorScheme.onSurface,
               ),
@@ -264,7 +195,7 @@ class _JobsSearchAndFiltersState extends State<JobsSearchAndFilters> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.refresh_rounded, size: 14, color: theme.colorScheme.error),
+                Icon(AppIcons.refresh_rounded, size: 14, color: theme.colorScheme.error),
                 const SizedBox(width: 6),
                 Text(
                   "Clear All",
@@ -296,16 +227,17 @@ class _JobsSearchAndFiltersState extends State<JobsSearchAndFilters> {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(999),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            height: 34,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               color: isSelected ? theme.colorScheme.primary : theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(999),
               border: Border.all(
                 color: isSelected ? theme.colorScheme.primary : theme.dividerColor.withValues(alpha: 0.5),
-                width: isSelected ? 1.5 : 1.0,
+                width: 1.0,
               ),
               boxShadow: isSelected
                   ? [
@@ -317,12 +249,18 @@ class _JobsSearchAndFiltersState extends State<JobsSearchAndFilters> {
                     ]
                   : null,
             ),
-            child: Text(
-              label,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: isSelected ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontSize: 13,
+                    color: isSelected ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

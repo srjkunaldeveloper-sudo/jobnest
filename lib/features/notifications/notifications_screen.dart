@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -294,7 +295,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           button: true,
           child: IconButton(
             tooltip: "Mark All Read",
-            icon: const Icon(Icons.done_all_rounded),
+            icon: const Icon(AppIcons.done_all_rounded),
             constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
             onPressed: hasUnread ? () => _markAllAsRead(provider) : null,
           ),
@@ -304,7 +305,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           button: true,
           child: PopupMenuButton<String>(
             tooltip: "More Options",
-            icon: const Icon(Icons.more_vert_rounded),
+            icon: const Icon(AppIcons.more_vert_rounded),
             constraints: const BoxConstraints(minWidth: 48),
             onSelected: (value) {
               if (value == "settings") {
@@ -333,7 +334,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 value: "settings",
                 child: Row(
                   children: [
-                    Icon(Icons.settings_outlined, size: 20),
+                    Icon(AppIcons.settings_outlined, size: 20),
                     SizedBox(width: 12),
                     Text("Notification Settings"),
                   ],
@@ -345,7 +346,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   value: "simulate_alert",
                   child: Row(
                     children: [
-                      Icon(Icons.add_alert_outlined, size: 20, color: Colors.teal),
+                      Icon(AppIcons.add_alert_outlined, size: 20, color: Colors.teal),
                       SizedBox(width: 12),
                       Text("QA: Simulate New Alert", style: TextStyle(color: Colors.teal)),
                     ],
@@ -355,7 +356,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   value: "simulate_loading",
                   child: Row(
                     children: [
-                      Icon(Icons.hourglass_empty_rounded, size: 20, color: Colors.blue),
+                      Icon(AppIcons.hourglass_empty_rounded, size: 20, color: Colors.blue),
                       SizedBox(width: 12),
                       Text("QA: Loading Skeleton", style: TextStyle(color: Colors.blue)),
                     ],
@@ -365,7 +366,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   value: "simulate_error",
                   child: Row(
                     children: [
-                      Icon(Icons.error_outline_rounded, size: 20, color: Colors.orange),
+                      Icon(AppIcons.error_outline_rounded, size: 20, color: Colors.orange),
                       SizedBox(width: 12),
                       Text("QA: Error State", style: TextStyle(color: Colors.orange)),
                     ],
@@ -375,7 +376,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   value: "simulate_empty",
                   child: Row(
                     children: [
-                      Icon(Icons.inbox_outlined, size: 20, color: Colors.purple),
+                      Icon(AppIcons.inbox_outlined, size: 20, color: Colors.purple),
                       SizedBox(width: 12),
                       Text("QA: Empty State", style: TextStyle(color: Colors.purple)),
                     ],
@@ -385,7 +386,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   value: "restore",
                   child: Row(
                     children: [
-                      Icon(Icons.restore_rounded, size: 20, color: Colors.green),
+                      Icon(AppIcons.restore_rounded, size: 20, color: Colors.green),
                       SizedBox(width: 12),
                       Text("QA: Restore Defaults", style: TextStyle(color: Colors.green)),
                     ],
@@ -397,7 +398,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 value: "clear_all",
                 child: Row(
                   children: [
-                    Icon(Icons.delete_sweep_outlined, size: 20, color: Colors.red),
+                    Icon(AppIcons.delete_sweep_outlined, size: 20, color: Colors.red),
                     SizedBox(width: 12),
                     Text("Clear All", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600)),
                   ],
@@ -421,7 +422,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       backgroundColor: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
       elevation: 0,
       leading: IconButton(
-        icon: const Icon(Icons.close_rounded),
+        icon: const Icon(AppIcons.close_rounded),
         tooltip: "Clear Selection",
         constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
         onPressed: () {
@@ -444,7 +445,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           button: true,
           child: IconButton(
             tooltip: allSelected ? "Deselect All" : "Select All",
-            icon: Icon(allSelected ? Icons.deselect_rounded : Icons.select_all_rounded, color: theme.colorScheme.primary),
+            icon: Icon(allSelected ? AppIcons.deselect_rounded : AppIcons.select_all_rounded, color: theme.colorScheme.primary),
             constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
             onPressed: () {
               setState(() {
@@ -463,7 +464,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           button: true,
           child: IconButton(
             tooltip: "Mark Selected Read",
-            icon: Icon(Icons.mark_email_read_rounded, color: theme.colorScheme.primary),
+            icon: Icon(AppIcons.mark_email_read_rounded, color: theme.colorScheme.primary),
             constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
             onPressed: _selectedIds.isNotEmpty ? () => _markSelectedAsRead(provider) : null,
           ),
@@ -473,7 +474,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           button: true,
           child: IconButton(
             tooltip: "Delete Selected",
-            icon: const Icon(Icons.delete_outline_rounded, color: Colors.red),
+            icon: const Icon(AppIcons.delete_outline_rounded, color: Colors.red),
             constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
             onPressed: _selectedIds.isNotEmpty ? () => _deleteSelected(provider) : null,
           ),
@@ -559,7 +560,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       message: "An unexpected network error occurred while syncing your recruitment activities. Please check your connection and try again.",
       primaryButtonText: "Retry",
       onRetry: () => provider.refreshNotifications(),
-      iconData: Icons.error_outline_rounded,
+      iconData: AppIcons.error_outline_rounded,
     );
   }
 
@@ -578,8 +579,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
               child: Icon(
                 _selectedFilter == "Unread"
-                    ? Icons.done_all_rounded
-                    : Icons.notifications_off_outlined,
+                    ? AppIcons.done_all_rounded
+                    : AppIcons.notifications_off_outlined,
                 size: 64,
                 color: theme.colorScheme.primary,
               ),
@@ -613,7 +614,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   height: 48,
                   child: FilledButton.icon(
                     onPressed: () => provider.refreshNotifications(),
-                    icon: const Icon(Icons.refresh_rounded),
+                    icon: const Icon(AppIcons.refresh_rounded),
                     label: const Text("Refresh", style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ),
@@ -747,7 +748,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ),
                 const Spacer(),
                 Icon(
-                  isExpanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                  isExpanded ? AppIcons.expand_less_rounded : AppIcons.expand_more_rounded,
                   color: theme.colorScheme.onSurfaceVariant,
                   size: 20,
                 ),

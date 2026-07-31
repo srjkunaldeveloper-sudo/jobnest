@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -10,10 +11,10 @@ class JobsHeader extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
+      padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start, // Align to start
         children: [
           Expanded(
             child: Column(
@@ -22,48 +23,39 @@ class JobsHeader extends StatelessWidget {
                 Text(
                   "Jobs",
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.5,
+                    fontSize: 30, // 30px size
+                    fontWeight: FontWeight.w700, // 700 weight
+                    letterSpacing: -0.4,
+                    height: 1.1,
                   ),
                 ),
-                AppSpacing.h4,
+                const SizedBox(height: 6), // 6px gap
                 Text(
-                  "Manage and track all active job openings.",
+                  "Track and manage your hiring pipeline.",
+                  maxLines: 2, // Max 2 lines
+                  overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    height: 1.4,
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8), // Muted text color
                   ),
                 ),
               ],
             ),
           ),
-          Row(
-            children: [
-              _buildIconButton(context, Icons.search_rounded, () {}),
-              AppSpacing.w8,
-              _buildIconButton(context, Icons.tune_rounded, () {}),
-              AppSpacing.w8,
-              _buildIconButton(context, Icons.more_vert_rounded, () {}),
-            ],
+          // Small ghost overflow menu button
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(
+              icon: Icon(AppIcons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurface),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              splashRadius: 20,
+              onPressed: () {},
+            ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildIconButton(BuildContext context, IconData icon, VoidCallback onTap) {
-    final theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.5),
-        ),
-      ),
-      child: IconButton(
-        icon: Icon(icon, size: 20, color: theme.colorScheme.onSurface),
-        onPressed: onTap,
-        splashRadius: 20,
       ),
     );
   }

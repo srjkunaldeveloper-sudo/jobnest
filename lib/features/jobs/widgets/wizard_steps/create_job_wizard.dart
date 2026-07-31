@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -66,7 +67,7 @@ class CreateJobWizard extends StatelessWidget {
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded),
+          icon: const Icon(AppIcons.close_rounded),
           onPressed: () {
             Navigator.pop(context);
           },

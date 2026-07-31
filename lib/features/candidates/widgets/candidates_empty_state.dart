@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 
@@ -19,7 +20,7 @@ class CandidatesEmptyState extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 64.0, horizontal: 16.0),
         child: Column(
           children: [
-            Icon(Icons.inbox_rounded, size: 80, color: theme.dividerColor),
+            Icon(AppIcons.inbox_rounded, size: 80, color: theme.dividerColor),
             AppSpacing.h16,
             Text(
               "No candidates found.",
@@ -42,13 +43,13 @@ class CandidatesEmptyState extends StatelessWidget {
               children: [
                 OutlinedButton.icon(
                   onPressed: onClearFilters,
-                  icon: const Icon(Icons.refresh_rounded, size: 18),
+                  icon: const Icon(AppIcons.refresh_rounded, size: 18),
                   label: const Text("Clear Filters"),
                 ),
                 AppSpacing.w12,
                 ElevatedButton.icon(
                   onPressed: onAddDummyCandidate,
-                  icon: const Icon(Icons.person_add_rounded, size: 18),
+                  icon: const Icon(AppIcons.person_add_rounded, size: 18),
                   label: const Text("Add Dummy Candidate"),
                 ),
               ],

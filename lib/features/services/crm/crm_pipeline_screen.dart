@@ -1,5 +1,9 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
 
 class CrmPipelineScreen extends StatelessWidget {
   const CrmPipelineScreen({super.key});
@@ -10,24 +14,19 @@ class CrmPipelineScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: Pipeline data CRM backend se load hogi.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("Hiring Pipeline"),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add_rounded),
-            tooltip: "New Deal",
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
+    return AppPageScaffold(
+      title: "Hiring Pipeline",
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(AppIcons.add_rounded),
+          tooltip: "New Deal",
+        ),
+        AppSpacing.w8,
+      ],
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(24.0),
+        padding: AppSpacing.edgeInsetsAll24,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -42,7 +41,7 @@ class CrmPipelineScreen extends StatelessWidget {
                 _buildDealCard(context, "Beta LLC - Manager", "\$12,000", "Medium", Colors.orange),
               ],
             ),
-            const SizedBox(width: 24),
+            AppSpacing.w24,
             _buildKanbanColumn(
               context,
               title: "Discussion",
@@ -53,7 +52,7 @@ class CrmPipelineScreen extends StatelessWidget {
                 _buildDealCard(context, "Delta Corp - HR", "\$5,000", "Low", Colors.green),
               ],
             ),
-            const SizedBox(width: 24),
+            AppSpacing.w24,
             _buildKanbanColumn(
               context,
               title: "Req. Received",
@@ -63,7 +62,7 @@ class CrmPipelineScreen extends StatelessWidget {
                 _buildDealCard(context, "Omega - Data Scientist", "\$22,000", "High", Colors.redAccent),
               ],
             ),
-            const SizedBox(width: 24),
+            AppSpacing.w24,
             _buildKanbanColumn(
               context,
               title: "Interview Running",
@@ -74,7 +73,7 @@ class CrmPipelineScreen extends StatelessWidget {
                 _buildDealCard(context, "Epsilon - QA", "\$9,000", "Low", Colors.green),
               ],
             ),
-            const SizedBox(width: 24),
+            AppSpacing.w24,
             _buildKanbanColumn(
               context,
               title: "Offer",
@@ -84,7 +83,7 @@ class CrmPipelineScreen extends StatelessWidget {
                 _buildDealCard(context, "Zeta - PM", "\$16,000", "Medium", Colors.orange),
               ],
             ),
-            const SizedBox(width: 24),
+            AppSpacing.w24,
             _buildKanbanColumn(
               context,
               title: "Closed",
@@ -125,10 +124,10 @@ class CrmPipelineScreen extends StatelessWidget {
                       height: 12,
                       decoration: BoxDecoration(color: color, shape: BoxShape.circle),
                     ),
-                    const SizedBox(width: 12),
+                    AppSpacing.w12,
                     Text(
                       title,
-                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: AppText.h3.copyWith(fontSize: 16),
                     ),
                   ],
                 ),
@@ -140,7 +139,7 @@ class CrmPipelineScreen extends StatelessWidget {
                   ),
                   child: Text(
                     count,
-                    style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: AppText.label.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -164,7 +163,7 @@ class CrmPipelineScreen extends StatelessWidget {
   Widget _buildDealCard(BuildContext context, String title, String value, String priority, Color priorityColor) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.edgeInsetsAll16,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -179,28 +178,27 @@ class CrmPipelineScreen extends StatelessWidget {
                 ),
                 child: Text(
                   priority,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: AppText.labelSmall.copyWith(
                     color: priorityColor,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              Icon(Icons.more_horiz_rounded, size: 16, color: theme.colorScheme.onSurfaceVariant),
+              Icon(AppIcons.more_horiz_rounded, size: 16, color: theme.colorScheme.onSurfaceVariant),
             ],
           ),
-          const SizedBox(height: 12),
+          AppSpacing.h12,
           Text(
             title,
-            style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: AppText.h3.copyWith(fontSize: 14),
           ),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           Row(
             children: [
-              Icon(Icons.monetization_on_rounded, size: 16, color: Colors.green.shade600),
-              const SizedBox(width: 4),
+              Icon(AppIcons.monetization_on_rounded, size: 16, color: Colors.green.shade600),
+              AppSpacing.w4,
               Text(
                 value,
-                style: theme.textTheme.labelLarge?.copyWith(
+                style: AppText.label.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.green.shade600,
                 ),

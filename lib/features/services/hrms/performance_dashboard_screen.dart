@@ -1,5 +1,9 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
 
 class PerformanceDashboardScreen extends StatelessWidget {
   const PerformanceDashboardScreen({super.key});
@@ -10,23 +14,15 @@ class PerformanceDashboardScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: Performance metrics backend analytics se aayenge.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("Performance Dashboard"),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return AppPageScaffold(
+      title: "Performance Dashboard",
+      body: SingleChildScrollView(
+        padding: AppSpacing.edgeInsetsAll24,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
                 _buildOverviewCard(context),
-                const SizedBox(height: 32),
+                AppSpacing.h32,
                 
                 LayoutBuilder(
                   builder: (context, constraints) {
@@ -39,15 +35,15 @@ class PerformanceDashboardScreen extends StatelessWidget {
                       mainAxisSpacing: 16,
                       childAspectRatio: 1.5,
                       children: [
-                        _buildMetricCard(context, "Completed Tasks", "45", Icons.task_alt_rounded, Colors.green),
-                        _buildMetricCard(context, "Attendance %", "96%", Icons.calendar_month_rounded, Colors.blueAccent),
-                        _buildMetricCard(context, "Productivity", "8.5/10", Icons.speed_rounded, Colors.orange),
-                        _buildMetricCard(context, "Monthly Rating", "A-", Icons.star_rounded, Colors.purpleAccent),
+                        _buildMetricCard(context, "Completed Tasks", "45", AppIcons.task_alt_rounded, Colors.green),
+                        _buildMetricCard(context, "Attendance %", "96%", AppIcons.calendar_month_rounded, Colors.blueAccent),
+                        _buildMetricCard(context, "Productivity", "8.5/10", AppIcons.speed_rounded, Colors.orange),
+                        _buildMetricCard(context, "Monthly Rating", "A-", AppIcons.star_rounded, Colors.purpleAccent),
                       ],
                     );
                   }
                 ),
-                const SizedBox(height: 32),
+                AppSpacing.h32,
                 
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,18 +52,16 @@ class PerformanceDashboardScreen extends StatelessWidget {
                       flex: 2,
                       child: _buildGoalProgressCard(context),
                     ),
-                    const SizedBox(width: 24),
+                    AppSpacing.w24,
                     Expanded(
                       child: _buildTopPerformersCard(context),
                     ),
                   ],
                 ),
-                const SizedBox(height: 48),
+                AppSpacing.h48,
               ],
             ),
           ),
-        ),
-      ),
     );
   }
 
@@ -83,12 +77,12 @@ class PerformanceDashboardScreen extends StatelessWidget {
             children: [
               Text(
                 "Company Performance",
-                style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: AppText.h2,
               ),
-              const SizedBox(height: 8),
+              AppSpacing.h8,
               Text(
                 "Q3 2026 Analytics",
-                style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                style: AppText.bodyMedium.copyWith(color: theme.colorScheme.onSurfaceVariant),
               ),
             ],
           ),
@@ -107,7 +101,7 @@ class PerformanceDashboardScreen extends StatelessWidget {
               ),
               Text(
                 "88%",
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: AppText.h3,
               ),
             ],
           ),
@@ -119,7 +113,7 @@ class PerformanceDashboardScreen extends StatelessWidget {
   Widget _buildMetricCard(BuildContext context, String title, String value, IconData icon, Color color) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.edgeInsetsAll16,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -127,11 +121,11 @@ class PerformanceDashboardScreen extends StatelessWidget {
           Row(
             children: [
               Icon(icon, color: color, size: 24),
-              const SizedBox(width: 8),
+              AppSpacing.w8,
               Expanded(
                 child: Text(
                   title,
-                  style: theme.textTheme.labelMedium?.copyWith(
+                  style: AppText.label.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                   maxLines: 1,
@@ -143,9 +137,7 @@ class PerformanceDashboardScreen extends StatelessWidget {
           const Spacer(),
           Text(
             value,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppText.h1,
           ),
         ],
       ),
@@ -155,19 +147,19 @@ class PerformanceDashboardScreen extends StatelessWidget {
   Widget _buildGoalProgressCard(BuildContext context) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(24),
+      padding: AppSpacing.edgeInsetsAll24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "Quarterly Goals",
-            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: AppText.h3,
           ),
-          const SizedBox(height: 24),
+          AppSpacing.h24,
           _buildGoalItem(context, "Hire 20 Engineers", 0.75, Colors.blueAccent),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           _buildGoalItem(context, "Reduce Time-to-Hire", 0.90, Colors.green),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           _buildGoalItem(context, "Launch Employer Branding", 0.40, Colors.orange),
         ],
       ),
@@ -182,11 +174,11 @@ class PerformanceDashboardScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
-            Text("${(progress * 100).toInt()}%", style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+            Text(title, style: AppText.h3.copyWith(fontSize: 14)),
+            Text("${(progress * 100).toInt()}%", style: AppText.label.copyWith(color: theme.colorScheme.onSurfaceVariant)),
           ],
         ),
-        const SizedBox(height: 8),
+        AppSpacing.h8,
         LinearProgressIndicator(
           value: progress,
           minHeight: 8,
@@ -201,15 +193,15 @@ class PerformanceDashboardScreen extends StatelessWidget {
   Widget _buildTopPerformersCard(BuildContext context) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(24),
+      padding: AppSpacing.edgeInsetsAll24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "Top Performers",
-            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: AppText.h3,
           ),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           _buildPerformerItem(context, "Rahul S.", "Engineering"),
           const Divider(),
           _buildPerformerItem(context, "Priya M.", "Sales"),
@@ -229,19 +221,19 @@ class PerformanceDashboardScreen extends StatelessWidget {
           CircleAvatar(
             radius: 20,
             backgroundColor: theme.colorScheme.primaryContainer,
-            child: Text(name[0], style: TextStyle(color: theme.colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold)),
+            child: Text(name[0], style: AppText.label.copyWith(color: theme.colorScheme.onPrimaryContainer)),
           ),
-          const SizedBox(width: 12),
+          AppSpacing.w12,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-                Text(dept, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                Text(name, style: AppText.h3.copyWith(fontSize: 16)),
+                Text(dept, style: AppText.label.copyWith(color: theme.colorScheme.onSurfaceVariant)),
               ],
             ),
           ),
-          const Icon(Icons.workspace_premium_rounded, color: Colors.amber, size: 20),
+          const Icon(AppIcons.workspace_premium_rounded, color: Colors.amber, size: 20),
         ],
       ),
     );

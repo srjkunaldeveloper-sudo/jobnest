@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class ActivityTimelineItem {
@@ -41,7 +42,7 @@ class ActivityTimelineItem {
         title: "Candidate Applied",
         subtitle: "Aarav Sharma applied for Backend Engineer",
         timestamp: "2 minutes ago",
-        icon: Icons.person_add_rounded,
+        icon: AppIcons.person_add_rounded,
         type: 'application',
       ),
       ActivityTimelineItem(
@@ -49,7 +50,7 @@ class ActivityTimelineItem {
         title: "Interview Scheduled",
         subtitle: "Technical round for UI/UX",
         timestamp: "15 minutes ago",
-        icon: Icons.calendar_month_rounded,
+        icon: AppIcons.calendar_month_rounded,
         type: 'interview',
       ),
       ActivityTimelineItem(
@@ -57,7 +58,7 @@ class ActivityTimelineItem {
         title: "Job Posted",
         subtitle: "Senior Flutter Developer",
         timestamp: "1 hour ago",
-        icon: Icons.work_rounded,
+        icon: AppIcons.work_rounded,
         type: 'job',
       ),
       ActivityTimelineItem(
@@ -65,7 +66,7 @@ class ActivityTimelineItem {
         title: "Candidate Selected",
         subtitle: "Priya Singh for Data Scientist",
         timestamp: "Yesterday",
-        icon: Icons.verified_rounded,
+        icon: AppIcons.verified_rounded,
         type: 'selection',
       ),
       ActivityTimelineItem(
@@ -73,7 +74,7 @@ class ActivityTimelineItem {
         title: "Offer Letter Sent",
         subtitle: "Offer letter generated for Priya Singh",
         timestamp: "Yesterday",
-        icon: Icons.mail_rounded,
+        icon: AppIcons.mail_rounded,
         type: 'offer',
       ),
     ];

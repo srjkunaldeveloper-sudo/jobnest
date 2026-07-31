@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/features/services/models/service_item.dart';
 import 'package:jobnest/features/services/providers/services_data_provider.dart';
@@ -63,7 +64,7 @@ class ServiceDetailModal extends StatelessWidget {
                       button: true,
                       child: IconButton(
                         icon: Icon(
-                          service.isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                          service.isFavorite ? AppIcons.favorite_rounded : AppIcons.favorite_border_rounded,
                           color: service.isFavorite ? Colors.redAccent : theme.colorScheme.onSurfaceVariant,
                           size: 24,
                         ),
@@ -79,7 +80,7 @@ class ServiceDetailModal extends StatelessWidget {
                       label: "Close details",
                       button: true,
                       child: IconButton(
-                        icon: const Icon(Icons.close_rounded),
+                        icon: const Icon(AppIcons.close_rounded),
                         constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                         onPressed: () => Navigator.pop(context),
                       ),
@@ -194,7 +195,7 @@ class ServiceDetailModal extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Icon(
-                        Icons.check_circle_rounded,
+                        AppIcons.check_circle_rounded,
                         color: service.color,
                         size: 20,
                       ),
@@ -224,7 +225,7 @@ class ServiceDetailModal extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.info_outline_rounded, color: Colors.orange.shade800, size: 24),
+                    Icon(AppIcons.info_outline_rounded, color: Colors.orange.shade800, size: 24),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -276,7 +277,7 @@ class ServiceDetailModal extends StatelessWidget {
                     }
                   },
                   icon: Icon(
-                    service.isAvailable ? Icons.launch_rounded : Icons.notifications_active_outlined,
+                    service.isAvailable ? AppIcons.launch_rounded : AppIcons.notifications_active_outlined,
                     size: 20,
                   ),
                   label: Text(

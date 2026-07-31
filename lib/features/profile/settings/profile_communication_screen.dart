@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -38,8 +39,8 @@ class ProfileCommunicationScreen extends StatelessWidget {
             onPressed: () => provider.toggleCommunicationEmptyState(),
             icon: Icon(
               provider.isCommunicationEmpty
-                  ? Icons.speaker_notes_off_rounded
-                  : Icons.speaker_notes_outlined,
+                  ? AppIcons.speaker_notes_off_rounded
+                  : AppIcons.speaker_notes_outlined,
               color: provider.isCommunicationEmpty
                   ? theme.colorScheme.error
                   : null,
@@ -81,7 +82,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    Icons.speaker_notes_off_rounded,
+                    AppIcons.speaker_notes_off_rounded,
                     size: 56,
                     color: theme.colorScheme.primary,
                   ),
@@ -116,7 +117,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.tune_rounded),
+                  icon: const Icon(AppIcons.tune_rounded),
                   label: const Text(
                     "Configure Now",
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -155,7 +156,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 theme,
                 "Communication Channels",
                 "Enable or disable messaging gateways used for candidate and team notifications.",
-                Icons.hub_outlined,
+                AppIcons.hub_outlined,
               ),
               const SizedBox(height: 14),
               _buildChannelsGrid(context, provider),
@@ -166,7 +167,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 theme,
                 "Candidate Communication",
                 "Manage automated touchpoints dispatched during hiring pipeline stages.",
-                Icons.person_pin_circle_outlined,
+                AppIcons.person_pin_circle_outlined,
               ),
               const SizedBox(height: 14),
               _buildCandidateSettingsList(context, provider),
@@ -177,7 +178,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 theme,
                 "Team Communication",
                 "Configure internal recruiter alerts, interview scorecard reminders, and announcements.",
-                Icons.groups_outlined,
+                AppIcons.groups_outlined,
               ),
               const SizedBox(height: 14),
               _buildTeamSettingsList(context, provider),
@@ -188,7 +189,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 theme,
                 "Automated Message Templates",
                 "Customize placeholder response copy for immediate candidate engagement.",
-                Icons.auto_awesome_motion_outlined,
+                AppIcons.auto_awesome_motion_outlined,
               ),
               const SizedBox(height: 14),
               _buildAutomatedTemplatesSection(context, provider),
@@ -199,7 +200,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 theme,
                 "Quiet Hours & Do Not Disturb",
                 "Mute non-urgent notifications outside active recruitment working hours.",
-                Icons.nightlight_round_outlined,
+                AppIcons.nightlight_round_outlined,
               ),
               const SizedBox(height: 14),
               _buildQuietHoursCard(context, provider),
@@ -210,7 +211,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 theme,
                 "Recruiter Email Signature",
                 "Professional branding appended to outgoing candidate correspondence.",
-                Icons.border_color_outlined,
+                AppIcons.border_color_outlined,
               ),
               const SizedBox(height: 14),
               _buildEmailSignatureCard(context, provider),
@@ -221,7 +222,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 theme,
                 "Default Communication Language",
                 "Select primary language for automated candidate messages and templates.",
-                Icons.translate_rounded,
+                AppIcons.translate_rounded,
               ),
               const SizedBox(height: 14),
               _buildLanguageSelectorCard(context, provider),
@@ -232,7 +233,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 theme,
                 "Test Communication Channels",
                 "Dispatch sample alerts to verify gateway connectivity and formatting.",
-                Icons.send_to_mobile_rounded,
+                AppIcons.send_to_mobile_rounded,
               ),
               const SizedBox(height: 14),
               _buildTestCommunicationCard(context),
@@ -435,7 +436,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                   children: [
                     OutlinedButton.icon(
                       onPressed: () => _showPreviewDialog(context, item.title),
-                      icon: const Icon(Icons.visibility_outlined, size: 16),
+                      icon: const Icon(AppIcons.visibility_outlined, size: 16),
                       label: const Text("Preview"),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -567,7 +568,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: TextButton.icon(
                 onPressed: () => _showEditTemplateDialog(context, provider, tmpl),
-                icon: const Icon(Icons.edit_outlined, size: 16),
+                icon: const Icon(AppIcons.edit_outlined, size: 16),
                 label: const Text("Edit Template"),
               ),
             ),
@@ -675,7 +676,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.public_rounded,
+                            AppIcons.public_rounded,
                             size: 16,
                             color: theme.colorScheme.primary,
                           ),
@@ -779,7 +780,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  Icons.access_time_rounded,
+                  AppIcons.access_time_rounded,
                   size: 16,
                   color: theme.colorScheme.primary,
                 ),
@@ -793,7 +794,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Icon(
-                  Icons.arrow_drop_down_rounded,
+                  AppIcons.arrow_drop_down_rounded,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ],
@@ -827,7 +828,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
               ),
               OutlinedButton.icon(
                 onPressed: () => _showEditSignatureDialog(context, provider),
-                icon: const Icon(Icons.edit_outlined, size: 16),
+                icon: const Icon(AppIcons.edit_outlined, size: 16),
                 label: const Text("Edit Signature"),
               ),
             ],
@@ -884,7 +885,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.phone_outlined,
+                        Icon(AppIcons.phone_outlined,
                             size: 14, color: theme.colorScheme.onSurfaceVariant),
                         const SizedBox(width: 6),
                         Text(provider.sigPhone,
@@ -894,7 +895,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.language_rounded,
+                        Icon(AppIcons.language_rounded,
                             size: 14, color: theme.colorScheme.onSurfaceVariant),
                         const SizedBox(width: 6),
                         Text(provider.sigWebsite,
@@ -970,7 +971,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.email_rounded, size: 18),
+            icon: const Icon(AppIcons.email_rounded, size: 18),
             label: const Text("Send Test Email"),
           ),
           FilledButton.icon(
@@ -984,7 +985,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.sms_rounded, size: 18),
+            icon: const Icon(AppIcons.sms_rounded, size: 18),
             label: const Text("Send Test SMS"),
             style: FilledButton.styleFrom(
               backgroundColor: Colors.teal.shade700,
@@ -1001,7 +1002,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.notifications_active_rounded, size: 18),
+            icon: const Icon(AppIcons.notifications_active_rounded, size: 18),
             label: const Text("Send Test Notification"),
             style: FilledButton.styleFrom(
               backgroundColor: Colors.indigo.shade700,
@@ -1018,7 +1019,7 @@ class ProfileCommunicationScreen extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: Row(
           children: [
-            const Icon(Icons.preview_rounded),
+            const Icon(AppIcons.preview_rounded),
             const SizedBox(width: 10),
             Expanded(child: Text("Preview: $title")),
           ],

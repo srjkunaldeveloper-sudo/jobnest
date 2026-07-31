@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -19,7 +20,7 @@ class WorkflowAutomationScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.add_circle_outline_rounded),
+            icon: const Icon(AppIcons.add_circle_outline_rounded),
             tooltip: "Create Workflow",
           ),
           const SizedBox(width: 8),
@@ -40,7 +41,7 @@ class WorkflowAutomationScreen extends StatelessWidget {
                 context,
                 title: "Auto Shortlist (AI)",
                 description: "Automatically shortlist candidates scoring > 85% on AI matching.",
-                icon: Icons.auto_awesome_rounded,
+                icon: AppIcons.auto_awesome_rounded,
                 color: Colors.deepPurpleAccent,
                 isActive: true,
               ),
@@ -49,7 +50,7 @@ class WorkflowAutomationScreen extends StatelessWidget {
                 context,
                 title: "Auto Interview Reminder",
                 description: "Send WhatsApp & Email reminders 24 hours before interview.",
-                icon: Icons.notifications_active_rounded,
+                icon: AppIcons.notifications_active_rounded,
                 color: Colors.blueAccent,
                 isActive: true,
               ),
@@ -58,7 +59,7 @@ class WorkflowAutomationScreen extends StatelessWidget {
                 context,
                 title: "Candidate Follow-up",
                 description: "Email candidates who haven't replied in 3 days.",
-                icon: Icons.mark_email_read_rounded,
+                icon: AppIcons.mark_email_read_rounded,
                 color: Colors.orange,
                 isActive: false,
               ),
@@ -67,7 +68,7 @@ class WorkflowAutomationScreen extends StatelessWidget {
                 context,
                 title: "Offer Reminder",
                 description: "Alert hiring managers 2 days before offer expiration.",
-                icon: Icons.assignment_late_rounded,
+                icon: AppIcons.assignment_late_rounded,
                 color: Colors.redAccent,
                 isActive: true,
               ),
@@ -76,7 +77,7 @@ class WorkflowAutomationScreen extends StatelessWidget {
                 context,
                 title: "Auto Status Update",
                 description: "Change status to 'Rejected' if no action taken for 30 days.",
-                icon: Icons.update_rounded,
+                icon: AppIcons.update_rounded,
                 color: Colors.teal,
                 isActive: false,
               ),
@@ -179,7 +180,7 @@ class WorkflowAutomationScreen extends StatelessWidget {
               ),
               OutlinedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.settings_outlined, size: 18),
+                icon: const Icon(AppIcons.settings_outlined, size: 18),
                 label: const Text("Configure"),
               ),
             ],

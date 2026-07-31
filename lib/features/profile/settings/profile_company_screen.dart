@@ -1,7 +1,12 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/features/profile/providers/profile_data_provider.dart';
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/widgets/app_textfield.dart';
 
 class ProfileCompanyScreen extends StatefulWidget {
   const ProfileCompanyScreen({super.key});
@@ -113,119 +118,111 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
 
     // TODO:
     // Company media storage integration.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("Company & Organization Profile"),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return AppPageScaffold(
+      title: "Company & Organization Profile",
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: AppSpacing.edgeInsetsAll16,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
                 // CARD 1: ORGANIZATION DETAILS
-                AppCard(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Edit Organization Details",
-                        style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        "Manage your enterprise branding and corporate headquarters information.",
-                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                      ),
-                      const SizedBox(height: 24),
-                      _buildSectionTitle(context, "Basic Information", Icons.business_outlined),
+              AppCard(
+                padding: AppSpacing.edgeInsetsAll24,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Edit Organization Details",
+                      style: AppText.h3,
+                    ),
+                    AppSpacing.h8,
+                    Text(
+                      "Manage your enterprise branding and corporate headquarters information.",
+                      style: AppText.bodyMedium,
+                    ),
+                      AppSpacing.h24,
+                      _buildSectionTitle(context, "Basic Information", AppIcons.business_outlined),
                       _buildTextField(context, "Company Name", _nameCtrl, "e.g., TechNova Solutions"),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Industry Domain", _industryCtrl, "e.g., Software & Technology"),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Company Size", _sizeCtrl, "e.g., 500 - 1000 Employees"),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Founded Year", _yearCtrl, "e.g., 2015", keyboardType: TextInputType.number),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Company Website", _websiteCtrl, "e.g., https://technova.dev", keyboardType: TextInputType.url),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Official Phone Number", _phoneCtrl, "e.g., +91 80 4123 4567", keyboardType: TextInputType.phone),
-                      const SizedBox(height: 24),
+                      AppSpacing.h24,
                       const Divider(),
-                      const SizedBox(height: 16),
-                      _buildSectionTitle(context, "Location Details", Icons.location_on_outlined),
+                      AppSpacing.h16,
+                      _buildSectionTitle(context, "Location Details", AppIcons.location_on_outlined),
                       _buildTextField(context, "Headquarters Location", _hqCtrl, "e.g., Koramangala, Bangalore"),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Office Address", _addressCtrl, "e.g., Plot 42, Cyber Park, Electronic City Phase 1"),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "City", _cityCtrl, "e.g., Bangalore"),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "State", _stateCtrl, "e.g., Karnataka"),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Country", _countryCtrl, "e.g., India"),
-                      const SizedBox(height: 24),
+                      AppSpacing.h24,
                       const Divider(),
-                      const SizedBox(height: 16),
-                      _buildSectionTitle(context, "Optional Identifiers", Icons.badge_outlined),
+                      AppSpacing.h16,
+                      _buildSectionTitle(context, "Optional Identifiers", AppIcons.badge_outlined),
                       _buildTextField(context, "Company PAN (Optional)", _panCtrl, "e.g., AAACT1234K", textCapitalization: TextCapitalization.characters),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Company TAN (Optional)", _tanCtrl, "e.g., BLRT12345F", textCapitalization: TextCapitalization.characters),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                AppSpacing.h24,
 
                 // CARD 2: COMPANY BRANDING & STORY
                 AppCard(
-                  padding: const EdgeInsets.all(24),
+                  padding: AppSpacing.edgeInsetsAll24,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Company Branding & Story",
-                        style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                        style: AppText.h3,
                       ),
-                      const SizedBox(height: 8),
+                      AppSpacing.h8,
                       Text(
                         "Present your company overview, mission, vision, and work culture professionally to candidates.",
-                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                        style: AppText.bodyMedium,
                       ),
-                      const SizedBox(height: 24),
-                      _buildSectionTitle(context, "About Company", Icons.info_outline),
+                      AppSpacing.h24,
+                      _buildSectionTitle(context, "About Company", AppIcons.info_outline),
                       _buildTextField(context, "Company Overview", _overviewCtrl, "e.g., Global leader in HR technology..."),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Company Description", _descriptionCtrl, "e.g., Founded in 2015, we empower Fortune 500 companies...", maxLines: 3),
-                      const SizedBox(height: 24),
+                      AppSpacing.h24,
                       const Divider(),
-                      const SizedBox(height: 16),
-                      _buildSectionTitle(context, "Mission & Vision", Icons.track_changes_outlined),
+                      AppSpacing.h16,
+                      _buildSectionTitle(context, "Mission & Vision", AppIcons.track_changes_outlined),
                       _buildTextField(context, "Mission Statement", _missionCtrl, "e.g., To revolutionize global recruitment...", maxLines: 2),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Vision Statement", _visionCtrl, "e.g., To become the world's most trusted recruitment operating system...", maxLines: 2),
-                      const SizedBox(height: 24),
+                      AppSpacing.h24,
                       const Divider(),
-                      const SizedBox(height: 16),
-                      _buildSectionTitle(context, "Work Culture & Values", Icons.groups_outlined),
+                      AppSpacing.h16,
+                      _buildSectionTitle(context, "Work Culture & Values", AppIcons.groups_outlined),
                       _buildTextField(context, "Work Culture Description", _cultureCtrl, "e.g., We thrive in a collaborative, remote-first environment...", maxLines: 3),
-                      const SizedBox(height: 16),
+                      AppSpacing.h16,
                       _buildTextField(context, "Company Values", _valuesCtrl, "e.g., 1. Customer Obsession\n2. Radical Transparency...", maxLines: 4),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                AppSpacing.h24,
 
                 // CARD 3: COMPANY MEDIA GALLERY
                 AppCard(
-                  padding: const EdgeInsets.all(24),
+                  padding: AppSpacing.edgeInsetsAll24,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -238,17 +235,17 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                               children: [
                                 Text(
                                   "Company Media Gallery",
-                                  style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                                  style: AppText.h3,
                                 ),
-                                const SizedBox(height: 4),
+                                AppSpacing.h4,
                                 Text(
                                   "Showcase office tours, logos, and recruitment banners.",
-                                  style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                                  style: AppText.bodyMedium,
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          AppSpacing.w12,
                           Wrap(
                             spacing: 8,
                             crossAxisAlignment: WrapCrossAlignment.center,
@@ -258,7 +255,7 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                                   provider.toggleCompanyMediaEmpty();
                                 },
                                 icon: Icon(
-                                  provider.isCompanyMediaEmpty ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                                  provider.isCompanyMediaEmpty ? AppIcons.visibility_off_outlined : AppIcons.visibility_outlined,
                                   color: theme.colorScheme.primary,
                                 ),
                                 tooltip: "Toggle Empty State Simulation",
@@ -272,7 +269,7 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                                     ),
                                   );
                                 },
-                                icon: const Icon(Icons.add_photo_alternate_outlined, size: 18),
+                                icon: const Icon(AppIcons.add_photo_alternate_outlined, size: 18),
                                 label: const Text("Add Media", style: TextStyle(fontWeight: FontWeight.bold)),
                                 style: OutlinedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -283,19 +280,19 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      AppSpacing.h20,
                       if (provider.isCompanyMediaEmpty || provider.isEmpty)
                         _buildMediaEmptyState(context)
                       else
                         Column(
                           children: [
-                            _buildMediaCard(context, "Company Logo", "High-Res Vector Brand Asset", Icons.business_rounded, "Primary Logo"),
+                            _buildMediaCard(context, "Company Logo", "High-Res Vector Brand Asset", AppIcons.business_rounded, "Primary Logo"),
                             const SizedBox(height: 12),
-                            _buildMediaCard(context, "Recruitment Banner", "Cover Image for Candidate Portal", Icons.image_outlined, "Cover Image"),
+                            _buildMediaCard(context, "Recruitment Banner", "Cover Image for Candidate Portal", AppIcons.image_outlined, "Cover Image"),
                             const SizedBox(height: 12),
-                            _buildMediaCard(context, "Office Images", "Bangalore HQ & Collaborative Spaces", Icons.photo_library_outlined, "12 Photos"),
+                            _buildMediaCard(context, "Office Images", "Bangalore HQ & Collaborative Spaces", AppIcons.photo_library_outlined, "12 Photos"),
                             const SizedBox(height: 12),
-                            _buildMediaCard(context, "Office Tour", "Inside TechNova Work Culture Video", Icons.videocam_outlined, "Video Tour"),
+                            _buildMediaCard(context, "Office Tour", "Inside TechNova Work Culture Video", AppIcons.videocam_outlined, "Video Tour"),
                           ],
                         ),
                     ],
@@ -381,18 +378,17 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                       );
                       Navigator.pop(context);
                     },
-                    icon: const Icon(Icons.check_circle_outline_rounded),
+                    icon: const Icon(AppIcons.check_circle_outline_rounded),
                     style: FilledButton.styleFrom(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     label: const Text("Save All Company & Branding Details", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   ),
                 ),
+                AppSpacing.h32,
               ],
             ),
           ),
-        ),
-      ),
     );
   }
 
@@ -423,7 +419,7 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
             ),
             child: Icon(icon, color: theme.colorScheme.primary, size: 26),
           ),
-          const SizedBox(width: 16),
+          AppSpacing.w16,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -436,7 +432,7 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                   children: [
                     Text(
                       title,
-                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: AppText.h3.copyWith(fontSize: 16),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -446,25 +442,24 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                       ),
                       child: Text(
                         badge,
-                        style: theme.textTheme.labelSmall?.copyWith(
+                        style: AppText.labelSmall.copyWith(
                           color: theme.colorScheme.onSecondaryContainer,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                AppSpacing.h4,
                 Text(
                   subtitle,
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  style: AppText.caption,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          AppSpacing.w8,
           IconButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -474,7 +469,7 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                 ),
               );
             },
-            icon: const Icon(Icons.edit_outlined, size: 20),
+            icon: const Icon(AppIcons.edit_outlined, size: 20),
             tooltip: "Edit Asset",
           ),
         ],
@@ -494,18 +489,18 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
       ),
       child: Column(
         children: [
-          Icon(Icons.photo_library_outlined, size: 52, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
+          Icon(AppIcons.photo_library_outlined, size: 52, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
           const SizedBox(height: 16),
           Text(
             "No company media available.",
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            style: AppText.h3.copyWith(fontSize: 16),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          AppSpacing.h8,
           Text(
             "Upload your company logo, recruitment banners, office photos, and video tours to showcase your work culture.",
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            style: AppText.bodyMedium,
           ),
           const SizedBox(height: 24),
           FilledButton.icon(
@@ -517,7 +512,7 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
                 ),
               );
             },
-            icon: const Icon(Icons.add_photo_alternate_rounded),
+            icon: const Icon(AppIcons.add_photo_alternate_rounded),
             label: const Text("Add Media", style: TextStyle(fontWeight: FontWeight.bold)),
             style: FilledButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -539,10 +534,7 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
           const SizedBox(width: 10),
           Text(
             title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
-            ),
+            style: AppText.h3.copyWith(fontSize: 16, color: theme.colorScheme.primary),
           ),
         ],
       ),
@@ -558,30 +550,13 @@ class _ProfileCompanyScreenState extends State<ProfileCompanyScreen> {
     TextCapitalization textCapitalization = TextCapitalization.none,
     int maxLines = 1,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          keyboardType: keyboardType,
-          textCapitalization: textCapitalization,
-          maxLines: maxLines,
-          decoration: InputDecoration(
-            hintText: hint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          ),
-        ),
-      ],
+    return AppTextField(
+      label: label,
+      controller: controller,
+      hint: hint,
+      keyboardType: keyboardType ?? TextInputType.text,
+      textCapitalization: textCapitalization,
+      maxLines: maxLines,
     );
   }
 }

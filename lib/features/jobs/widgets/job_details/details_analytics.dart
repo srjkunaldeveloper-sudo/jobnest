@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -35,7 +36,7 @@ class DetailsAnalytics extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Icon(Icons.keyboard_arrow_down_rounded, size: 16, color: theme.colorScheme.onSurface),
+                  Icon(AppIcons.keyboard_arrow_down_rounded, size: 16, color: theme.colorScheme.onSurface),
                 ],
               ),
             ),

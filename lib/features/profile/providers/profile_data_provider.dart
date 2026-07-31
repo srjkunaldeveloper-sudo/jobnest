@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -351,7 +352,7 @@ class ProfileDataProvider extends ChangeNotifier {
       type: "Credit/Debit Card",
       title: "Visa ending in •••• 4242",
       subtitle: "Expires 08/28 • Corporate Billing",
-      icon: Icons.credit_card_rounded,
+      icon: AppIcons.credit_card_rounded,
       isDefault: true,
     ),
     PaymentMethodPlaceholderItem(
@@ -359,7 +360,7 @@ class ProfileDataProvider extends ChangeNotifier {
       type: "UPI",
       title: "technova.recruiting@okaxis",
       subtitle: "Instant bank transfer via verified UPI ID",
-      icon: Icons.qr_code_2_rounded,
+      icon: AppIcons.qr_code_2_rounded,
       isDefault: false,
     ),
     PaymentMethodPlaceholderItem(
@@ -367,7 +368,7 @@ class ProfileDataProvider extends ChangeNotifier {
       type: "Net Banking",
       title: "HDFC Corporate Banking",
       subtitle: "Direct enterprise treasury account debit",
-      icon: Icons.account_balance_rounded,
+      icon: AppIcons.account_balance_rounded,
       isDefault: false,
     ),
     PaymentMethodPlaceholderItem(
@@ -375,7 +376,7 @@ class ProfileDataProvider extends ChangeNotifier {
       type: "Wallet",
       title: "JobNest Enterprise Credits Wallet",
       subtitle: "Balance: \$1,250.00 available credit",
-      icon: Icons.account_balance_wallet_rounded,
+      icon: AppIcons.account_balance_wallet_rounded,
       isDefault: false,
     ),
   ];
@@ -400,35 +401,35 @@ class ProfileDataProvider extends ChangeNotifier {
       id: "chan_email",
       name: "Email",
       description: "Send automated transactional emails and requisition updates",
-      icon: Icons.email_outlined,
+      icon: AppIcons.email_outlined,
       isEnabled: true,
     ),
     CommunicationChannelItem(
       id: "chan_sms",
       name: "SMS",
       description: "Instant text alerts for time-sensitive interview reminders",
-      icon: Icons.sms_outlined,
+      icon: AppIcons.sms_outlined,
       isEnabled: true,
     ),
     CommunicationChannelItem(
       id: "chan_push",
       name: "Push Notifications",
       description: "Real-time mobile app push alerts for candidate activities",
-      icon: Icons.notifications_active_outlined,
+      icon: AppIcons.notifications_active_outlined,
       isEnabled: true,
     ),
     CommunicationChannelItem(
       id: "chan_whatsapp",
       name: "WhatsApp",
       description: "Direct WhatsApp Business API messaging for fast engagement",
-      icon: Icons.chat_rounded,
+      icon: AppIcons.chat_rounded,
       isEnabled: false,
     ),
     CommunicationChannelItem(
       id: "chan_inapp",
       name: "In-App Messages",
       description: "Internal portal notifications and candidate chat interface",
-      icon: Icons.inbox_outlined,
+      icon: AppIcons.inbox_outlined,
       isEnabled: true,
     ),
   ];
@@ -2302,7 +2303,7 @@ class ProfileDataProvider extends ChangeNotifier {
         type: "Credit/Debit Card",
         title: "Visa ending in •••• 4242",
         subtitle: "Expires 08/28 • Corporate Billing",
-        icon: Icons.credit_card_rounded,
+        icon: AppIcons.credit_card_rounded,
         isDefault: true,
       ),
       PaymentMethodPlaceholderItem(
@@ -2310,7 +2311,7 @@ class ProfileDataProvider extends ChangeNotifier {
         type: "UPI",
         title: "technova.recruiting@okaxis",
         subtitle: "Instant bank transfer via verified UPI ID",
-        icon: Icons.qr_code_2_rounded,
+        icon: AppIcons.qr_code_2_rounded,
         isDefault: false,
       ),
       PaymentMethodPlaceholderItem(
@@ -2318,7 +2319,7 @@ class ProfileDataProvider extends ChangeNotifier {
         type: "Net Banking",
         title: "HDFC Corporate Banking",
         subtitle: "Direct enterprise treasury account debit",
-        icon: Icons.account_balance_rounded,
+        icon: AppIcons.account_balance_rounded,
         isDefault: false,
       ),
       PaymentMethodPlaceholderItem(
@@ -2326,7 +2327,7 @@ class ProfileDataProvider extends ChangeNotifier {
         type: "Wallet",
         title: "JobNest Enterprise Credits Wallet",
         subtitle: "Balance: \$1,250.00 available credit",
-        icon: Icons.account_balance_wallet_rounded,
+        icon: AppIcons.account_balance_wallet_rounded,
         isDefault: false,
       ),
     ];
@@ -2347,35 +2348,35 @@ class ProfileDataProvider extends ChangeNotifier {
         id: "chan_email",
         name: "Email",
         description: "Send automated transactional emails and requisition updates",
-        icon: Icons.email_outlined,
+        icon: AppIcons.email_outlined,
         isEnabled: true,
       ),
       CommunicationChannelItem(
         id: "chan_sms",
         name: "SMS",
         description: "Instant text alerts for time-sensitive interview reminders",
-        icon: Icons.sms_outlined,
+        icon: AppIcons.sms_outlined,
         isEnabled: true,
       ),
       CommunicationChannelItem(
         id: "chan_push",
         name: "Push Notifications",
         description: "Real-time mobile app push alerts for candidate activities",
-        icon: Icons.notifications_active_outlined,
+        icon: AppIcons.notifications_active_outlined,
         isEnabled: true,
       ),
       CommunicationChannelItem(
         id: "chan_whatsapp",
         name: "WhatsApp",
         description: "Direct WhatsApp Business API messaging for fast engagement",
-        icon: Icons.chat_rounded,
+        icon: AppIcons.chat_rounded,
         isEnabled: false,
       ),
       CommunicationChannelItem(
         id: "chan_inapp",
         name: "In-App Messages",
         description: "Internal portal notifications and candidate chat interface",
-        icon: Icons.inbox_outlined,
+        icon: AppIcons.inbox_outlined,
         isEnabled: true,
       ),
     ];

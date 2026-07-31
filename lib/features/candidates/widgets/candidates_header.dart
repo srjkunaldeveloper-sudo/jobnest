@@ -1,6 +1,5 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:jobnest/core/constants/app_spacing.dart';
-import 'package:jobnest/features/candidates/widgets/candidate_icon_button.dart';
 
 class CandidatesHeader extends StatelessWidget {
   const CandidatesHeader({super.key});
@@ -10,10 +9,10 @@ class CandidatesHeader extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24.0),
+      padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Column(
@@ -22,28 +21,36 @@ class CandidatesHeader extends StatelessWidget {
                 Text(
                   "Candidates",
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.5,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.4,
+                    height: 1.1,
                   ),
                 ),
-                AppSpacing.h4,
+                const SizedBox(height: 6),
                 Text(
-                  "Search and manage applicants.",
+                  "Search, review and track candidates.",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    height: 1.4,
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
                   ),
                 ),
               ],
             ),
           ),
-          Row(
-            children: [
-              CandidateIconButton(icon: Icons.search_rounded, onTap: () {}),
-              AppSpacing.w8,
-              CandidateIconButton(icon: Icons.tune_rounded, onTap: () {}),
-              AppSpacing.w8,
-              CandidateIconButton(icon: Icons.sort_rounded, onTap: () {}),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(
+              icon: Icon(AppIcons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurface),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              splashRadius: 20,
+              onPressed: () {},
+            ),
           ),
         ],
       ),

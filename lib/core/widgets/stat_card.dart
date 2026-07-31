@@ -1,6 +1,8 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_radius.dart';
+import '../constants/app_colors.dart';
 
+/// Premium ATS stat card — clean elevation, subtle hover, refined typography.
 class StatCard extends StatefulWidget {
   final String title;
   final String count;
@@ -16,7 +18,7 @@ class StatCard extends StatefulWidget {
     required this.count,
     required this.icon,
     required this.color,
-    this.trend = "",
+    this.trend = '',
     this.isPositiveTrend = true,
     this.onTap,
   });
@@ -31,105 +33,158 @@ class _StatCardState extends State<StatCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+    final isDark = theme.brightness == Brightness.dark;
+    final borderColor = isDark ? AppColors.borderDark : AppColors.borderLight;
+    final hoverBorderColor = theme.colorScheme.primary.withValues(alpha: 0.25);
+    final surfaceColor = isDark ? AppColors.darkSurface : AppColors.lightSurface;
+
+    final trendPositiveColor = const Color(0xFF16A34A); // Green-600
+    final trendNegativeColor = const Color(0xFFDC2626); // Red-600
+
     return MouseRegion(
-        onEnter: (_) => setState(() => _isHovered = true),
-        onExit: (_) => setState(() => _isHovered = false),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          transform: Matrix4.translationValues(0, _isHovered ? -2 : 0, 0),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: AppRadius.large,
-            border: Border.all(
-              color: theme.dividerColor.withValues(alpha: 0.5),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: theme.shadowColor.withValues(alpha: _isHovered ? 0.08 : 0.02),
-                blurRadius: _isHovered ? 12 : 8,
-                offset: Offset(0, _isHovered ? 6 : 4),
-              )
-            ],
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit:  (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOutCubic,
+        transform: Matrix4.translationValues(0, _isHovered ? -3 : 0, 0),
+        decoration: BoxDecoration(
+          color: surfaceColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: _isHovered ? hoverBorderColor : borderColor,
+            width: _isHovered ? 1.5 : 1.0,
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: widget.onTap ?? () {
-                // ===== BACKEND TODO =====
-                // TODO: List page (e.g. candidates list or jobs list) navigate hogi yaha se.
-              },
-              borderRadius: AppRadius.large,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: widget.color.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(widget.icon, color: widget.color, size: 24),
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered
+                  ? theme.colorScheme.primary.withValues(alpha: 0.08)
+                  : (isDark
+                      ? Colors.black.withValues(alpha: 0.3)
+                      : const Color(0xFF0F172A).withValues(alpha: 0.04)),
+              blurRadius: _isHovered ? 16 : 8,
+              offset: Offset(0, _isHovered ? 6 : 2),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: widget.onTap ?? () {},
+            borderRadius: BorderRadius.circular(16),
+            splashColor: theme.colorScheme.primary.withValues(alpha: 0.06),
+            highlightColor: theme.colorScheme.primary.withValues(alpha: 0.04),
+            child: Container(
+              height: 160,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Icon + Trend row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: widget.color.withValues(alpha: 0.10),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        if (widget.trend.isNotEmpty)
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: (widget.isPositiveTrend ? Colors.green : Colors.red).withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  widget.isPositiveTrend ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-                                  color: widget.isPositiveTrend ? Colors.green : Colors.red,
-                                  size: 12,
-                                ),
-                                const SizedBox(width: 2),
-                                Text(
-                                  widget.trend,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: widget.isPositiveTrend ? Colors.green : Colors.red,
+                        child: Center(
+                          child: Icon(widget.icon, color: widget.color, size: 26),
+                        ),
+                      ),
+                      if (widget.trend.isNotEmpty)
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Container(
+                              height: 24,
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: (widget.isPositiveTrend
+                                        ? trendPositiveColor
+                                        : trendNegativeColor)
+                                    .withValues(alpha: 0.10),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    widget.isPositiveTrend
+                                        ? AppIcons.trending_up_rounded
+                                        : AppIcons.trending_down_rounded,
+                                    color: widget.isPositiveTrend
+                                        ? trendPositiveColor
+                                        : trendNegativeColor,
+                                    size: 12,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 4),
+                                  Flexible(
+                                    child: Text(
+                                      widget.trend,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: widget.isPositiveTrend
+                                            ? trendPositiveColor
+                                            : trendNegativeColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          )
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      widget.count, 
-                      style: theme.textTheme.headlineLarge?.copyWith(
-                        fontSize: 28, 
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: -0.5,
+                          ),
+                        ),
+                    ],
+                  ),
+
+                  // Texts
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Count
+                      Text(
+                        widget.count,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.headlineLarge?.copyWith(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.8,
+                          height: 1.1,
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      widget.title, 
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant, 
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                      const SizedBox(height: 2),
+                      // Title
+                      Text(
+                        widget.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 }

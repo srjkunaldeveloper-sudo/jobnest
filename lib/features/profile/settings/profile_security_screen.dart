@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/services/session_manager.dart';
@@ -77,7 +78,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Security Checkup",
                   "Review recommended account protection safeguards and completion status.",
-                  Icons.verified_user_outlined,
+                  AppIcons.verified_user_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildSecurityCheckupCard(context, provider),
@@ -88,7 +89,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Password Management",
                   "Update your account password and review enterprise cryptographic strength rules.",
-                  Icons.key_outlined,
+                  AppIcons.key_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildPasswordManagementCard(context, provider),
@@ -99,7 +100,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Two-Factor Authentication (2FA)",
                   "Require an additional verification code when signing in from unrecognized devices.",
-                  Icons.shield_outlined,
+                  AppIcons.shield_outlined,
                 ),
                 const SizedBox(height: 14),
                 _build2FACard(context, provider),
@@ -110,7 +111,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Account Recovery Options",
                   "Configure fallback communication channels to regain access if locked out.",
-                  Icons.restore_page_outlined,
+                  AppIcons.restore_page_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildAccountRecoveryCard(context, provider),
@@ -121,7 +122,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Active Sessions & Devices",
                   "Manage signed-in browsers and workstations across your enterprise network.",
-                  Icons.devices_rounded,
+                  AppIcons.devices_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildActiveSessionsCard(context, provider),
@@ -132,7 +133,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Recent Login Activity",
                   "Audit recent access attempts, geolocation diagnostics, and session results.",
-                  Icons.history_rounded,
+                  AppIcons.history_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildLoginActivityCard(context, provider),
@@ -143,7 +144,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Enterprise Privacy Controls",
                   "Control visibility of your recruiter profile and activity diagnostics across JobNest.",
-                  Icons.privacy_tip_outlined,
+                  AppIcons.privacy_tip_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildPrivacyControlsCard(context, provider),
@@ -154,7 +155,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Login Alerts & Threat Monitoring",
                   "Receive instant notifications for suspicious sign-ins or credential modifications.",
-                  Icons.notifications_active_outlined,
+                  AppIcons.notifications_active_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildLoginAlertsCard(context, provider),
@@ -165,7 +166,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   theme,
                   "Danger Zone",
                   "High-risk destructive actions that permanently impact account access and data.",
-                  Icons.warning_amber_rounded,
+                  AppIcons.warning_amber_rounded,
                   isDanger: true,
                 ),
                 const SizedBox(height: 14),
@@ -226,13 +227,13 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
     IconData statusIcon;
     if (score >= 90) {
       statusColor = Colors.green;
-      statusIcon = Icons.verified_rounded;
+      statusIcon = AppIcons.verified_rounded;
     } else if (score >= 75) {
       statusColor = Colors.amber.shade700;
-      statusIcon = Icons.admin_panel_settings_rounded;
+      statusIcon = AppIcons.admin_panel_settings_rounded;
     } else {
       statusColor = theme.colorScheme.error;
-      statusIcon = Icons.gpp_bad_rounded;
+      statusIcon = AppIcons.gpp_bad_rounded;
     }
 
     return AppCard(
@@ -320,7 +321,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               onPressed: () {
                 _showFeedback(context, "Running security diagnostic check");
               },
-              icon: const Icon(Icons.shield_outlined, size: 18),
+              icon: const Icon(AppIcons.shield_outlined, size: 18),
               label: const Text("Run Diagnostics"),
             ),
           ],
@@ -424,8 +425,8 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                     ),
                     child: Icon(
                       item.isCompleted
-                          ? Icons.check_rounded
-                          : Icons.priority_high_rounded,
+                          ? AppIcons.check_rounded
+                          : AppIcons.priority_high_rounded,
                       size: 16,
                       color: item.isCompleted
                           ? Colors.green
@@ -496,7 +497,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.access_time_rounded,
+                  Icon(AppIcons.access_time_rounded,
                       size: 16, color: theme.colorScheme.onSurfaceVariant),
                   const SizedBox(width: 6),
                   Text(
@@ -518,7 +519,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.check_circle, size: 14, color: Colors.green),
+                    Icon(AppIcons.check_circle, size: 14, color: Colors.green),
                     SizedBox(width: 6),
                     Text(
                       "Password Strength: Strong",
@@ -583,7 +584,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.check_circle_rounded,
+                    const Icon(AppIcons.check_circle_rounded,
                         size: 15, color: Colors.green),
                     const SizedBox(width: 6),
                     Text(r, style: const TextStyle(fontSize: 12)),
@@ -615,7 +616,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                 _showFeedback(
                     context, "Password updated successfully (Dummy action)");
               },
-              icon: const Icon(Icons.lock_reset_rounded),
+              icon: const Icon(AppIcons.lock_reset_rounded),
               label: const Text(
                 "Update Password",
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -659,8 +660,8 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               onPressed: onToggle,
               icon: Icon(
                 isObscured
-                    ? Icons.visibility_off_rounded
-                    : Icons.visibility_rounded,
+                    ? AppIcons.visibility_off_rounded
+                    : AppIcons.visibility_rounded,
               ),
               tooltip: isObscured ? "Show password" : "Hide password",
             ),
@@ -694,7 +695,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.security_rounded,
+                          Icon(AppIcons.security_rounded,
                               color: theme.colorScheme.primary, size: 22),
                           const SizedBox(width: 10),
                           Text(
@@ -737,7 +738,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               context,
               "Authenticator App",
               "Use Google Authenticator, Authy, or Microsoft Authenticator to generate time-based OTP codes.",
-              Icons.phone_android_rounded,
+              AppIcons.phone_android_rounded,
               provider.authenticatorAppEnabled,
               (val) => provider.toggleSecurity2FA('app', val),
             ),
@@ -749,7 +750,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               context,
               "SMS Verification OTP",
               "Receive text message verification codes on your verified mobile phone number (${provider.recoveryPhone}).",
-              Icons.sms_outlined,
+              AppIcons.sms_outlined,
               provider.smsOtpEnabled,
               (val) => provider.toggleSecurity2FA('sms', val),
             ),
@@ -761,7 +762,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               context,
               "Email Verification OTP",
               "Receive one-time passcodes on your enterprise email address (${provider.recoveryEmail}).",
-              Icons.email_outlined,
+              AppIcons.email_outlined,
               provider.emailOtpEnabled,
               (val) => provider.toggleSecurity2FA('email', val),
             ),
@@ -780,7 +781,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.password_rounded,
+                      Icon(AppIcons.password_rounded,
                           color: theme.colorScheme.primary, size: 20),
                       const SizedBox(width: 12),
                       Column(
@@ -809,7 +810,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                     onPressed: () {
                       _showBackupCodesDialog(context);
                     },
-                    icon: const Icon(Icons.qr_code_2_rounded, size: 18),
+                    icon: const Icon(AppIcons.qr_code_2_rounded, size: 18),
                     label: const Text("View Backup Codes"),
                   ),
                 ],
@@ -893,7 +894,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
             context,
             "Recovery Email Address",
             provider.recoveryEmail,
-            Icons.mark_email_read_outlined,
+            AppIcons.mark_email_read_outlined,
             "Edit Email",
             () => _showEditRecoveryDialog(
               context,
@@ -913,7 +914,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
             context,
             "Recovery Mobile Phone",
             provider.recoveryPhone,
-            Icons.phone_android_rounded,
+            AppIcons.phone_android_rounded,
             "Edit Phone",
             () => _showEditRecoveryDialog(
               context,
@@ -933,7 +934,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
             context,
             "Backup Verification Method",
             provider.backupVerificationMethod,
-            Icons.security_rounded,
+            AppIcons.security_rounded,
             "Change Method",
             () {
               _showFeedback(context, "Backup verification options opened");
@@ -1026,14 +1027,14 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
             ),
             itemBuilder: (context, index) {
               final s = sessions[index];
-              IconData icon = Icons.laptop_mac_rounded;
+              IconData icon = AppIcons.laptop_mac_rounded;
               if (s.deviceName.toLowerCase().contains('iphone') ||
                   s.deviceName.toLowerCase().contains('android') ||
                   s.deviceName.toLowerCase().contains('phone')) {
-                icon = Icons.phone_iphone_rounded;
+                icon = AppIcons.phone_iphone_rounded;
               } else if (s.deviceName.toLowerCase().contains('ipad') ||
                   s.deviceName.toLowerCase().contains('tablet')) {
-                icon = Icons.tablet_mac_rounded;
+                icon = AppIcons.tablet_mac_rounded;
               }
 
               return Padding(
@@ -1185,7 +1186,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                       },
                     );
                   },
-                  icon: const Icon(Icons.logout_rounded, size: 18),
+                  icon: const Icon(AppIcons.logout_rounded, size: 18),
                   label: const Text("Sign Out Other Devices"),
                   style: FilledButton.styleFrom(
                     foregroundColor: theme.colorScheme.error,
@@ -1238,10 +1239,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   children: [
                     Icon(
                       isFailed
-                          ? Icons.warning_rounded
+                          ? AppIcons.warning_rounded
                           : (isCurrent
-                              ? Icons.verified_user_rounded
-                              : Icons.history_rounded),
+                              ? AppIcons.verified_user_rounded
+                              : AppIcons.history_rounded),
                       color: badgeColor,
                       size: 22,
                     ),
@@ -1497,7 +1498,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.warning_amber_rounded, color: errorColor, size: 24),
+                Icon(AppIcons.warning_amber_rounded, color: errorColor, size: 24),
                 const SizedBox(width: 10),
                 Text(
                   "High-Risk Destructive Operations",
@@ -1537,7 +1538,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                       isDestructive: true,
                     );
                   },
-                  icon: Icon(Icons.pause_circle_outline_rounded,
+                  icon: Icon(AppIcons.pause_circle_outline_rounded,
                       color: errorColor, size: 18),
                   label: Text("Deactivate Account",
                       style: TextStyle(color: errorColor)),
@@ -1564,7 +1565,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                       isDestructive: true,
                     );
                   },
-                  icon: Icon(Icons.logout_rounded, color: errorColor, size: 18),
+                  icon: Icon(AppIcons.logout_rounded, color: errorColor, size: 18),
                   label: Text("Sign Out All Devices",
                       style: TextStyle(color: errorColor)),
                   style: OutlinedButton.styleFrom(
@@ -1585,7 +1586,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                       isDestructive: true,
                     );
                   },
-                  icon: const Icon(Icons.delete_forever_rounded, size: 18),
+                  icon: const Icon(AppIcons.delete_forever_rounded, size: 18),
                   label: const Text(
                     "Delete Account",
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -1765,7 +1766,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               Navigator.pop(ctx);
               _showFeedback(context, "Backup codes downloaded (Dummy action)");
             },
-            icon: const Icon(Icons.download_rounded, size: 16),
+            icon: const Icon(AppIcons.download_rounded, size: 16),
             label: const Text("Download Codes"),
           ),
           FilledButton(

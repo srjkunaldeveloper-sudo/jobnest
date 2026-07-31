@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -13,7 +14,7 @@ class ProfileAiCandidateScore extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.analytics_rounded, color: Colors.blueAccent, size: 24),
+            const Icon(AppIcons.analytics_rounded, color: Colors.blueAccent, size: 24),
             const SizedBox(width: 12),
             Text(
               "Candidate Score",

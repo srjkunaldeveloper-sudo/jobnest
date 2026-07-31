@@ -1,5 +1,9 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
 
 class ServicesSettingsScreen extends StatelessWidget {
   const ServicesSettingsScreen({super.key});
@@ -10,19 +14,12 @@ class ServicesSettingsScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: Settings backend/local storage me save hongi.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("Services Settings"),
-      ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-            children: [
+    return AppPageScaffold(
+      title: "Services Settings",
+      body: SingleChildScrollView(
+        padding: AppSpacing.edgeInsetsAll24,
+        child: Column(
+          children: [
               _buildSettingsSection(
                 context,
                 title: "Automation Preferences",
@@ -66,23 +63,22 @@ class ServicesSettingsScreen extends StatelessWidget {
                   ListTile(
                     title: const Text("Default Candidate Filters"),
                     subtitle: const Text("Manage the preset filters used on the Candidates Dashboard."),
-                    trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                    trailing: const Icon(AppIcons.arrow_forward_ios_rounded, size: 16),
                     onTap: () {},
                   ),
                   const Divider(),
                   ListTile(
                     title: const Text("Theme Settings"),
                     subtitle: const Text("System Default (Dark Mode enabled)"),
-                    trailing: const Icon(Icons.palette_rounded, size: 20),
+                    trailing: const Icon(AppIcons.palette_rounded, size: 20),
                     onTap: () {},
                   ),
                 ],
               ),
-              const SizedBox(height: 48),
+              AppSpacing.h48,
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -95,9 +91,8 @@ class ServicesSettingsScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
           child: Text(
             title,
-            style: theme.textTheme.titleMedium?.copyWith(
+            style: AppText.h3.copyWith(
               color: theme.colorScheme.primary,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -113,8 +108,8 @@ class ServicesSettingsScreen extends StatelessWidget {
 
   Widget _buildSwitchTile(BuildContext context, String title, String subtitle, bool initialValue) {
     return SwitchListTile(
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(subtitle),
+      title: Text(title, style: AppText.h3.copyWith(fontSize: 16)),
+      subtitle: Text(subtitle, style: AppText.caption),
       value: initialValue,
       onChanged: (val) {},
     );

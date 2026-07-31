@@ -1,7 +1,10 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/widgets/app_textfield.dart';
 import 'package:jobnest/features/jobs/providers/job_form_provider.dart';
 
 class Step5Settings extends StatelessWidget {
@@ -23,15 +26,12 @@ class Step5Settings extends StatelessWidget {
         children: [
           Text(
             "Hiring Settings",
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              letterSpacing: -0.5,
-            ),
+            style: AppText.h2,
           ),
           AppSpacing.h8,
           Text(
             "Configure how candidates apply and how you manage them.",
-            style: theme.textTheme.bodyMedium?.copyWith(
+            style: AppText.bodyMedium.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -45,24 +45,13 @@ class Step5Settings extends StatelessWidget {
                   children: [
                     Text(
                       "Open Positions *",
-                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                      style: AppText.h3.copyWith(fontSize: 14),
                     ),
                     AppSpacing.h8,
-                    TextFormField(
+                    AppTextField(
                       controller: form.openingsController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: theme.colorScheme.surface,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
-                        ),
-                      ),
+                      hint: "",
                     ),
                   ],
                 ),
@@ -74,12 +63,14 @@ class Step5Settings extends StatelessWidget {
                   children: [
                     Text(
                       "Application Deadline",
-                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                      style: AppText.h3.copyWith(fontSize: 14),
                     ),
                     AppSpacing.h8,
-                    TextFormField(
+                    AppTextField(
                       controller: form.deadlineController,
+                      hint: "",
                       readOnly: true,
+                      icon: AppIcons.calendar_month_rounded,
                       onTap: () async {
                         final picked = await showDatePicker(
                           context: context,
@@ -92,19 +83,6 @@ class Step5Settings extends StatelessWidget {
                           form.deadlineController.text = "${picked.day} ${months[picked.month - 1]} ${picked.year}";
                         }
                       },
-                      decoration: InputDecoration(
-                        suffixIcon: const Icon(Icons.calendar_month_rounded),
-                        filled: true,
-                        fillColor: theme.colorScheme.surface,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -115,7 +93,7 @@ class Step5Settings extends StatelessWidget {
 
           Text(
             "Advanced Toggles",
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            style: AppText.h3.copyWith(fontSize: 16),
           ),
           AppSpacing.h16,
           
@@ -174,12 +152,12 @@ class Step5Settings extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                  style: AppText.h3.copyWith(fontSize: 14),
                 ),
                 AppSpacing.h4,
                 Text(
                   subtitle,
-                  style: theme.textTheme.labelMedium?.copyWith(
+                  style: AppText.label.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),

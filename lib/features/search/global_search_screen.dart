@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -143,7 +144,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
+            icon: const Icon(AppIcons.arrow_back_rounded),
             onPressed: () => Navigator.pop(context),
             splashRadius: 24,
           ),
@@ -164,10 +165,10 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
                 decoration: InputDecoration(
                   hintText: "Search jobs, candidates or companies",
                   hintStyle: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                  prefixIcon: Icon(Icons.search_rounded, color: theme.colorScheme.primary, size: 22),
+                  prefixIcon: Icon(AppIcons.search_rounded, color: theme.colorScheme.primary, size: 22),
                   suffixIcon: _query.isNotEmpty
                       ? IconButton(
-                          icon: Icon(Icons.clear_rounded, size: 20, color: theme.colorScheme.onSurfaceVariant),
+                          icon: Icon(AppIcons.clear_rounded, size: 20, color: theme.colorScheme.onSurfaceVariant),
                           onPressed: () {
                             _searchController.clear();
                             _onSearchChanged('');
@@ -256,8 +257,8 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
               children: searchProvider.recentSearches.map((term) {
                 return InputChip(
                   label: Text(term),
-                  avatar: const Icon(Icons.history_rounded, size: 16),
-                  deleteIcon: const Icon(Icons.close_rounded, size: 16),
+                  avatar: const Icon(AppIcons.history_rounded, size: 16),
+                  deleteIcon: const Icon(AppIcons.close_rounded, size: 16),
                   onDeleted: () => searchProvider.deleteRecentSearch(term),
                   onPressed: () => _submitSearch(term),
                   backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
@@ -280,7 +281,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
             children: searchProvider.trendingSearches.map((term) {
               return ActionChip(
                 label: Text(term),
-                avatar: const Icon(Icons.trending_up_rounded, size: 16, color: Colors.amber),
+                avatar: const Icon(AppIcons.trending_up_rounded, size: 16, color: Colors.amber),
                 onPressed: () => _submitSearch(term),
                 backgroundColor: theme.colorScheme.surface,
                 shape: RoundedRectangleBorder(
@@ -293,19 +294,19 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
           const SizedBox(height: 32),
 
           // Suggested Jobs
-          _buildSectionHeader(theme, "Suggested Jobs", Icons.work_outline_rounded),
+          _buildSectionHeader(theme, "Suggested Jobs", AppIcons.work_outline_rounded),
           const SizedBox(height: 12),
           ...jobProvider.jobs.take(3).map((job) => _buildSuggestedJobCard(theme, job)),
           const SizedBox(height: 24),
 
           // Suggested Candidates
-          _buildSectionHeader(theme, "Suggested Candidates", Icons.people_outline_rounded),
+          _buildSectionHeader(theme, "Suggested Candidates", AppIcons.people_outline_rounded),
           const SizedBox(height: 12),
           ...candidateProvider.candidates.take(3).map((cand) => _buildSuggestedCandidateCard(theme, cand)),
           const SizedBox(height: 24),
 
           // Suggested Companies
-          _buildSectionHeader(theme, "Suggested Companies", Icons.business_rounded),
+          _buildSectionHeader(theme, "Suggested Companies", AppIcons.business_rounded),
           const SizedBox(height: 12),
           ...companyProvider.companies.take(3).map((comp) => _buildSuggestedCompanyCard(theme, comp)),
           const SizedBox(height: 32),
@@ -328,7 +329,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.search_off_rounded, size: 64, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
+              Icon(AppIcons.search_off_rounded, size: 64, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
               const SizedBox(height: 16),
               Text(
                 "No results found for '$_query'",
@@ -350,19 +351,19 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       children: [
         if (showJobs && jobs.isNotEmpty) ...[
-          _buildSectionHeader(theme, "Jobs (${jobs.length})", Icons.work_rounded),
+          _buildSectionHeader(theme, "Jobs (${jobs.length})", AppIcons.work_rounded),
           const SizedBox(height: 12),
           ...jobs.map((j) => _buildSuggestedJobCard(theme, j)),
           const SizedBox(height: 20),
         ],
         if (showCandidates && candidates.isNotEmpty) ...[
-          _buildSectionHeader(theme, "Candidates (${candidates.length})", Icons.person_rounded),
+          _buildSectionHeader(theme, "Candidates (${candidates.length})", AppIcons.person_rounded),
           const SizedBox(height: 12),
           ...candidates.map((c) => _buildSuggestedCandidateCard(theme, c)),
           const SizedBox(height: 20),
         ],
         if (showCompanies && companies.isNotEmpty) ...[
-          _buildSectionHeader(theme, "Companies (${companies.length})", Icons.business_rounded),
+          _buildSectionHeader(theme, "Companies (${companies.length})", AppIcons.business_rounded),
           const SizedBox(height: 12),
           ...companies.map((comp) => _buildSuggestedCompanyCard(theme, comp)),
           const SizedBox(height: 20),
@@ -418,7 +419,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
                     color: theme.colorScheme.primaryContainer.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(Icons.work_rounded, color: theme.colorScheme.primary, size: 20),
+                  child: Icon(AppIcons.work_rounded, color: theme.colorScheme.primary, size: 20),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -488,7 +489,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right_rounded, color: theme.colorScheme.onSurfaceVariant),
+                Icon(AppIcons.chevron_right_rounded, color: theme.colorScheme.onSurfaceVariant),
               ],
             ),
           ),
@@ -518,7 +519,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
                     color: Colors.blueGrey.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.apartment_rounded, color: Colors.blueGrey, size: 22),
+                  child: const Icon(AppIcons.apartment_rounded, color: Colors.blueGrey, size: 22),
                 ),
                 const SizedBox(width: 14),
                 Expanded(

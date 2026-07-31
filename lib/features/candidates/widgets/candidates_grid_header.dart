@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 
@@ -48,7 +49,7 @@ class CandidatesGridHeader extends StatelessWidget {
                 TextButton.icon(
                   onPressed: onSelectAllVisible,
                   icon: Icon(
-                    isAllSelected ? Icons.check_box_rounded : Icons.select_all_rounded,
+                    isAllSelected ? AppIcons.check_box_rounded : AppIcons.select_all_rounded,
                     size: 18,
                   ),
                   label: Text(
@@ -62,7 +63,7 @@ class CandidatesGridHeader extends StatelessWidget {
             children: [
               TextButton.icon(
                 onPressed: onToggleMultiSelect,
-                icon: Icon(isMultiSelectMode ? Icons.checklist_rtl_rounded : Icons.checklist_rounded, size: 18),
+                icon: Icon(isMultiSelectMode ? AppIcons.checklist_rtl_rounded : AppIcons.checklist_rounded, size: 18),
                 label: Text(isMultiSelectMode ? "Exit Select" : "Multi Select"),
                 style: TextButton.styleFrom(
                   foregroundColor: isMultiSelectMode ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
@@ -71,7 +72,7 @@ class CandidatesGridHeader extends StatelessWidget {
               AppSpacing.w8,
               TextButton.icon(
                 onPressed: onAddCandidate,
-                icon: const Icon(Icons.person_add_rounded, size: 18),
+                icon: const Icon(AppIcons.person_add_rounded, size: 18),
                 label: const Text("Add Candidate"),
                 style: TextButton.styleFrom(
                   foregroundColor: theme.colorScheme.primary,

@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -34,8 +35,8 @@ class ProfileVerificationScreen extends StatelessWidget {
             onPressed: () => provider.toggleVerificationEmptyState(),
             icon: Icon(
               provider.isVerificationEmpty
-                  ? Icons.verified_user_rounded
-                  : Icons.remove_moderator_outlined,
+                  ? AppIcons.verified_user_rounded
+                  : AppIcons.remove_moderator_outlined,
             ),
             tooltip: provider.isVerificationEmpty
                 ? "Show Populated Trust System"
@@ -72,7 +73,7 @@ class ProfileVerificationScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    Icons.security_update_warning_rounded,
+                    AppIcons.security_update_warning_rounded,
                     size: 64,
                     color: theme.colorScheme.primary,
                   ),
@@ -109,7 +110,7 @@ class ProfileVerificationScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: const Icon(Icons.verified_outlined),
+                    icon: const Icon(AppIcons.verified_outlined),
                     label: const Text(
                       "Start Verification",
                       style: TextStyle(
@@ -197,13 +198,13 @@ class ProfileVerificationScreen extends StatelessWidget {
     IconData statusIcon;
     if (status == "Verified") {
       statusColor = Colors.green;
-      statusIcon = Icons.verified_rounded;
+      statusIcon = AppIcons.verified_rounded;
     } else if (status == "Partially Verified") {
       statusColor = Colors.amber.shade800;
-      statusIcon = Icons.gpp_maybe_rounded;
+      statusIcon = AppIcons.gpp_maybe_rounded;
     } else {
       statusColor = theme.colorScheme.error;
-      statusIcon = Icons.gpp_bad_rounded;
+      statusIcon = AppIcons.gpp_bad_rounded;
     }
 
     return AppCard(
@@ -299,7 +300,7 @@ class ProfileVerificationScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.verified_user_outlined,
+                            AppIcons.verified_user_outlined,
                             size: 14,
                             color: theme.colorScheme.primary,
                           ),
@@ -350,7 +351,7 @@ class ProfileVerificationScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.business_center_outlined,
+                            AppIcons.business_center_outlined,
                             size: 14,
                             color: theme.colorScheme.secondary,
                           ),
@@ -473,22 +474,22 @@ class ProfileVerificationScreen extends StatelessWidget {
 
     if (item.status == "Verified") {
       statusColor = Colors.green;
-      statusIcon = Icons.check_circle_rounded;
+      statusIcon = AppIcons.check_circle_rounded;
       badgeText = "✓ Verified";
       actionLabel = "View Details";
-      actionIcon = Icons.visibility_outlined;
+      actionIcon = AppIcons.visibility_outlined;
     } else if (item.status == "Pending") {
       statusColor = Colors.amber.shade800;
-      statusIcon = Icons.hourglass_top_rounded;
+      statusIcon = AppIcons.hourglass_top_rounded;
       badgeText = "⏳ Pending";
       actionLabel = "Resubmit";
-      actionIcon = Icons.refresh_rounded;
+      actionIcon = AppIcons.refresh_rounded;
     } else {
       statusColor = theme.colorScheme.error;
-      statusIcon = Icons.warning_rounded;
+      statusIcon = AppIcons.warning_rounded;
       badgeText = "⚠ Not Verified";
       actionLabel = "Verify Now";
-      actionIcon = Icons.arrow_forward_rounded;
+      actionIcon = AppIcons.arrow_forward_rounded;
     }
 
     return AppCard(
@@ -652,7 +653,7 @@ class ProfileVerificationScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
-                  Icons.folder_shared_outlined,
+                  AppIcons.folder_shared_outlined,
                   color: theme.colorScheme.onTertiaryContainer,
                   size: 24,
                 ),
@@ -710,13 +711,13 @@ class ProfileVerificationScreen extends StatelessWidget {
     IconData badgeIcon;
     if (doc.status == "Uploaded") {
       badgeColor = Colors.green;
-      badgeIcon = Icons.check_circle_outline_rounded;
+      badgeIcon = AppIcons.check_circle_outline_rounded;
     } else if (doc.status == "Pending Review") {
       badgeColor = Colors.amber.shade800;
-      badgeIcon = Icons.hourglass_empty_rounded;
+      badgeIcon = AppIcons.hourglass_empty_rounded;
     } else {
       badgeColor = theme.colorScheme.onSurfaceVariant;
-      badgeIcon = Icons.upload_file_outlined;
+      badgeIcon = AppIcons.upload_file_outlined;
     }
 
     return Wrap(
@@ -728,7 +729,7 @@ class ProfileVerificationScreen extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.description_outlined,
+            Icon(AppIcons.description_outlined,
                 color: theme.colorScheme.primary, size: 22),
             const SizedBox(width: 12),
             Column(
@@ -790,7 +791,7 @@ class ProfileVerificationScreen extends StatelessWidget {
                   ),
                 );
               },
-              icon: const Icon(Icons.cloud_upload_outlined, size: 16),
+              icon: const Icon(AppIcons.cloud_upload_outlined, size: 16),
               label: const Text("Upload Document"),
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
@@ -817,7 +818,7 @@ class ProfileVerificationScreen extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: Row(
           children: [
-            const Icon(Icons.verified_rounded, color: Colors.green),
+            const Icon(AppIcons.verified_rounded, color: Colors.green),
             const SizedBox(width: 10),
             Expanded(child: Text("${item.title} Details")),
           ],

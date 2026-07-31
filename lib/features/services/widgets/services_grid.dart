@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/features/services/models/service_item.dart';
@@ -58,7 +59,7 @@ class ServicesGrid extends StatelessWidget {
                   onPressed: () {
                     provider.restoreDefaults();
                   },
-                  icon: const Icon(Icons.refresh_rounded, size: 16),
+                  icon: const Icon(AppIcons.refresh_rounded, size: 16),
                   label: const Text("Reset Filters", style: TextStyle(fontWeight: FontWeight.w600)),
                   style: TextButton.styleFrom(
                     minimumSize: const Size(48, 36),
@@ -193,7 +194,7 @@ class ServicesGrid extends StatelessWidget {
                                   duration: const Duration(milliseconds: 200),
                                   transitionBuilder: (child, anim) => ScaleTransition(scale: anim, child: child),
                                   child: Icon(
-                                    service.isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                                    service.isFavorite ? AppIcons.favorite_rounded : AppIcons.favorite_border_rounded,
                                     key: ValueKey<bool>(service.isFavorite),
                                     color: service.isFavorite
                                         ? Colors.redAccent
@@ -332,7 +333,7 @@ class ServicesGrid extends StatelessWidget {
       message: "A network timeout occurred while fetching recruiter tools from the server. Please check your connection and try again.",
       primaryButtonText: "Retry Connection",
       onRetry: () => provider.refreshServices(),
-      iconData: Icons.error_outline_rounded,
+      iconData: AppIcons.error_outline_rounded,
     );
   }
 
@@ -355,10 +356,10 @@ class ServicesGrid extends StatelessWidget {
               ),
               child: Icon(
                 isFav
-                    ? Icons.favorite_border_rounded
+                    ? AppIcons.favorite_border_rounded
                     : isSearch
-                        ? Icons.search_off_rounded
-                        : Icons.auto_awesome_outlined,
+                        ? AppIcons.search_off_rounded
+                        : AppIcons.auto_awesome_outlined,
                 size: 64,
                 color: theme.colorScheme.primary,
               ),
@@ -391,7 +392,7 @@ class ServicesGrid extends StatelessWidget {
                   height: 48,
                   child: FilledButton.icon(
                     onPressed: () => provider.refreshServices(),
-                    icon: const Icon(Icons.refresh_rounded),
+                    icon: const Icon(AppIcons.refresh_rounded),
                     label: const Text("Refresh", style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ),

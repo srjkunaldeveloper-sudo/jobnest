@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -19,7 +20,7 @@ class CommunicationTimelineScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.add_comment_rounded),
+            icon: const Icon(AppIcons.add_comment_rounded),
             tooltip: "Log Interaction",
           ),
           const SizedBox(width: 8),
@@ -36,7 +37,7 @@ class CommunicationTimelineScreen extends StatelessWidget {
                 title: "Offer Shared",
                 subtitle: "Sent via email to TechCorp for Senior Developer role.",
                 time: "Today, 10:30 AM",
-                icon: Icons.local_activity_rounded,
+                icon: AppIcons.local_activity_rounded,
                 color: Colors.purpleAccent,
                 isFirst: true,
                 isLast: false,
@@ -46,7 +47,7 @@ class CommunicationTimelineScreen extends StatelessWidget {
                 title: "Meeting Completed",
                 subtitle: "Final round interview wrap-up meeting with client.",
                 time: "Yesterday, 4:00 PM",
-                icon: Icons.groups_rounded,
+                icon: AppIcons.groups_rounded,
                 color: Colors.blueAccent,
                 isFirst: false,
                 isLast: false,
@@ -56,7 +57,7 @@ class CommunicationTimelineScreen extends StatelessWidget {
                 title: "Interview Scheduled",
                 subtitle: "Technical round scheduled for Rahul Sharma.",
                 time: "Oct 12, 11:00 AM",
-                icon: Icons.event_rounded,
+                icon: AppIcons.event_rounded,
                 color: Colors.orange,
                 isFirst: false,
                 isLast: false,
@@ -66,7 +67,7 @@ class CommunicationTimelineScreen extends StatelessWidget {
                 title: "Call Completed",
                 subtitle: "Discussed candidate feedback with TechCorp HR.",
                 time: "Oct 10, 2:15 PM",
-                icon: Icons.phone_in_talk_rounded,
+                icon: AppIcons.phone_in_talk_rounded,
                 color: Colors.green,
                 isFirst: false,
                 isLast: false,
@@ -76,7 +77,7 @@ class CommunicationTimelineScreen extends StatelessWidget {
                 title: "Email Sent",
                 subtitle: "Sent initial shortlist of 5 candidates.",
                 time: "Oct 8, 09:45 AM",
-                icon: Icons.email_rounded,
+                icon: AppIcons.email_rounded,
                 color: theme.colorScheme.primary,
                 isFirst: false,
                 isLast: true,

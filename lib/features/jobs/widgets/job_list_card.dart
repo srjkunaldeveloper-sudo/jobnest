@@ -1,6 +1,9 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/constants/app_radius.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/features/jobs/job_details_screen.dart';
@@ -83,7 +86,7 @@ class _JobListCardState extends State<JobListCard> {
                       ),
                     );
                   },
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: AppRadius.large,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
@@ -100,18 +103,12 @@ class _JobListCardState extends State<JobListCard> {
                                 children: [
                                   Text(
                                     widget.title,
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                    ),
+                                    style: AppText.h3,
                                   ),
                                   AppSpacing.h4,
                                   Text(
                                     "${widget.company} • ${widget.location}",
-                                    style: theme.textTheme.labelMedium?.copyWith(
-                                      color: theme.colorScheme.onSurfaceVariant,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: AppText.bodyMedium,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -128,10 +125,10 @@ class _JobListCardState extends State<JobListCard> {
                           spacing: 14,
                           runSpacing: 10,
                           children: [
-                            _buildAttribute(context, Icons.monetization_on_rounded, widget.salary),
-                            _buildAttribute(context, Icons.work_outline_rounded, widget.jobType),
-                            _buildAttribute(context, Icons.people_alt_rounded, "${widget.applicationsCount} Candidates"),
-                            _buildAttribute(context, Icons.calendar_today_rounded, postedDate),
+                            _buildAttribute(context, AppIcons.monetization_on_rounded, widget.salary),
+                            _buildAttribute(context, AppIcons.work_outline_rounded, widget.jobType),
+                            _buildAttribute(context, AppIcons.people_alt_rounded, "${widget.applicationsCount} Candidates"),
+                            _buildAttribute(context, AppIcons.calendar_today_rounded, postedDate),
                           ],
                         ),
                         AppSpacing.h16,
@@ -148,7 +145,7 @@ class _JobListCardState extends State<JobListCard> {
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.auto_awesome_rounded, color: Colors.deepPurpleAccent, size: 16),
+                                const Icon(AppIcons.auto_awesome_rounded, color: Colors.deepPurpleAccent, size: 16),
                                 const SizedBox(width: 4),
                                 Text(
                                   "${widget.aiMatchScore}% AI Match",
@@ -171,7 +168,7 @@ class _JobListCardState extends State<JobListCard> {
                                     onPressed: widget.onBookmarkTap ?? () {},
                                     tooltip: isBookmarked ? "Bookmarked" : "Bookmark",
                                     icon: Icon(
-                                      isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                                      isBookmarked ? AppIcons.bookmark_rounded : AppIcons.bookmark_border_rounded,
                                       color: isBookmarked ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
                                       size: 20,
                                     ),
@@ -224,7 +221,7 @@ class _JobListCardState extends State<JobListCard> {
                                         value: "edit",
                                         child: Row(
                                           children: [
-                                            Icon(Icons.edit_note_rounded, size: 18),
+                                            Icon(AppIcons.edit_note_rounded, size: 18),
                                             SizedBox(width: 10),
                                             Text("Edit Requisition"),
                                           ],
@@ -234,7 +231,7 @@ class _JobListCardState extends State<JobListCard> {
                                         value: "duplicate",
                                         child: Row(
                                           children: [
-                                            Icon(Icons.copy_rounded, size: 18),
+                                            Icon(AppIcons.copy_rounded, size: 18),
                                             SizedBox(width: 10),
                                             Text("Duplicate Job"),
                                           ],
@@ -248,7 +245,7 @@ class _JobListCardState extends State<JobListCard> {
                                         value: "status_Open",
                                         child: Row(
                                           children: [
-                                            Icon(Icons.check_circle_outline_rounded, size: 16, color: Colors.green),
+                                            Icon(AppIcons.check_circle_outline_rounded, size: 16, color: Colors.green),
                                             SizedBox(width: 8),
                                             Text("Set as Open"),
                                           ],
@@ -258,7 +255,7 @@ class _JobListCardState extends State<JobListCard> {
                                         value: "status_Hiring",
                                         child: Row(
                                           children: [
-                                            Icon(Icons.group_add_outlined, size: 16, color: Colors.blueAccent),
+                                            Icon(AppIcons.group_add_outlined, size: 16, color: Colors.blueAccent),
                                             SizedBox(width: 8),
                                             Text("Set as Hiring"),
                                           ],
@@ -268,7 +265,7 @@ class _JobListCardState extends State<JobListCard> {
                                         value: "status_Paused",
                                         child: Row(
                                           children: [
-                                            Icon(Icons.pause_circle_outline_rounded, size: 16, color: Colors.amber),
+                                            Icon(AppIcons.pause_circle_outline_rounded, size: 16, color: Colors.amber),
                                             SizedBox(width: 8),
                                             Text("Set as Paused"),
                                           ],
@@ -278,7 +275,7 @@ class _JobListCardState extends State<JobListCard> {
                                         value: "status_Closed",
                                         child: Row(
                                           children: [
-                                            Icon(Icons.cancel_outlined, size: 16, color: Colors.redAccent),
+                                            Icon(AppIcons.cancel_outlined, size: 16, color: Colors.redAccent),
                                             SizedBox(width: 8),
                                             Text("Set as Closed"),
                                           ],
@@ -289,14 +286,14 @@ class _JobListCardState extends State<JobListCard> {
                                         value: "delete",
                                         child: Row(
                                           children: [
-                                            Icon(Icons.delete_outline_rounded, size: 18, color: Colors.red),
+                                            Icon(AppIcons.delete_outline_rounded, size: 18, color: Colors.red),
                                             SizedBox(width: 10),
                                             Text("Archive / Delete", style: TextStyle(color: Colors.red)),
                                           ],
                                         ),
                                       ),
                                     ],
-                                    icon: Icon(Icons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurfaceVariant),
+                                    icon: Icon(AppIcons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurfaceVariant),
                                     padding: EdgeInsets.zero,
                                     splashRadius: 24,
                                   ),
@@ -319,24 +316,24 @@ class _JobListCardState extends State<JobListCard> {
 
   Widget _buildStatusBadge(ThemeData theme, String status) {
     Color badgeColor = Colors.green;
-    IconData badgeIcon = Icons.check_circle_rounded;
+    IconData badgeIcon = AppIcons.check_circle_rounded;
     final s = status.toLowerCase();
 
     if (s == "active" || s == "open") {
       badgeColor = Colors.green;
-      badgeIcon = Icons.check_circle_rounded;
+      badgeIcon = AppIcons.check_circle_rounded;
     } else if (s == "hiring") {
       badgeColor = Colors.blueAccent;
-      badgeIcon = Icons.group_add_rounded;
+      badgeIcon = AppIcons.group_add_rounded;
     } else if (s == "paused") {
       badgeColor = Colors.amber.shade700;
-      badgeIcon = Icons.pause_circle_filled_rounded;
+      badgeIcon = AppIcons.pause_circle_filled_rounded;
     } else if (s == "closed") {
       badgeColor = Colors.redAccent;
-      badgeIcon = Icons.cancel_rounded;
+      badgeIcon = AppIcons.cancel_rounded;
     } else if (s == "draft") {
       badgeColor = Colors.blueGrey;
-      badgeIcon = Icons.edit_note_rounded;
+      badgeIcon = AppIcons.edit_note_rounded;
     }
 
     return Container(

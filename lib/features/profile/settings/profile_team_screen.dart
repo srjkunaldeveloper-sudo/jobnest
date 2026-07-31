@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -64,8 +65,8 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
             onPressed: () => provider.toggleTeamEmptyState(),
             icon: Icon(
               provider.isTeamEmpty
-                  ? Icons.people_alt_rounded
-                  : Icons.group_off_outlined,
+                  ? AppIcons.people_alt_rounded
+                  : AppIcons.group_off_outlined,
             ),
             tooltip: provider.isTeamEmpty
                 ? "Show Populated Team"
@@ -81,11 +82,11 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
           indicatorWeight: 3,
           tabs: const [
             Tab(
-              icon: Icon(Icons.people_outline_rounded, size: 20),
+              icon: Icon(AppIcons.people_outline_rounded, size: 20),
               text: "Team Members",
             ),
             Tab(
-              icon: Icon(Icons.admin_panel_settings_outlined, size: 20),
+              icon: Icon(AppIcons.admin_panel_settings_outlined, size: 20),
               text: "Role Directory",
             ),
           ],
@@ -101,7 +102,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
       floatingActionButton: _tabController.index == 0 && !provider.isTeamEmpty
           ? FloatingActionButton.extended(
               onPressed: () => _showInviteMemberDialog(context, provider),
-              icon: const Icon(Icons.person_add_outlined),
+              icon: const Icon(AppIcons.person_add_outlined),
               label: const Text("Invite Member"),
             )
           : null,
@@ -143,7 +144,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        Icons.shield_outlined,
+                        AppIcons.shield_outlined,
                         color: theme.colorScheme.primary,
                         size: 26,
                       ),
@@ -181,10 +182,10 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                   decoration: InputDecoration(
                     hintText:
                         "Search team by name, email, or role...",
-                    prefixIcon: const Icon(Icons.search_rounded),
+                    prefixIcon: const Icon(AppIcons.search_rounded),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
-                            icon: const Icon(Icons.clear),
+                            icon: const Icon(AppIcons.clear),
                             onPressed: () {
                               _searchController.clear();
                               provider.updateTeamSearchQuery("");
@@ -275,7 +276,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            Icons.group_off_rounded,
+            AppIcons.group_off_rounded,
             size: 64,
             color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
@@ -298,7 +299,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
           const SizedBox(height: 24),
           ElevatedButton.icon(
             onPressed: () => _showInviteMemberDialog(context, provider),
-            icon: const Icon(Icons.person_add_outlined),
+            icon: const Icon(AppIcons.person_add_outlined),
             label: const Text("Add Team Member"),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(
@@ -440,7 +441,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                 ),
                 const SizedBox(width: 8),
                 Icon(
-                  Icons.chevron_right_rounded,
+                  AppIcons.chevron_right_rounded,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ],
@@ -475,7 +476,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.badge_outlined,
+                          Icon(AppIcons.badge_outlined,
                               size: 14, color: roleColor),
                           const SizedBox(width: 6),
                           Text(
@@ -503,7 +504,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
-                              Icons.tune_rounded,
+                              AppIcons.tune_rounded,
                               size: 12,
                               color: theme.colorScheme.onTertiaryContainer,
                             ),
@@ -533,7 +534,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                       ),
                     );
                   },
-                  icon: const Icon(Icons.security_rounded, size: 16),
+                  icon: const Icon(AppIcons.security_rounded, size: 16),
                   label: const Text("Role & Permissions"),
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -578,7 +579,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        Icons.admin_panel_settings_rounded,
+                        AppIcons.admin_panel_settings_rounded,
                         color: theme.colorScheme.onSecondaryContainer,
                         size: 26,
                       ),
@@ -633,23 +634,23 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
     switch (role.name) {
       case "Admin":
         roleColor = Colors.purple;
-        roleIcon = Icons.shield_rounded;
+        roleIcon = AppIcons.shield_rounded;
         break;
       case "HR Manager":
         roleColor = Colors.blue;
-        roleIcon = Icons.manage_accounts_rounded;
+        roleIcon = AppIcons.manage_accounts_rounded;
         break;
       case "Recruiter":
         roleColor = Colors.teal;
-        roleIcon = Icons.person_search_rounded;
+        roleIcon = AppIcons.person_search_rounded;
         break;
       case "Hiring Manager":
         roleColor = Colors.orange;
-        roleIcon = Icons.fact_check_rounded;
+        roleIcon = AppIcons.fact_check_rounded;
         break;
       default:
         roleColor = Colors.grey;
-        roleIcon = Icons.visibility_rounded;
+        roleIcon = AppIcons.visibility_rounded;
     }
 
     return AppCard(
@@ -711,7 +712,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
             child: Row(
               children: [
                 Icon(
-                  Icons.key_outlined,
+                  AppIcons.key_outlined,
                   size: 16,
                   color: theme.colorScheme.primary,
                 ),
@@ -768,7 +769,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                       controller: nameController,
                       decoration: const InputDecoration(
                         labelText: "Full Name",
-                        prefixIcon: Icon(Icons.person_outline_rounded),
+                        prefixIcon: Icon(AppIcons.person_outline_rounded),
                         border: OutlineInputBorder(),
                       ),
                       validator: (v) => ProfileValidators.validateRequired(v, "Full Name"),
@@ -778,7 +779,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                       controller: emailController,
                       decoration: const InputDecoration(
                         labelText: "Email Address",
-                        prefixIcon: Icon(Icons.email_outlined),
+                        prefixIcon: Icon(AppIcons.email_outlined),
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.emailAddress,
@@ -789,7 +790,7 @@ class _ProfileTeamScreenState extends State<ProfileTeamScreen>
                       initialValue: selectedRole,
                       decoration: const InputDecoration(
                         labelText: "Assign Role",
-                        prefixIcon: Icon(Icons.badge_outlined),
+                        prefixIcon: Icon(AppIcons.badge_outlined),
                         border: OutlineInputBorder(),
                       ),
                       items: [
@@ -928,7 +929,7 @@ class _MemberRolePermissionsScreenState
         actions: [
           if (currentMember.id != "1")
             IconButton(
-              icon: Icon(Icons.delete_outline_rounded,
+              icon: Icon(AppIcons.delete_outline_rounded,
                   color: theme.colorScheme.error),
               tooltip: "Remove Team Member",
               onPressed: () {
@@ -1100,7 +1101,7 @@ class _MemberRolePermissionsScreenState
                         decoration: InputDecoration(
                           labelText: "Enterprise Permission Tier",
                           prefixIcon:
-                              const Icon(Icons.admin_panel_settings_outlined),
+                              const Icon(AppIcons.admin_panel_settings_outlined),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -1158,7 +1159,7 @@ class _MemberRolePermissionsScreenState
                             ),
                           );
                         },
-                        icon: const Icon(Icons.restore_rounded, size: 16),
+                        icon: const Icon(AppIcons.restore_rounded, size: 16),
                         label: const Text("Reset to Default"),
                       ),
                   ],
@@ -1206,7 +1207,7 @@ class _MemberRolePermissionsScreenState
                         ),
                       );
                     },
-                    icon: const Icon(Icons.check_circle_outline_rounded),
+                    icon: const Icon(AppIcons.check_circle_outline_rounded),
                     label: const Text(
                       "Save Access & Permissions",
                       style: TextStyle(
@@ -1237,37 +1238,37 @@ class _MemberRolePermissionsScreenState
     IconData icon;
     switch (perm.category) {
       case "Dashboard":
-        icon = Icons.dashboard_outlined;
+        icon = AppIcons.dashboard_outlined;
         break;
       case "Jobs":
-        icon = Icons.work_outline_rounded;
+        icon = AppIcons.work_outline_rounded;
         break;
       case "Candidates":
-        icon = Icons.people_outline_rounded;
+        icon = AppIcons.people_outline_rounded;
         break;
       case "Interviews":
-        icon = Icons.calendar_today_outlined;
+        icon = AppIcons.calendar_today_outlined;
         break;
       case "Reports":
-        icon = Icons.analytics_outlined;
+        icon = AppIcons.analytics_outlined;
         break;
       case "Notifications":
-        icon = Icons.notifications_none_rounded;
+        icon = AppIcons.notifications_none_rounded;
         break;
       case "Company Settings":
-        icon = Icons.business_outlined;
+        icon = AppIcons.business_outlined;
         break;
       case "Team Management":
-        icon = Icons.manage_accounts_outlined;
+        icon = AppIcons.manage_accounts_outlined;
         break;
       case "Billing":
-        icon = Icons.credit_card_outlined;
+        icon = AppIcons.credit_card_outlined;
         break;
       case "Security":
-        icon = Icons.security_outlined;
+        icon = AppIcons.security_outlined;
         break;
       default:
-        icon = Icons.folder_outlined;
+        icon = AppIcons.folder_outlined;
     }
 
     return AppCard(

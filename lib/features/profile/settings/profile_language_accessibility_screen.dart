@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -33,7 +34,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => _showResetConfirmDialog(context, provider),
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(AppIcons.refresh_rounded),
             tooltip: "Restore Default Accessibility Settings",
           ),
           const SizedBox(width: 8),
@@ -52,7 +53,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Live Accessibility Preview",
                   "Real-time preview demonstrating text size, contrast, button style, and card layout.",
-                  Icons.preview_rounded,
+                  AppIcons.preview_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildLivePreviewCard(context, provider),
@@ -63,7 +64,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Language & Localization",
                   "Select your preferred interface language. Prepared for enterprise multi-lingual localization.",
-                  Icons.translate_rounded,
+                  AppIcons.translate_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildLanguageSection(context, provider),
@@ -74,7 +75,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Regional Formatting Standards",
                   "Configure country conventions, date formatting, time notation, and number decimals.",
-                  Icons.public_rounded,
+                  AppIcons.public_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildRegionalSection(context, provider),
@@ -85,7 +86,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Workspace Timezone",
                   "Set the active time zone for scheduling candidate interviews and automated alerts.",
-                  Icons.schedule_rounded,
+                  AppIcons.schedule_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildTimezoneSection(context, provider),
@@ -96,7 +97,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Text Size & Font Scaling",
                   "Adjust interface typography scaling from compact 0.85x to extra large 1.30x.",
-                  Icons.format_size_rounded,
+                  AppIcons.format_size_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildTextSizeSection(context, provider),
@@ -107,7 +108,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Workspace Display Options",
                   "Fine-tune layout density, high contrast modes, button sizing, and interface tooltips.",
-                  Icons.desktop_windows_outlined,
+                  AppIcons.desktop_windows_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildDisplayOptionsSection(context, provider),
@@ -118,7 +119,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Assistive & Accessibility Features",
                   "Configure screen reader compatibility, keyboard navigation, and focus highlights.",
-                  Icons.accessibility_new_rounded,
+                  AppIcons.accessibility_new_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildAccessibilityFeaturesSection(context, provider),
@@ -129,7 +130,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Color Accessibility & Palettes",
                   "Select specialized color modes tailored for color vision deficiencies and high contrast.",
-                  Icons.color_lens_outlined,
+                  AppIcons.color_lens_outlined,
                 ),
                 const SizedBox(height: 14),
                 _buildColorAccessibilitySection(context, provider),
@@ -140,7 +141,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Motion & Animation Settings",
                   "Control UI transition speeds or reduce motion for vestibular comfort.",
-                  Icons.animation_rounded,
+                  AppIcons.animation_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildAnimationSettingsSection(context, provider),
@@ -151,7 +152,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                   theme,
                   "Readability & Typography Tuning",
                   "Customize line spacing, font weight, card spacing density, and icon dimensions.",
-                  Icons.subject_rounded,
+                  AppIcons.subject_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildReadabilitySection(context, provider),
@@ -281,7 +282,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                       color: primaryAccent.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(Icons.preview_rounded,
+                    child: Icon(AppIcons.preview_rounded,
                         color: primaryAccent, size: iconSize),
                   ),
                   Text(
@@ -351,7 +352,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                 onPressed: () {
                   _showFeedback(context, "Live Preview CTA: Scorecard Reviewed!");
                 },
-                icon: Icon(Icons.assessment_rounded,
+                icon: Icon(AppIcons.assessment_rounded,
                     size: isLargeButtons ? 22 : 18),
                 label: Text(
                   "Review Scorecard",
@@ -371,7 +372,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                 onPressed: () {
                   _showFeedback(context, "Live Preview CTA: Interview Scheduled!");
                 },
-                icon: Icon(Icons.calendar_today_rounded,
+                icon: Icon(AppIcons.calendar_today_rounded,
                     size: isLargeButtons ? 22 : 18),
                 label: Text(
                   "Schedule Interview",
@@ -417,7 +418,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.language_rounded, color: Colors.blue),
+              const Icon(AppIcons.language_rounded, color: Colors.blue),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -443,8 +444,8 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
               final isSel = provider.currentLanguage == lang["name"]!;
               return ChoiceChip(
                 avatar: isSel
-                    ? const Icon(Icons.check_circle_rounded, size: 18)
-                    : const Icon(Icons.translate_rounded, size: 16),
+                    ? const Icon(AppIcons.check_circle_rounded, size: 18)
+                    : const Icon(AppIcons.translate_rounded, size: 16),
                 label: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Column(
@@ -491,7 +492,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
         children: [
           _buildSelectorTile(
             context,
-            icon: Icons.flag_rounded,
+            icon: AppIcons.flag_rounded,
             title: "Country / Regional Standard",
             value: provider.regionalCountry,
             options: [
@@ -512,7 +513,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildSelectorTile(
             context,
-            icon: Icons.calendar_month_rounded,
+            icon: AppIcons.calendar_month_rounded,
             title: "Date Format Notation",
             value: provider.regionalDateFormat,
             options: [
@@ -529,7 +530,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildSelectorTile(
             context,
-            icon: Icons.access_time_rounded,
+            icon: AppIcons.access_time_rounded,
             title: "Time Notation Format",
             value: provider.regionalTimeFormat,
             options: [
@@ -545,7 +546,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildSelectorTile(
             context,
-            icon: Icons.numbers_rounded,
+            icon: AppIcons.numbers_rounded,
             title: "Number & Decimal Notation",
             value: provider.regionalNumberFormat,
             options: [
@@ -562,7 +563,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildSelectorTile(
             context,
-            icon: Icons.date_range_rounded,
+            icon: AppIcons.date_range_rounded,
             title: "First Day of Week",
             value: provider.regionalFirstDayOfWeek,
             options: ["Monday", "Sunday", "Saturday"],
@@ -584,7 +585,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: _buildSelectorTile(
         context,
-        icon: Icons.public_rounded,
+        icon: AppIcons.public_rounded,
         title: "Active Timezone",
         value: provider.regionalTimezone,
         options: [
@@ -715,7 +716,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
         children: [
           _buildToggleTile(
             context,
-            icon: Icons.contrast_rounded,
+            icon: AppIcons.contrast_rounded,
             title: "High Contrast Mode",
             subtitle: "Increase visual border separation and color contrast",
             value: provider.displayHighContrast,
@@ -728,7 +729,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.speed_rounded,
+            icon: AppIcons.speed_rounded,
             title: "Reduce Motion",
             subtitle: "Minimize screen transitions and parallax animations",
             value: provider.displayReduceMotion,
@@ -741,7 +742,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.touch_app_rounded,
+            icon: AppIcons.touch_app_rounded,
             title: "Large Buttons & Targets",
             subtitle: "Increase clickable touch area and button height for ease of use",
             value: provider.displayLargeButtons,
@@ -754,7 +755,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.view_compact_rounded,
+            icon: AppIcons.view_compact_rounded,
             title: "Compact Layout Density",
             subtitle: "Condense card padding to fit more candidates and jobs on screen",
             value: provider.displayCompactLayout,
@@ -767,7 +768,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.info_outline_rounded,
+            icon: AppIcons.info_outline_rounded,
             title: "Show Helpful Tooltips",
             subtitle: "Display hover descriptions and onboarding explanations on icons",
             value: provider.displayShowTooltips,
@@ -793,7 +794,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
         children: [
           _buildToggleTile(
             context,
-            icon: Icons.record_voice_over_rounded,
+            icon: AppIcons.record_voice_over_rounded,
             title: "Screen Reader Support (TalkBack / VoiceOver)",
             subtitle: "Optimize semantic tree annotations for visually impaired recruiters",
             value: provider.accessScreenReader,
@@ -806,7 +807,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.label_important_outline_rounded,
+            icon: AppIcons.label_important_outline_rounded,
             title: "Accessible Semantic Labels",
             subtitle: "Attach descriptive text labels to all interactive icons and status badges",
             value: provider.accessAccessibleLabels,
@@ -819,7 +820,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.keyboard_alt_outlined,
+            icon: AppIcons.keyboard_alt_outlined,
             title: "Keyboard Navigation Ready",
             subtitle: "Enable shortcut keys (Tab, Enter, Arrows) for fast desktop pipeline review",
             value: provider.accessKeyboardNav,
@@ -832,7 +833,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.center_focus_strong_rounded,
+            icon: AppIcons.center_focus_strong_rounded,
             title: "Enhanced Focus Indicators",
             subtitle: "Highlight active input fields and buttons with vivid outline borders",
             value: provider.accessFocusIndicators,
@@ -845,7 +846,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.mic_external_on_rounded,
+            icon: AppIcons.mic_external_on_rounded,
             title: "Voice Assistance Ready",
             subtitle: "Prepare workspace commands for voice recognition dictation tools",
             value: provider.accessVoiceAssistance,
@@ -933,7 +934,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: isSel
-                              ? const Icon(Icons.check_rounded, color: Colors.white, size: 20)
+                              ? const Icon(AppIcons.check_rounded, color: Colors.white, size: 20)
                               : null,
                         ),
                         const SizedBox(width: 14),
@@ -1049,7 +1050,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
         children: [
           _buildSelectorTile(
             context,
-            icon: Icons.format_line_spacing_rounded,
+            icon: AppIcons.format_line_spacing_rounded,
             title: "Line Spacing Density",
             value: provider.readabilityLineSpacing,
             options: [
@@ -1066,7 +1067,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildSelectorTile(
             context,
-            icon: Icons.format_bold_rounded,
+            icon: AppIcons.format_bold_rounded,
             title: "Typography Font Weight",
             value: provider.readabilityFontWeight,
             options: [
@@ -1083,7 +1084,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildSelectorTile(
             context,
-            icon: Icons.view_agenda_outlined,
+            icon: AppIcons.view_agenda_outlined,
             title: "Card Spacing Density",
             value: provider.readabilityCardDensity,
             options: [
@@ -1100,7 +1101,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildSelectorTile(
             context,
-            icon: Icons.photo_size_select_small_rounded,
+            icon: AppIcons.photo_size_select_small_rounded,
             title: "Interface Icon Dimensions",
             value: provider.readabilityIconSize,
             options: ["Small (18px)", "Medium (24px)", "Large (32px)"],
@@ -1122,7 +1123,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          const Icon(Icons.settings_backup_restore_rounded, size: 36, color: Colors.orange),
+          const Icon(AppIcons.settings_backup_restore_rounded, size: 36, color: Colors.orange),
           const SizedBox(height: 12),
           Text(
             "Restore Accessibility Defaults",
@@ -1144,7 +1145,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
             height: 48,
             child: OutlinedButton.icon(
               onPressed: () => _showResetConfirmDialog(context, provider),
-              icon: const Icon(Icons.refresh_rounded, color: Colors.orange),
+              icon: const Icon(AppIcons.refresh_rounded, color: Colors.orange),
               label: const Text(
                 "Restore Default Accessibility Settings",
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange),
@@ -1222,7 +1223,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
           ),
         ),
       ),
-      trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+      trailing: const Icon(AppIcons.arrow_forward_ios_rounded, size: 16),
       onTap: () {
         showModalBottomSheet(
           context: context,
@@ -1250,7 +1251,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontWeight: isSel ? FontWeight.bold : FontWeight.normal)),
                         trailing: isSel
-                            ? Icon(Icons.check_circle_rounded,
+                            ? Icon(AppIcons.check_circle_rounded,
                                 color: theme.colorScheme.primary)
                             : null,
                         onTap: () {
@@ -1279,7 +1280,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: const Row(
           children: [
-            Icon(Icons.warning_amber_rounded, color: Colors.orange),
+            Icon(AppIcons.warning_amber_rounded, color: Colors.orange),
             SizedBox(width: 10),
             Expanded(child: Text("Restore Default Settings?")),
           ],
@@ -1299,7 +1300,7 @@ class ProfileLanguageAccessibilityScreen extends StatelessWidget {
               provider.resetLanguageAccessibilityToDefaults();
               _showFeedback(context, "All language & accessibility defaults restored!");
             },
-            icon: const Icon(Icons.refresh_rounded, size: 18),
+            icon: const Icon(AppIcons.refresh_rounded, size: 18),
             label: const Text("Restore Defaults"),
             style: FilledButton.styleFrom(backgroundColor: Colors.orange),
           ),

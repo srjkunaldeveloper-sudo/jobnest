@@ -1,7 +1,9 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AppTextField extends StatefulWidget {
+  final String? label;
   final String hint;
   final IconData? icon;
   final bool isPassword;
@@ -11,9 +13,14 @@ class AppTextField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
   final String? errorText;
+  final int maxLines;
+  final TextCapitalization textCapitalization;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   const AppTextField({
     super.key,
+    this.label,
     required this.hint,
     this.icon,
     this.isPassword = false,
@@ -23,6 +30,10 @@ class AppTextField extends StatefulWidget {
     this.inputFormatters,
     this.maxLength,
     this.errorText,
+    this.maxLines = 1,
+    this.textCapitalization = TextCapitalization.none,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -60,13 +71,17 @@ class _AppTextFieldState extends State<AppTextField> {
     final theme = Theme.of(context);
     final iconColor = _isFocused ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant;
     
-    return TextField(
+    Widget textField = TextField(
       controller: widget.controller,
       focusNode: _focusNode,
       obscureText: _obscureText,
       keyboardType: widget.keyboardType,
+      readOnly: widget.readOnly,
+      onTap: widget.onTap,
       inputFormatters: widget.inputFormatters,
       maxLength: widget.maxLength,
+      maxLines: widget.maxLines,
+      textCapitalization: widget.textCapitalization,
       style: TextStyle(
         color: theme.colorScheme.onSurface,
         fontWeight: FontWeight.w500,
@@ -88,8 +103,8 @@ class _AppTextFieldState extends State<AppTextField> {
                     child: FadeTransition(opacity: anim, child: child),
                   ),
                   child: _obscureText
-                      ? Icon(Icons.visibility_off_outlined, color: iconColor, key: const ValueKey('icon1'))
-                      : Icon(Icons.visibility_outlined, color: iconColor, key: const ValueKey('icon2')),
+                      ? Icon(AppIcons.visibility_off_outlined, color: iconColor, key: const ValueKey('icon1'))
+                      : Icon(AppIcons.visibility_outlined, color: iconColor, key: const ValueKey('icon2')),
                 ),
                 onPressed: () {
                   setState(() {
@@ -100,5 +115,26 @@ class _AppTextFieldState extends State<AppTextField> {
             : null,
       ),
     );
+
+    if (widget.label != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            widget.label!,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 6),
+          textField,
+        ],
+      );
+    }
+
+    return textField;
   }
 }

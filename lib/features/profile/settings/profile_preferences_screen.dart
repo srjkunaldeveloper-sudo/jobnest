@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,7 +65,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                       constraints: const BoxConstraints(minHeight: 48),
                       child: ListTile(
                         title: Text(option),
-                        trailing: isSelected ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary) : null,
+                        trailing: isSelected ? Icon(AppIcons.check, color: Theme.of(context).colorScheme.primary) : null,
                         onTap: () {
                           onSelected(option);
                           Navigator.pop(context);
@@ -119,7 +120,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                       child: TextField(
                         decoration: const InputDecoration(
                           hintText: "Search Time Zone",
-                          prefixIcon: Icon(Icons.search),
+                          prefixIcon: Icon(AppIcons.search),
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
@@ -141,7 +142,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                             constraints: const BoxConstraints(minHeight: 48),
                             child: ListTile(
                               title: Text(option),
-                              trailing: isSelected ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary) : null,
+                              trailing: isSelected ? Icon(AppIcons.check, color: Theme.of(context).colorScheme.primary) : null,
                               onTap: () {
                                 setState(() {
                                   _timeZone = option;
@@ -207,7 +208,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                   children: [
                     _buildDropdownTile(
                       context, 
-                      Icons.language_rounded, 
+                      AppIcons.language_rounded, 
                       "Language", 
                       _language,
                       () {
@@ -227,7 +228,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                     Divider(height: 1, color: theme.dividerColor),
                     _buildDropdownTile(
                       context, 
-                      Icons.palette_outlined, 
+                      AppIcons.palette_outlined, 
                       "Theme Mode", 
                       _getThemeName(themeProvider.themeMode),
                       () {
@@ -250,7 +251,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                     Divider(height: 1, color: theme.dividerColor),
                     _buildDropdownTile(
                       context, 
-                      Icons.calendar_today_rounded, 
+                      AppIcons.calendar_today_rounded, 
                       "Date Format", 
                       _dateFormat,
                       () {
@@ -270,7 +271,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                     Divider(height: 1, color: theme.dividerColor),
                     _buildDropdownTile(
                       context, 
-                      Icons.schedule_rounded, 
+                      AppIcons.schedule_rounded, 
                       "Time Zone", 
                       _timeZone,
                       () {
@@ -280,7 +281,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
                     Divider(height: 1, color: theme.dividerColor),
                     _buildDropdownTile(
                       context, 
-                      Icons.home_rounded, 
+                      AppIcons.home_rounded, 
                       "Default Dashboard", 
                       _defaultDashboard,
                       () {
@@ -333,7 +334,7 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
               style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w600),
             ),
           ),
-          trailing: Icon(Icons.arrow_drop_down_rounded, size: 24, color: theme.colorScheme.onSurfaceVariant),
+          trailing: Icon(AppIcons.arrow_drop_down_rounded, size: 24, color: theme.colorScheme.onSurfaceVariant),
           onTap: onTap,
         ),
       ),

@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/services/session_manager.dart';
 import 'package:jobnest/main.dart'; // Dashboard par jane ke liye
@@ -52,7 +53,7 @@ class _AdvancedSetupScreenState extends State<AdvancedSetupScreen> {
                 children: [
                   Expanded(
                     flex: 3,
-                    child: _buildTextField("Email address", Icons.email_outlined),
+                    child: _buildTextField("Email address", AppIcons.email_outlined),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -69,7 +70,7 @@ class _AdvancedSetupScreenState extends State<AdvancedSetupScreen> {
                   onPressed: () {
                     // Action to send invite
                   },
-                  icon: Icon(Icons.send, size: 18, color: theme.colorScheme.primary),
+                  icon: Icon(AppIcons.send, size: 18, color: theme.colorScheme.primary),
                   label: Text("Send Invite", style: TextStyle(color: theme.colorScheme.primary)),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: theme.colorScheme.primary),
@@ -100,7 +101,7 @@ class _AdvancedSetupScreenState extends State<AdvancedSetupScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.cloud_upload_outlined, color: theme.colorScheme.onSurfaceVariant, size: 32),
+                      Icon(AppIcons.cloud_upload_outlined, color: theme.colorScheme.onSurfaceVariant, size: 32),
                       const SizedBox(height: 8),
                       Text("Upload Logo", style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 12)),
                     ],
@@ -177,7 +178,7 @@ class _AdvancedSetupScreenState extends State<AdvancedSetupScreen> {
           value: selectedRole,
           isExpanded: true,
           dropdownColor: theme.colorScheme.surfaceContainerHighest,
-          icon: Icon(Icons.keyboard_arrow_down, color: theme.colorScheme.onSurface),
+          icon: Icon(AppIcons.keyboard_arrow_down, color: theme.colorScheme.onSurface),
           items: ['Admin', 'Recruiter', 'Viewer'].map((String value) {
             return DropdownMenuItem<String>(
               value: value,

@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -34,7 +35,7 @@ class ProfileAboutScreen extends StatelessWidget {
                         color: theme.colorScheme.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(22),
                       ),
-                      child: Icon(Icons.work_rounded, size: 44, color: theme.colorScheme.primary),
+                      child: Icon(AppIcons.work_rounded, size: 44, color: theme.colorScheme.primary),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -66,7 +67,7 @@ class ProfileAboutScreen extends StatelessWidget {
                   children: [
                     _buildAboutTile(
                       context,
-                      icon: Icons.info_outline_rounded,
+                      icon: AppIcons.info_outline_rounded,
                       title: "Application Name",
                       subtitle: "JobNest Enterprise Recruiting & ATS Suite",
                       onTap: () {},
@@ -74,7 +75,7 @@ class ProfileAboutScreen extends StatelessWidget {
                     Divider(height: 1, color: theme.dividerColor),
                     _buildAboutTile(
                       context,
-                      icon: Icons.verified_user_outlined,
+                      icon: AppIcons.verified_user_outlined,
                       title: "Current Version & Build",
                       subtitle: "Release v4.2.0 (Build 2026.10.15 Enterprise Production)",
                       onTap: () {},
@@ -82,7 +83,7 @@ class ProfileAboutScreen extends StatelessWidget {
                     Divider(height: 1, color: theme.dividerColor),
                     _buildAboutTile(
                       context,
-                      icon: Icons.gavel_outlined,
+                      icon: AppIcons.gavel_outlined,
                       title: "Terms of Service",
                       subtitle: "Master Services Agreement (MSA) and acceptable use terms",
                       onTap: () => _showLegalSheet(context, "Terms of Service", "By utilizing JobNest Enterprise, your company agrees to adhere to our standard recruitment compliance guidelines, anti-bias algorithms protocol, and uptime Service Level Agreements (SLA 99.99%)."),
@@ -90,7 +91,7 @@ class ProfileAboutScreen extends StatelessWidget {
                     Divider(height: 1, color: theme.dividerColor),
                     _buildAboutTile(
                       context,
-                      icon: Icons.privacy_tip_outlined,
+                      icon: AppIcons.privacy_tip_outlined,
                       title: "Privacy Policy",
                       subtitle: "GDPR, CCPA, and SOC2 Type II data protection agreements",
                       onTap: () => _showLegalSheet(context, "Privacy Policy", "All applicant resumes, interview feedback, and recruiter notes are encrypted using AES-256 at rest and TLS 1.3 in transit. We never monetize or sell recruitment data to external third parties."),
@@ -98,7 +99,7 @@ class ProfileAboutScreen extends StatelessWidget {
                     Divider(height: 1, color: theme.dividerColor),
                     _buildAboutTile(
                       context,
-                      icon: Icons.article_outlined,
+                      icon: AppIcons.article_outlined,
                       title: "Open Source Licenses",
                       subtitle: "View legal notices and third-party software libraries used",
                       onTap: () {
@@ -108,7 +109,7 @@ class ProfileAboutScreen extends StatelessWidget {
                           applicationVersion: "4.2.0 (Build 2026.10.15)",
                           applicationIcon: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.work_rounded, size: 48, color: theme.colorScheme.primary),
+                            child: Icon(AppIcons.work_rounded, size: 48, color: theme.colorScheme.primary),
                           ),
                         );
                       },
@@ -164,7 +165,7 @@ class ProfileAboutScreen extends StatelessWidget {
               ),
             ),
           ),
-          trailing: Icon(Icons.arrow_forward_ios_rounded, size: 16, color: theme.colorScheme.onSurfaceVariant),
+          trailing: Icon(AppIcons.arrow_forward_ios_rounded, size: 16, color: theme.colorScheme.onSurfaceVariant),
           onTap: onTap,
         ),
       ),
@@ -189,7 +190,7 @@ class ProfileAboutScreen extends StatelessWidget {
                   children: [
                     Text(title, style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                     IconButton(
-                      icon: const Icon(Icons.close_rounded),
+                      icon: const Icon(AppIcons.close_rounded),
                       constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                       onPressed: () => Navigator.pop(ctx),
                     ),

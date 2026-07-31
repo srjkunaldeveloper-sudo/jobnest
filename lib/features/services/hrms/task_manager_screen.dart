@@ -1,5 +1,9 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
+import 'package:jobnest/core/constants/app_spacing.dart';
+import 'package:jobnest/core/constants/app_text.dart';
+import 'package:jobnest/core/widgets/page_layouts/app_page_scaffold.dart';
 
 class TaskManagerScreen extends StatelessWidget {
   const TaskManagerScreen({super.key});
@@ -10,24 +14,19 @@ class TaskManagerScreen extends StatelessWidget {
 
     // ===== BACKEND TODO =====
     // TODO: Task Management backend se sync hoga.
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
-        title: const Text("Task Manager"),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add_rounded),
-            tooltip: "New Task",
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
+    return AppPageScaffold(
+      title: "Task Manager",
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(AppIcons.add_rounded),
+          tooltip: "New Task",
+        ),
+        AppSpacing.w8,
+      ],
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(24.0),
+        padding: AppSpacing.edgeInsetsAll24,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -42,7 +41,7 @@ class TaskManagerScreen extends StatelessWidget {
                 _buildTaskCard(context, "Update Job Posting", "Rahul S.", "Low", Colors.green, "Next Week"),
               ],
             ),
-            const SizedBox(width: 24),
+            AppSpacing.w24,
             _buildKanbanColumn(
               context,
               title: "In Progress",
@@ -53,7 +52,7 @@ class TaskManagerScreen extends StatelessWidget {
                 _buildTaskCard(context, "Prepare Monthly Report", "Rahul S.", "Medium", Colors.orange, "Friday"),
               ],
             ),
-            const SizedBox(width: 24),
+            AppSpacing.w24,
             _buildKanbanColumn(
               context,
               title: "Completed",
@@ -95,10 +94,10 @@ class TaskManagerScreen extends StatelessWidget {
                       height: 12,
                       decoration: BoxDecoration(color: color, shape: BoxShape.circle),
                     ),
-                    const SizedBox(width: 12),
+                    AppSpacing.w12,
                     Text(
                       title,
-                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: AppText.h3.copyWith(fontSize: 16),
                     ),
                   ],
                 ),
@@ -110,7 +109,7 @@ class TaskManagerScreen extends StatelessWidget {
                   ),
                   child: Text(
                     count,
-                    style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: AppText.label.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -134,7 +133,7 @@ class TaskManagerScreen extends StatelessWidget {
   Widget _buildTaskCard(BuildContext context, String title, String assignee, String priority, Color priorityColor, String dueDate) {
     final theme = Theme.of(context);
     return AppCard(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.edgeInsetsAll16,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -146,18 +145,18 @@ class TaskManagerScreen extends StatelessWidget {
             ),
             child: Text(
               priority,
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: AppText.labelSmall.copyWith(
                 color: priorityColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          AppSpacing.h12,
           Text(
             title,
-            style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+            style: AppText.h3.copyWith(fontSize: 14),
           ),
-          const SizedBox(height: 16),
+          AppSpacing.h16,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -168,16 +167,15 @@ class TaskManagerScreen extends StatelessWidget {
                     backgroundColor: theme.colorScheme.primaryContainer,
                     child: Text(
                       assignee[0],
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: AppText.labelSmall.copyWith(
                         color: theme.colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  AppSpacing.w8,
                   Text(
                     assignee,
-                    style: theme.textTheme.labelMedium?.copyWith(
+                    style: AppText.label.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -185,11 +183,11 @@ class TaskManagerScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(Icons.calendar_today_rounded, size: 12, color: theme.colorScheme.onSurfaceVariant),
-                  const SizedBox(width: 4),
+                  Icon(AppIcons.calendar_today_rounded, size: 12, color: theme.colorScheme.onSurfaceVariant),
+                  AppSpacing.w4,
                   Text(
                     dueDate,
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style: AppText.labelSmall.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),

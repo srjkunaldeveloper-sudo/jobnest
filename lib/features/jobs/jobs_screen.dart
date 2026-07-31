@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,20 +60,29 @@ class JobsScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text(
-                              filterProvider.filterCount > 0
-                                  ? "Filtered Requisitions (${filteredJobs.length})"
-                                  : "All Requisitions (${provider.jobs.length})",
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: -0.3,
+                            Expanded(
+                              child: Text(
+                                filterProvider.filterCount > 0
+                                    ? "Filtered Requisitions (${filteredJobs.length})"
+                                    : "All Requisitions (${provider.jobs.length})",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -0.3,
+                                  color: theme.colorScheme.onSurface,
+                                ),
                               ),
                             ),
+                            const SizedBox(width: 16),
                             Text(
                               "Swipe left to archive",
                               style: theme.textTheme.labelSmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                                fontSize: 13,
+                                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -121,7 +131,7 @@ class JobsScreen extends StatelessWidget {
               ),
             );
           },
-          icon: const Icon(Icons.add_rounded),
+          icon: const Icon(AppIcons.add_rounded),
           label: const Text(
             "Create Job",
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -156,7 +166,7 @@ class JobsScreen extends StatelessWidget {
         onRetry: () => provider.refreshJobs(),
         secondaryButtonText: "Restore Offline Data",
         onSecondaryAction: () => provider.restoreJobsDefault(),
-        iconData: Icons.cloud_off_rounded,
+        iconData: AppIcons.cloud_off_rounded,
       ),
     );
   }
@@ -175,7 +185,7 @@ class JobsScreen extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                isFilterEmpty ? Icons.search_off_rounded : Icons.work_outline_rounded,
+                isFilterEmpty ? AppIcons.search_off_rounded : AppIcons.work_outline_rounded,
                 size: 64,
                 color: theme.colorScheme.primary,
               ),
@@ -201,7 +211,7 @@ class JobsScreen extends StatelessWidget {
             if (isFilterEmpty)
               OutlinedButton.icon(
                 onPressed: () => filterProvider.clearFilters(),
-                icon: const Icon(Icons.filter_alt_off_rounded, size: 18),
+                icon: const Icon(AppIcons.filter_alt_off_rounded, size: 18),
                 label: const Text("Clear Filters & Search", style: TextStyle(fontWeight: FontWeight.bold)),
                 style: OutlinedButton.styleFrom(minimumSize: const Size(160, 48)),
               )
@@ -217,7 +227,7 @@ class JobsScreen extends StatelessWidget {
                     ),
                   );
                 },
-                icon: const Icon(Icons.add_rounded, size: 20),
+                icon: const Icon(AppIcons.add_rounded, size: 20),
                 label: const Text("Create New Job", style: TextStyle(fontWeight: FontWeight.bold)),
                 style: FilledButton.styleFrom(minimumSize: const Size(180, 48)),
               ),
@@ -263,7 +273,7 @@ class JobsScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Icon(Icons.archive_outlined, color: theme.colorScheme.onErrorContainer),
+                Icon(AppIcons.archive_outlined, color: theme.colorScheme.onErrorContainer),
                 const SizedBox(width: 8),
                 Text(
                   "Archive",
@@ -330,7 +340,7 @@ class JobsScreen extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.bug_report_rounded, size: 16, color: theme.colorScheme.primary),
+              Icon(AppIcons.bug_report_rounded, size: 16, color: theme.colorScheme.primary),
               const SizedBox(width: 8),
               Text(
                 "ATS QA Controls:",

@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/features/services/providers/services_data_provider.dart';
@@ -35,14 +36,14 @@ class ServicesCategories extends StatelessWidget {
                       children: [
                         if (category == "Favorites") ...[
                           Icon(
-                            isSelected ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                            isSelected ? AppIcons.favorite_rounded : AppIcons.favorite_border_rounded,
                             size: 16,
                             color: isSelected ? Colors.white : Colors.redAccent,
                           ),
                           const SizedBox(width: 6),
                         ] else if (category == "Recently Used") ...[
                           Icon(
-                            Icons.history_rounded,
+                            AppIcons.history_rounded,
                             size: 16,
                             color: isSelected ? theme.colorScheme.onPrimaryContainer : theme.colorScheme.onSurfaceVariant,
                           ),

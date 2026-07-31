@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
@@ -72,7 +73,7 @@ class DetailsHeader extends StatelessWidget {
                   button: true,
                   child: _buildIconButton(
                     context,
-                    isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                    isBookmarked ? AppIcons.bookmark_rounded : AppIcons.bookmark_border_rounded,
                     () {
                       if (activeJob != null) {
                         provider.toggleBookmarkJob(activeJob.id);
@@ -85,7 +86,7 @@ class DetailsHeader extends StatelessWidget {
                 Semantics(
                   label: "Share Requisition",
                   button: true,
-                  child: _buildIconButton(context, Icons.share_rounded, () {
+                  child: _buildIconButton(context, AppIcons.share_rounded, () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Job link copied to clipboard.")),
                     );
@@ -95,7 +96,7 @@ class DetailsHeader extends StatelessWidget {
                 Semantics(
                   label: "More Actions",
                   button: true,
-                  child: _buildIconButton(context, Icons.more_vert_rounded, () {}),
+                  child: _buildIconButton(context, AppIcons.more_vert_rounded, () {}),
                 ),
               ],
             ),
@@ -107,9 +108,9 @@ class DetailsHeader extends StatelessWidget {
           runSpacing: 12,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            _buildInfoChip(context, Icons.monetization_on_rounded, salary),
-            _buildInfoChip(context, Icons.work_outline_rounded, jobType),
-            _buildInfoChip(context, Icons.calendar_today_rounded, postedDate),
+            _buildInfoChip(context, AppIcons.monetization_on_rounded, salary),
+            _buildInfoChip(context, AppIcons.work_outline_rounded, jobType),
+            _buildInfoChip(context, AppIcons.calendar_today_rounded, postedDate),
             _buildStatusBadge(theme, displayStatus),
           ],
         ),
@@ -119,24 +120,24 @@ class DetailsHeader extends StatelessWidget {
 
   Widget _buildStatusBadge(ThemeData theme, String statusStr) {
     Color badgeColor = Colors.green;
-    IconData badgeIcon = Icons.check_circle_rounded;
+    IconData badgeIcon = AppIcons.check_circle_rounded;
     final s = statusStr.toLowerCase();
 
     if (s == "active" || s == "open") {
       badgeColor = Colors.green;
-      badgeIcon = Icons.check_circle_rounded;
+      badgeIcon = AppIcons.check_circle_rounded;
     } else if (s == "hiring") {
       badgeColor = Colors.blueAccent;
-      badgeIcon = Icons.group_add_rounded;
+      badgeIcon = AppIcons.group_add_rounded;
     } else if (s == "paused") {
       badgeColor = Colors.amber.shade700;
-      badgeIcon = Icons.pause_circle_filled_rounded;
+      badgeIcon = AppIcons.pause_circle_filled_rounded;
     } else if (s == "closed") {
       badgeColor = Colors.redAccent;
-      badgeIcon = Icons.cancel_rounded;
+      badgeIcon = AppIcons.cancel_rounded;
     } else if (s == "draft") {
       badgeColor = Colors.blueGrey;
-      badgeIcon = Icons.edit_note_rounded;
+      badgeIcon = AppIcons.edit_note_rounded;
     }
 
     return Container(

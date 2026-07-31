@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -32,8 +33,8 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
             onPressed: () => provider.toggleJobPreferencesEmptyState(),
             icon: Icon(
               provider.isJobPreferencesEmpty
-                  ? Icons.work_off_rounded
-                  : Icons.work_outline_rounded,
+                  ? AppIcons.work_off_rounded
+                  : AppIcons.work_outline_rounded,
               color: provider.isJobPreferencesEmpty
                   ? theme.colorScheme.error
                   : null,
@@ -75,7 +76,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    Icons.work_off_rounded,
+                    AppIcons.work_off_rounded,
                     size: 56,
                     color: theme.colorScheme.primary,
                   ),
@@ -110,7 +111,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.tune_rounded),
+                  icon: const Icon(AppIcons.tune_rounded),
                   label: const Text(
                     "Set Preferences",
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -149,7 +150,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                 theme,
                 "Default Job Settings",
                 "Configure baseline classification values pre-populated when drafting new requisitions.",
-                Icons.work_history_outlined,
+                AppIcons.work_history_outlined,
               ),
               const SizedBox(height: 14),
               _buildDefaultJobSettingsCard(context, provider),
@@ -160,7 +161,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                 theme,
                 "Default Salary Structure",
                 "Set standard compensation brackets, currency, and payout frequency.",
-                Icons.payments_outlined,
+                AppIcons.payments_outlined,
               ),
               const SizedBox(height: 14),
               _buildDefaultSalaryCard(context, provider),
@@ -171,7 +172,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                 theme,
                 "Default Skills Required",
                 "Maintain reusable technical and professional competency tags for candidate matching.",
-                Icons.psychology_outlined,
+                AppIcons.psychology_outlined,
               ),
               const SizedBox(height: 14),
               _buildDefaultSkillsCard(context, provider),
@@ -182,7 +183,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                 theme,
                 "Preferred Hiring Locations",
                 "Specify target cities and geographic regions for talent sourcing.",
-                Icons.location_on_outlined,
+                AppIcons.location_on_outlined,
               ),
               const SizedBox(height: 14),
               _buildPreferredLocationsCard(context, provider),
@@ -193,7 +194,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                 theme,
                 "Hiring Workflow Settings",
                 "Automate requisition archiving, application gates, and duplicate candidate checks.",
-                Icons.rule_rounded,
+                AppIcons.rule_rounded,
               ),
               const SizedBox(height: 14),
               _buildHiringWorkflowSettingsCard(context, provider),
@@ -204,7 +205,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                 theme,
                 "Interview Defaults",
                 "Set preferred session format and standard duration for candidate scheduling.",
-                Icons.event_available_outlined,
+                AppIcons.event_available_outlined,
               ),
               const SizedBox(height: 14),
               _buildInterviewDefaultsCard(context, provider),
@@ -215,7 +216,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                 theme,
                 "Default Job Visibility",
                 "Control default exposure level across public boards and internal portals.",
-                Icons.visibility_outlined,
+                AppIcons.visibility_outlined,
               ),
               const SizedBox(height: 14),
               _buildJobVisibilityCard(context, provider),
@@ -547,7 +548,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
               ),
               OutlinedButton.icon(
                 onPressed: () => _showEditSalaryDialog(context, provider),
-                icon: const Icon(Icons.edit_outlined, size: 16),
+                icon: const Icon(AppIcons.edit_outlined, size: 16),
                 label: const Text("Edit Salary Range"),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
@@ -570,7 +571,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  Icons.account_balance_wallet_outlined,
+                  AppIcons.account_balance_wallet_outlined,
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(width: 14),
@@ -629,7 +630,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                   "Enter skill name (e.g. Kotlin, Docker, AWS)...",
                   (val) => provider.addDefaultSkill(val),
                 ),
-                icon: const Icon(Icons.add_rounded, size: 18),
+                icon: const Icon(AppIcons.add_rounded, size: 18),
                 label: const Text("Add Skill"),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
@@ -663,7 +664,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                     skill,
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  avatar: const Icon(Icons.code_rounded, size: 16),
+                  avatar: const Icon(AppIcons.code_rounded, size: 16),
                   onDeleted: () {
                     provider.removeDefaultSkill(skill);
                     _showFeedback(context, "Removed $skill from default skills");
@@ -703,7 +704,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                   "Enter city or region (e.g. Chennai, Gurgaon, Remote)...",
                   (val) => provider.addDefaultLocation(val),
                 ),
-                icon: const Icon(Icons.add_location_alt_rounded, size: 18),
+                icon: const Icon(AppIcons.add_location_alt_rounded, size: 18),
                 label: const Text("Add Location"),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
@@ -737,7 +738,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                     loc,
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  avatar: const Icon(Icons.location_city_rounded, size: 16),
+                  avatar: const Icon(AppIcons.location_city_rounded, size: 16),
                   onDeleted: () {
                     provider.removeDefaultLocation(loc);
                     _showFeedback(
@@ -938,19 +939,19 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
         title: "Public",
         subtitle:
             "Visible on JobNest career portal, search engines, and partner job boards.",
-        icon: Icons.public_rounded,
+        icon: AppIcons.public_rounded,
       ),
       _VisibilityOption(
         title: "Private",
         subtitle:
             "Unlisted. Accessible only via direct recruiter invitation or private application link.",
-        icon: Icons.lock_outline_rounded,
+        icon: AppIcons.lock_outline_rounded,
       ),
       _VisibilityOption(
         title: "Internal",
         subtitle:
             "Restricted to verified company employees and internal mobility talent network.",
-        icon: Icons.business_rounded,
+        icon: AppIcons.business_rounded,
       ),
     ];
 
@@ -1015,7 +1016,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                             if (isSel) ...[
                               const SizedBox(width: 8),
                               Icon(
-                                Icons.check_circle_rounded,
+                                AppIcons.check_circle_rounded,
                                 size: 16,
                                 color: theme.colorScheme.primary,
                               ),
@@ -1074,7 +1075,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                     "Job preferences reset to factory defaults (Dummy action)",
                   );
                 },
-                icon: const Icon(Icons.restore_rounded, size: 18),
+                icon: const Icon(AppIcons.restore_rounded, size: 18),
                 label: const Text("Reset to Default"),
               ),
               FilledButton.icon(
@@ -1084,7 +1085,7 @@ class ProfileJobPreferencesScreen extends StatelessWidget {
                     "Job preferences saved successfully (Dummy action)",
                   );
                 },
-                icon: const Icon(Icons.check_circle_outline_rounded, size: 18),
+                icon: const Icon(AppIcons.check_circle_outline_rounded, size: 18),
                 label: const Text(
                   "Save Preferences",
                   style: TextStyle(fontWeight: FontWeight.bold),

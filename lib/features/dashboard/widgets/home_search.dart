@@ -162,37 +162,29 @@ class _HomeSearchState extends State<HomeSearch> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeOutCubic,
-              height: 56,
+              height: 52, // 52-56px height
               decoration: BoxDecoration(
-                color: _isPressed || _isHovered 
-                    ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4) 
-                    : theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(28),
+                color: _isHovered 
+                    ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3) 
+                    : theme.colorScheme.surface, // Surface color only
+                borderRadius: BorderRadius.circular(16), // 14-16px radius
                 border: Border.all(
                   color: (_isHovered || _isPressed)
-                      ? theme.colorScheme.primary
-                      : theme.dividerColor.withValues(alpha: 0.8),
-                  width: (_isHovered || _isPressed) ? 1.5 : 1.0,
+                      ? theme.colorScheme.primary // Focus state: Primary border only
+                      : theme.dividerColor.withValues(alpha: 0.6), // 1px subtle border
+                  width: 1.0,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: (_isHovered || _isPressed)
-                        ? theme.colorScheme.primary.withValues(alpha: 0.1)
-                        : theme.shadowColor.withValues(alpha: 0.06),
-                    blurRadius: (_isHovered || _isPressed) ? 20 : 16,
-                    offset: const Offset(0, 4),
-                  )
-                ],
+                // Very soft shadow or no shadow (using none for flat SaaS look)
               ),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(28),
+                  borderRadius: BorderRadius.circular(16),
                   onHover: (hovered) => setState(() => _isHovered = hovered),
                   onHighlightChanged: (pressed) => setState(() => _isPressed = pressed),
                   onTap: () => _openSearch(context),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 18.0, right: 6.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0), // 16-20px padding
                     child: Row(
                       children: [
                         Icon(
@@ -200,55 +192,39 @@ class _HomeSearchState extends State<HomeSearch> {
                           color: (_isHovered || _isPressed)
                               ? theme.colorScheme.primary
                               : theme.colorScheme.onSurfaceVariant,
-                          size: 24,
+                          size: 20,
                         ),
-                        AppSpacing.w12,
+                        const SizedBox(width: 12), // 12px icon gap
                         Expanded(
                           child: Text(
-                            "Search jobs, candidates or companies",
+                            "Search jobs, candidates...",
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w400,
                             ),
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.ellipsis, // No wrapped text, no clipped placeholder
                           ),
                         ),
-                        // Functional Microphone Button with 48dp minimum tap target & animation
-                        Semantics(
-                          label: "Voice Search",
-                          button: true,
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: Center(
-                              child: GestureDetector(
-                                onTapDown: (_) => setState(() => _isMicPressed = true),
-                                onTapUp: (_) {
-                                  setState(() => _isMicPressed = false);
-                                  _showVoiceSearchBottomSheet(context);
-                                },
-                                onTapCancel: () => setState(() => _isMicPressed = false),
-                                child: AnimatedScale(
-                                  scale: _isMicPressed ? 0.88 : 1.0,
-                                  duration: const Duration(milliseconds: 150),
-                                  curve: Curves.easeOutCubic,
-                                  child: Container(
-                                    height: 38,
-                                    width: 38,
-                                    decoration: BoxDecoration(
-                                      color: theme.colorScheme.primaryContainer.withValues(alpha: 0.7),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Icon(
-                                      Icons.mic_rounded,
-                                      color: theme.colorScheme.primary,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                        GestureDetector(
+                          onTap: () => _showVoiceSearchBottomSheet(context),
+                          behavior: HitTestBehavior.opaque,
+                          child: Icon(
+                            Icons.mic_none_rounded,
+                            color: theme.colorScheme.onSurfaceVariant,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 12), // Gap between trailing icons
+                        GestureDetector(
+                          onTap: () {
+                            // Filter action
+                          },
+                          behavior: HitTestBehavior.opaque,
+                          child: Icon(
+                            Icons.tune_rounded, // Simple ghost filter icon
+                            color: theme.colorScheme.onSurfaceVariant,
+                            size: 20,
                           ),
                         ),
                       ],

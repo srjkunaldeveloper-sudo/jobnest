@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/constants/app_radius.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -106,7 +107,7 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
             if (widget.activeStage != "All")
               TextButton.icon(
                 onPressed: () => widget.onStageSelected?.call("All"),
-                icon: const Icon(Icons.filter_alt_off_rounded, size: 16),
+                icon: const Icon(AppIcons.filter_alt_off_rounded, size: 16),
                 label: const Text("Show All Stages"),
                 style: TextButton.styleFrom(
                   visualDensity: VisualDensity.compact,
@@ -181,14 +182,14 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.arrow_back_ios_rounded, size: 12, color: Colors.white),
+                        const Icon(AppIcons.arrow_back_ios_rounded, size: 12, color: Colors.white),
                         AppSpacing.w8,
                         const Text(
                           "Swipe to view more",
                           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                         AppSpacing.w8,
-                        const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: Colors.white),
+                        const Icon(AppIcons.arrow_forward_ios_rounded, size: 12, color: Colors.white),
                       ],
                     ),
                   ),

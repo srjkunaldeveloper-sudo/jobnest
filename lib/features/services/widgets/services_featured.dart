@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/features/services/models/service_item.dart';
@@ -122,7 +123,7 @@ class ServicesFeatured extends StatelessWidget {
                                 duration: const Duration(milliseconds: 200),
                                 transitionBuilder: (child, anim) => ScaleTransition(scale: anim, child: child),
                                 child: Icon(
-                                  item.isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                                  item.isFavorite ? AppIcons.favorite_rounded : AppIcons.favorite_border_rounded,
                                   key: ValueKey<bool>(item.isFavorite),
                                   color: item.isFavorite ? Colors.redAccent : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
                                   size: 24,
@@ -166,7 +167,7 @@ class ServicesFeatured extends StatelessWidget {
                       onPressed: () {
                         ServiceDetailModal.show(context, item, provider);
                       },
-                      icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+                      icon: const Icon(AppIcons.arrow_forward_rounded, size: 18),
                       label: const Text("Explore Tool", style: TextStyle(fontWeight: FontWeight.bold)),
                       style: FilledButton.styleFrom(
                         backgroundColor: color,

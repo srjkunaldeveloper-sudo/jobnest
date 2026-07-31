@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +10,6 @@ import 'package:jobnest/features/candidates/widgets/candidates_overview.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_pipeline.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_auto_screening.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_advanced_filters.dart';
-import 'package:jobnest/features/candidates/widgets/candidates_simulation_panel.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_grid_header.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_skeleton_grid.dart';
 import 'package:jobnest/features/candidates/widgets/candidates_empty_state.dart';
@@ -132,14 +131,6 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const CandidatesHeader(),
-                                  AppSpacing.h20,
-
-                                  // QA Testing Toolbar (Simulation Panel) - Hidden in release/demo mode
-                                  if (kDebugMode) ...[
-                                    CandidatesSimulationPanel(provider: candidateProvider),
-                                    AppSpacing.h24,
-                                  ],
-
                                   Selector<CandidateFilterProvider, String>(
                                     selector: (_, filter) => filter.searchQuery,
                                     builder: (context, searchQuery, _) {
@@ -152,36 +143,15 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                                       );
                                     },
                                   ),
-                                  AppSpacing.h20,
                                   
                                   Consumer<CandidateFilterProvider>(
                                     builder: (context, filter, _) {
-                                      return Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: CandidatesFilters(
-                                              selectedFilter: filter.selectedFilter,
-                                              onFilterChanged: filter.setSelectedFilter,
-                                              selectedSort: filter.selectedSort,
-                                              onSortChanged: filter.setSelectedSort,
-                                              onClearAll: filter.clearAll,
-                                            ),
-                                          ),
-                                          AppSpacing.w12,
-                                          Semantics(
-                                            label: "Advanced Candidate Filters",
-                                            button: true,
-                                            child: IconButton(
-                                              onPressed: _showAdvancedFilters,
-                                              icon: const Icon(Icons.tune_rounded),
-                                              style: IconButton.styleFrom(
-                                                backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                                                minimumSize: const Size(48, 48),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                      return CandidatesFilters(
+                                        selectedFilter: filter.selectedFilter,
+                                        onFilterChanged: filter.setSelectedFilter,
+                                        selectedSort: filter.selectedSort,
+                                        onSortChanged: filter.setSelectedSort,
+                                        onClearAll: filter.clearAll,
                                       );
                                     },
                                   ),

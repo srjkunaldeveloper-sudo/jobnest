@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class ProfileQuickActions extends StatelessWidget {
@@ -27,10 +28,9 @@ class ProfileQuickActions extends StatelessWidget {
           children: stages.map((stg) {
             final isCur = stg.toLowerCase() == currentStage.toLowerCase();
             return ListTile(
-              leading: Icon(
-                isCur ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded,
-                color: isCur ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
-              ),
+              leading: isCur 
+                  ? Icon(AppIcons.check_rounded, color: theme.colorScheme.primary)
+                  : const SizedBox(width: 24),
               title: Text(stg, style: TextStyle(fontWeight: isCur ? FontWeight.bold : FontWeight.normal)),
               onTap: () {
                 Navigator.pop(ctx);
@@ -65,7 +65,7 @@ class ProfileQuickActions extends StatelessWidget {
                     SnackBar(content: Text("Scheduled interview with $candidateName. Calendar invite sent!")),
                   );
                 },
-                icon: const Icon(Icons.calendar_month_outlined, size: 20),
+                icon: const Icon(AppIcons.calendar_month_outlined, size: 20),
                 label: const Text("Schedule Interview"),
                 style: FilledButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,
@@ -79,7 +79,7 @@ class ProfileQuickActions extends StatelessWidget {
             Expanded(
               child: FilledButton.tonalIcon(
                 onPressed: onMoveStage == null ? null : () => _showMoveStageDialog(context),
-                icon: const Icon(Icons.swap_horiz_rounded, size: 20),
+                icon: const Icon(AppIcons.swap_horiz_rounded, size: 20),
                 label: const Text("Move Stage"),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -99,7 +99,7 @@ class ProfileQuickActions extends StatelessWidget {
                     SnackBar(content: Text("Opening messaging thread with $candidateName...")),
                   );
                 },
-                icon: const Icon(Icons.chat_bubble_outline_rounded, size: 20),
+                icon: const Icon(AppIcons.chat_bubble_outline_rounded, size: 20),
                 label: const Text("Send Message"),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -115,7 +115,7 @@ class ProfileQuickActions extends StatelessWidget {
                     SnackBar(content: Text("Downloading resume PDF for $candidateName...")),
                   );
                 },
-                icon: const Icon(Icons.download_rounded, size: 20),
+                icon: const Icon(AppIcons.download_rounded, size: 20),
                 label: const Text("Download Resume"),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -127,7 +127,7 @@ class ProfileQuickActions extends StatelessWidget {
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: onArchive,
-                icon: const Icon(Icons.archive_outlined, size: 20),
+                icon: const Icon(AppIcons.archive_outlined, size: 20),
                 label: const Text("Archive"),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: theme.colorScheme.error,

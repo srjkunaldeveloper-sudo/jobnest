@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 
@@ -19,7 +20,7 @@ class ClientManagementScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.add_business_rounded),
+            icon: const Icon(AppIcons.add_business_rounded),
             tooltip: "Add Client",
           ),
           const SizedBox(width: 8),
@@ -50,7 +51,7 @@ class ClientManagementScreen extends StatelessWidget {
                           decoration: InputDecoration(
                             hintText: "Search Clients...",
                             border: InputBorder.none,
-                            icon: Icon(Icons.search_rounded, color: theme.colorScheme.primary),
+                            icon: Icon(AppIcons.search_rounded, color: theme.colorScheme.primary),
                           ),
                         ),
                       ),
@@ -58,7 +59,7 @@ class ClientManagementScreen extends StatelessWidget {
                     const SizedBox(width: 16),
                     OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.filter_list_rounded, size: 18),
+                      icon: const Icon(AppIcons.filter_list_rounded, size: 18),
                       label: const Text("Filters"),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -137,15 +138,15 @@ class ClientManagementScreen extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _buildMetricCard(context, "Total Clients", "42", Icons.business_rounded, Colors.blueAccent),
+          child: _buildMetricCard(context, "Total Clients", "42", AppIcons.business_rounded, Colors.blueAccent),
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: _buildMetricCard(context, "New Leads", "15", Icons.person_add_alt_1_rounded, Colors.orange),
+          child: _buildMetricCard(context, "New Leads", "15", AppIcons.person_add_alt_1_rounded, Colors.orange),
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: _buildMetricCard(context, "Active Accounts", "24", Icons.verified_rounded, Colors.green),
+          child: _buildMetricCard(context, "Active Accounts", "24", AppIcons.verified_rounded, Colors.green),
         ),
       ],
     );
@@ -294,19 +295,19 @@ class ClientManagementScreen extends StatelessWidget {
             children: [
               OutlinedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.remove_red_eye_outlined, size: 18),
+                icon: const Icon(AppIcons.remove_red_eye_outlined, size: 18),
                 label: const Text("View"),
               ),
               const SizedBox(width: 12),
               OutlinedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.edit_outlined, size: 18),
+                icon: const Icon(AppIcons.edit_outlined, size: 18),
                 label: const Text("Edit"),
               ),
               const SizedBox(width: 12),
               FilledButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.work_outline_rounded, size: 18),
+                icon: const Icon(AppIcons.work_outline_rounded, size: 18),
                 label: const Text("Open Jobs"),
               ),
             ],

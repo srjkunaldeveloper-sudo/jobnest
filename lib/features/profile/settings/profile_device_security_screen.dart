@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/widgets/app_card.dart';
@@ -43,13 +44,13 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           IconButton(
             onPressed: () => provider.toggleTrustedDevicesEmptyState(),
             icon: Icon(provider.isTrustedDevicesEmpty
-                ? Icons.devices_rounded
-                : Icons.devices_other_outlined),
+                ? AppIcons.devices_rounded
+                : AppIcons.devices_other_outlined),
             tooltip: "Toggle Trusted Devices Empty State (QA)",
           ),
           IconButton(
             onPressed: () => _showResetConfirmDialog(context, provider),
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const Icon(AppIcons.refresh_rounded),
             tooltip: "Restore Default Device Security Settings",
           ),
           const SizedBox(width: 8),
@@ -68,7 +69,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Device Security Overview",
                   "Real-time status of hardware biometric enrollment and trusted enterprise workstations.",
-                  Icons.shield_rounded,
+                  AppIcons.shield_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildOverviewCard(context, provider),
@@ -79,7 +80,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Biometric Login Methods",
                   "Fast, secure hardware-based authentication for instant workspace unlock.",
-                  Icons.fingerprint_rounded,
+                  AppIcons.fingerprint_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildBiometricLoginSection(context, provider),
@@ -90,7 +91,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Workspace Lock & Inactivity Timeout",
                   "Protect recruiting pipelines when stepping away from your workstation.",
-                  Icons.lock_clock_rounded,
+                  AppIcons.lock_clock_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildAppLockSection(context, provider),
@@ -101,7 +102,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Sensitive Action Protection",
                   "Require biometric re-authentication before executing critical enterprise operations.",
-                  Icons.admin_panel_settings_rounded,
+                  AppIcons.admin_panel_settings_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildSensitiveActionSection(context, provider),
@@ -112,7 +113,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Trusted Devices & Workstations",
                   "Devices authorized to access JobNest without repeated verification challenges.",
-                  Icons.devices_rounded,
+                  AppIcons.devices_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildTrustedDevicesSection(context, provider),
@@ -123,7 +124,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "New Device & Login Alerts",
                   "Receive notifications whenever an unrecognized device attempts to access your account.",
-                  Icons.notifications_active_rounded,
+                  AppIcons.notifications_active_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildNewDeviceAlertsSection(context, provider),
@@ -134,7 +135,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Session Security & Persistence",
                   "Control how long authentication tokens remain valid across sessions.",
-                  Icons.security_rounded,
+                  AppIcons.security_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildSessionProtectionSection(context, provider),
@@ -145,7 +146,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Recent Login & Device History",
                   "Audit trail of recent authentication sessions across all platforms and locations.",
-                  Icons.history_rounded,
+                  AppIcons.history_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildDeviceHistorySection(context, provider),
@@ -156,7 +157,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Security Recommendations",
                   "Proactive steps to fortify your recruiter workspace against unauthorized access.",
-                  Icons.lightbulb_outline_rounded,
+                  AppIcons.lightbulb_outline_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildRecommendationsSection(context, provider),
@@ -167,7 +168,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   theme,
                   "Emergency Security Actions",
                   "Critical account lockdowns in the event of a lost device or suspected breach.",
-                  Icons.warning_rounded,
+                  AppIcons.warning_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildEmergencyActionsSection(context, provider),
@@ -257,7 +258,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   color: theme.colorScheme.primary,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.security_rounded,
+                child: const Icon(AppIcons.security_rounded,
                     color: Colors.white, size: 24),
               ),
               const SizedBox(width: 14),
@@ -296,7 +297,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.verified_user_rounded,
+                    Icon(AppIcons.verified_user_rounded,
                         size: 16, color: Colors.green.shade700),
                     const SizedBox(width: 6),
                     Text(
@@ -323,28 +324,28 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                 context,
                 label: "Biometric Status",
                 value: "$activeBio Active Methods",
-                icon: Icons.fingerprint_rounded,
+                icon: AppIcons.fingerprint_rounded,
                 color: Colors.blue,
               ),
               _buildOverviewStat(
                 context,
                 label: "Trusted Devices",
                 value: "$activeCount Authorized",
-                icon: Icons.devices_rounded,
+                icon: AppIcons.devices_rounded,
                 color: Colors.purple,
               ),
               _buildOverviewStat(
                 context,
                 label: "Last Authentication",
                 value: "2 Mins Ago (Touch ID)",
-                icon: Icons.history_rounded,
+                icon: AppIcons.history_rounded,
                 color: Colors.orange,
               ),
               _buildOverviewStat(
                 context,
                 label: "Security Level",
                 value: "High (Tier-1 Shield)",
-                icon: Icons.shield_outlined,
+                icon: AppIcons.shield_outlined,
                 color: Colors.teal,
               ),
             ],
@@ -416,7 +417,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
         children: [
           _buildBiometricTile(
             context,
-            icon: Icons.fingerprint_rounded,
+            icon: AppIcons.fingerprint_rounded,
             title: "Fingerprint / Touch ID",
             description: "Hardware sensor recognition for rapid desktop and mobile unlock",
             statusBadge: "Available",
@@ -431,7 +432,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildBiometricTile(
             context,
-            icon: Icons.face_unlock_rounded,
+            icon: AppIcons.face_unlock_rounded,
             title: "Face Unlock / Face ID",
             description: "Infrared facial scanning recognition for hands-free login",
             statusBadge: "Available",
@@ -446,7 +447,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildBiometricTile(
             context,
-            icon: Icons.pin_rounded,
+            icon: AppIcons.pin_rounded,
             title: "Device Passcode / PIN",
             description: "System PIN, pattern, or alphanumeric fallback lock code",
             statusBadge: provider.bioPasscodeEnabled ? "Available" : "Not Configured",
@@ -550,7 +551,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
         children: [
           _buildSelectorTile(
             context,
-            icon: Icons.lock_clock_outlined,
+            icon: AppIcons.lock_clock_outlined,
             title: "Require Authentication (App Lock)",
             value: provider.bioAppLockTimeout,
             options: [
@@ -569,7 +570,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildSelectorTile(
             context,
-            icon: Icons.timer_outlined,
+            icon: AppIcons.timer_outlined,
             title: "Auto Lock After Inactivity",
             value: provider.bioAutoLockInactivity,
             options: [
@@ -600,7 +601,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
         children: [
           _buildToggleTile(
             context,
-            icon: Icons.credit_card_rounded,
+            icon: AppIcons.credit_card_rounded,
             title: "Billing & Payment Modifications",
             subtitle: "Require biometric check before updating corporate invoices or payment cards",
             value: provider.bioProtectBilling,
@@ -613,7 +614,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.card_membership_rounded,
+            icon: AppIcons.card_membership_rounded,
             title: "Subscription & Seat Licensing Changes",
             subtitle: "Protect against unauthorized enterprise tier upgrades or cancellations",
             value: provider.bioProtectSubscription,
@@ -626,7 +627,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.delete_forever_rounded,
+            icon: AppIcons.delete_forever_rounded,
             title: "Account Deletion & Termination",
             subtitle: "Mandate hardware biometric verification before wiping recruiter data",
             value: provider.bioProtectDeleteAccount,
@@ -639,7 +640,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.download_rounded,
+            icon: AppIcons.download_rounded,
             title: "Candidate Database & Resume Export",
             subtitle: "Verify identity before downloading large CSVs or resume archives",
             value: provider.bioProtectDataExport,
@@ -652,7 +653,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.verified_user_outlined,
+            icon: AppIcons.verified_user_outlined,
             title: "Verification Badge Modifications",
             subtitle: "Require authentication before altering corporate domain or identity proofs",
             value: provider.bioProtectVerification,
@@ -665,7 +666,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.security_rounded,
+            icon: AppIcons.security_rounded,
             title: "Security & 2FA Settings Access",
             subtitle: "Protect password resets and authenticator token re-generation",
             value: provider.bioProtectSecuritySettings,
@@ -697,7 +698,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                 color: Colors.orange.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.devices_other_rounded,
+              child: const Icon(AppIcons.devices_other_rounded,
                   size: 48, color: Colors.orange),
             ),
             const SizedBox(height: 16),
@@ -720,7 +721,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                 provider.registerCurrentDeviceAsTrusted();
                 _showFeedback(context, "Current device registered as trusted workstation!");
               },
-              icon: const Icon(Icons.add_to_queue_rounded, size: 18),
+              icon: const Icon(AppIcons.add_to_queue_rounded, size: 18),
               label: const Text("Register This Device",
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
@@ -751,8 +752,8 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                       ),
                       child: Icon(
                         dev.deviceType.contains("Mobile")
-                            ? Icons.smartphone_rounded
-                            : Icons.laptop_mac_rounded,
+                            ? AppIcons.smartphone_rounded
+                            : AppIcons.laptop_mac_rounded,
                         color: dev.isCurrentDevice
                             ? Colors.green.shade700
                             : theme.colorScheme.primary,
@@ -848,7 +849,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                       onPressed: () {
                         _showRenameDeviceDialog(context, dev.deviceName);
                       },
-                      icon: const Icon(Icons.edit_outlined, size: 16),
+                      icon: const Icon(AppIcons.edit_outlined, size: 16),
                       label: const Text("Rename Device"),
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -862,7 +863,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                         _showFeedback(
                             context, "${dev.deviceName} marked as trusted!");
                       },
-                      icon: const Icon(Icons.verified_outlined, size: 16),
+                      icon: const Icon(AppIcons.verified_outlined, size: 16),
                       label: const Text("Mark as Trusted"),
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -877,7 +878,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                         _showFeedback(
                             context, "Device '${dev.deviceName}' removed from trusted list");
                       },
-                      icon: const Icon(Icons.delete_outline_rounded,
+                      icon: const Icon(AppIcons.delete_outline_rounded,
                           size: 16, color: Colors.red),
                       label: const Text("Remove Device",
                           style: TextStyle(color: Colors.red)),
@@ -909,7 +910,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
         children: [
           _buildToggleTile(
             context,
-            icon: Icons.email_outlined,
+            icon: AppIcons.email_outlined,
             title: "Email Security Alert",
             subtitle: "Send immediate email warning to primary recruiter address",
             value: provider.bioAlertEmail,
@@ -922,7 +923,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.notifications_on_outlined,
+            icon: AppIcons.notifications_on_outlined,
             title: "Push Notification Alert",
             subtitle: "Send instant mobile push alert to active devices upon new login",
             value: provider.bioAlertPush,
@@ -935,7 +936,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.sms_outlined,
+            icon: AppIcons.sms_outlined,
             title: "SMS Text Alert",
             subtitle: "Send SMS text message with verification timestamp and IP location",
             value: provider.bioAlertSms,
@@ -948,7 +949,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.warning_amber_rounded,
+            icon: AppIcons.warning_amber_rounded,
             title: "In-App Security Warning Banner",
             subtitle: "Display prominent header banner warning upon next dashboard login",
             value: provider.bioAlertWarning,
@@ -974,7 +975,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
         children: [
           _buildToggleTile(
             context,
-            icon: Icons.logout_rounded,
+            icon: AppIcons.logout_rounded,
             title: "Auto Logout on Browser Exit",
             subtitle: "Automatically terminate session tokens whenever the browser window closes",
             value: provider.bioSessionAutoLogout,
@@ -987,7 +988,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.remember_me_outlined,
+            icon: AppIcons.remember_me_outlined,
             title: "Remember Trusted Devices",
             subtitle: "Skip repetitive 2FA verification challenges on trusted workstations for 30 days",
             value: provider.bioSessionRememberDevice,
@@ -1000,7 +1001,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           Divider(height: 1, color: theme.dividerColor),
           _buildToggleTile(
             context,
-            icon: Icons.verified_user_rounded,
+            icon: AppIcons.verified_user_rounded,
             title: "Require Login Again (24h Renewal)",
             subtitle: "Force authentication renewal every 24 hours regardless of active recruiting work",
             value: provider.bioSessionRequireLoginAgain,
@@ -1041,10 +1042,10 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   ),
                   child: Icon(
                     hist.deviceType.contains("Mobile")
-                        ? Icons.phone_iphone_rounded
+                        ? AppIcons.phone_iphone_rounded
                         : hist.deviceType.contains("Server")
-                            ? Icons.terminal_rounded
-                            : Icons.desktop_windows_rounded,
+                            ? AppIcons.terminal_rounded
+                            : AppIcons.desktop_windows_rounded,
                     color: badgeColor,
                     size: 22,
                   ),
@@ -1117,31 +1118,31 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
       {
         "title": "Enable Fingerprint Login",
         "desc": "Hardware-backed Touch ID prevents credential stuffing and phishing attacks.",
-        "icon": Icons.fingerprint_rounded,
+        "icon": AppIcons.fingerprint_rounded,
         "action": "Review Now",
       },
       {
         "title": "Enable Face Unlock",
         "desc": "Instant infrared biometric recognition for seamless mobile recruiter access.",
-        "icon": Icons.face_unlock_rounded,
+        "icon": AppIcons.face_unlock_rounded,
         "action": "Review Now",
       },
       {
         "title": "Review Trusted Devices",
         "desc": "Periodically audit and prune old or unused workstations to minimize risk.",
-        "icon": Icons.devices_rounded,
+        "icon": AppIcons.devices_rounded,
         "action": "Audit List",
       },
       {
         "title": "Turn On Device Alerts",
         "desc": "Get notified instantly if an unknown IP attempts to log into your account.",
-        "icon": Icons.notifications_active_outlined,
+        "icon": AppIcons.notifications_active_outlined,
         "action": "Configure Alerts",
       },
       {
         "title": "Enable App Lock",
         "desc": "Lock your screen automatically after 5 minutes of inactivity for privacy.",
-        "icon": Icons.lock_clock_outlined,
+        "icon": AppIcons.lock_clock_outlined,
         "action": "Set Timeout",
       },
     ];
@@ -1240,7 +1241,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                   color: Colors.red.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.warning_amber_rounded,
+                child: const Icon(AppIcons.warning_amber_rounded,
                     color: Colors.red, size: 22),
               ),
               const SizedBox(width: 12),
@@ -1279,7 +1280,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                     _showFeedback(context, "All trusted devices removed!");
                   },
                 ),
-                icon: const Icon(Icons.devices_other_rounded,
+                icon: const Icon(AppIcons.devices_other_rounded,
                     size: 18, color: Colors.red),
                 label: const Text("Remove All Trusted Devices",
                     style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
@@ -1301,7 +1302,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                     _showFeedback(context, "All biometric methods disabled!");
                   },
                 ),
-                icon: const Icon(Icons.fingerprint_rounded,
+                icon: const Icon(AppIcons.fingerprint_rounded,
                     size: 18, color: Colors.orange),
                 label: const Text("Disable Biometrics",
                     style:
@@ -1324,7 +1325,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                         context, "All sessions terminated across all devices!");
                   },
                 ),
-                icon: const Icon(Icons.logout_rounded, size: 18),
+                icon: const Icon(AppIcons.logout_rounded, size: 18),
                 label: const Text("Log Out Everywhere",
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 style: FilledButton.styleFrom(
@@ -1406,7 +1407,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
           ),
         ),
       ),
-      trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+      trailing: const Icon(AppIcons.arrow_forward_ios_rounded, size: 16),
       onTap: () {
         showModalBottomSheet(
           context: context,
@@ -1436,7 +1437,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
                                 fontWeight:
                                     isSel ? FontWeight.bold : FontWeight.normal)),
                         trailing: isSel
-                            ? Icon(Icons.check_circle_rounded,
+                            ? Icon(AppIcons.check_circle_rounded,
                                 color: theme.colorScheme.primary)
                             : null,
                         onTap: () {
@@ -1504,7 +1505,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: const Row(
           children: [
-            Icon(Icons.warning_amber_rounded, color: Colors.orange),
+            Icon(AppIcons.warning_amber_rounded, color: Colors.orange),
             SizedBox(width: 10),
             Expanded(child: Text("Restore Default Settings?")),
           ],
@@ -1524,7 +1525,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
               provider.resetDeviceSecurityToDefaults();
               _showFeedback(context, "All device security defaults restored!");
             },
-            icon: const Icon(Icons.refresh_rounded, size: 18),
+            icon: const Icon(AppIcons.refresh_rounded, size: 18),
             label: const Text("Restore Defaults"),
             style: FilledButton.styleFrom(backgroundColor: Colors.orange),
           ),
@@ -1546,7 +1547,7 @@ class ProfileDeviceSecurityScreen extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: Row(
           children: [
-            Icon(Icons.gpp_maybe_rounded, color: actionColor),
+            Icon(AppIcons.gpp_maybe_rounded, color: actionColor),
             const SizedBox(width: 10),
             Expanded(child: Text(title)),
           ],

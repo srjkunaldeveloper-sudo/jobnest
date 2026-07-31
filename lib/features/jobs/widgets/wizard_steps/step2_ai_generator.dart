@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
@@ -23,7 +24,7 @@ class Step2AiGenerator extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.auto_awesome_rounded, color: Colors.deepPurpleAccent),
+              const Icon(AppIcons.auto_awesome_rounded, color: Colors.deepPurpleAccent),
               AppSpacing.w8,
               Text(
                 "AI Job Description",
@@ -83,7 +84,7 @@ class Step2AiGenerator extends StatelessWidget {
                         backgroundColor: Colors.deepPurpleAccent,
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
                       ),
-                      icon: const Icon(Icons.auto_awesome_rounded),
+                      icon: const Icon(AppIcons.auto_awesome_rounded),
                       label: const Text("Generate"),
                     )
                   ],

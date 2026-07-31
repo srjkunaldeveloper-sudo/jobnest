@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +49,7 @@ class ServicesHeader extends StatelessWidget {
               button: true,
               child: _buildIconButton(
                 context,
-                icon: Icons.search_rounded,
+                icon: AppIcons.search_rounded,
                 tooltip: "Search",
                 onPressed: () {
                   if (onSearchTap != null) {
@@ -65,7 +66,7 @@ class ServicesHeader extends StatelessWidget {
               button: true,
               child: _buildIconButton(
                 context,
-                icon: Icons.history_rounded,
+                icon: AppIcons.history_rounded,
                 tooltip: "Recently Used",
                 onPressed: () {
                   provider.setSelectedCategory("Recently Used");
@@ -121,7 +122,7 @@ class ServicesHeader extends StatelessWidget {
       ),
       child: PopupMenuButton<String>(
         tooltip: "More Options",
-        icon: Icon(Icons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurface),
+        icon: Icon(AppIcons.more_vert_rounded, size: 20, color: theme.colorScheme.onSurface),
         constraints: const BoxConstraints(minWidth: 48),
         onSelected: (value) {
           if (value == "favorites") {
@@ -141,7 +142,7 @@ class ServicesHeader extends StatelessWidget {
             value: "favorites",
             child: Row(
               children: [
-                Icon(Icons.favorite_rounded, size: 20, color: Colors.redAccent),
+                Icon(AppIcons.favorite_rounded, size: 20, color: Colors.redAccent),
                 SizedBox(width: 12),
                 Text("Show Favorites", style: TextStyle(fontWeight: FontWeight.w600)),
               ],
@@ -153,7 +154,7 @@ class ServicesHeader extends StatelessWidget {
               value: "simulate_loading",
               child: Row(
                 children: [
-                  Icon(Icons.hourglass_empty_rounded, size: 20, color: Colors.blue),
+                  Icon(AppIcons.hourglass_empty_rounded, size: 20, color: Colors.blue),
                   SizedBox(width: 12),
                   Text("QA: Loading Skeleton", style: TextStyle(color: Colors.blue)),
                 ],
@@ -163,7 +164,7 @@ class ServicesHeader extends StatelessWidget {
               value: "simulate_error",
               child: Row(
                 children: [
-                  Icon(Icons.error_outline_rounded, size: 20, color: Colors.orange),
+                  Icon(AppIcons.error_outline_rounded, size: 20, color: Colors.orange),
                   SizedBox(width: 12),
                   Text("QA: Error State", style: TextStyle(color: Colors.orange)),
                 ],
@@ -173,7 +174,7 @@ class ServicesHeader extends StatelessWidget {
               value: "simulate_empty",
               child: Row(
                 children: [
-                  Icon(Icons.inbox_outlined, size: 20, color: Colors.purple),
+                  Icon(AppIcons.inbox_outlined, size: 20, color: Colors.purple),
                   SizedBox(width: 12),
                   Text("QA: Empty State", style: TextStyle(color: Colors.purple)),
                 ],
@@ -183,7 +184,7 @@ class ServicesHeader extends StatelessWidget {
               value: "restore",
               child: Row(
                 children: [
-                  Icon(Icons.restore_rounded, size: 20, color: Colors.green),
+                  Icon(AppIcons.restore_rounded, size: 20, color: Colors.green),
                   SizedBox(width: 12),
                   Text("QA: Restore Defaults", style: TextStyle(color: Colors.green)),
                 ],

@@ -1,11 +1,14 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class AppDropdownField extends StatelessWidget {
+  final String? label;
   final String hint;
   final IconData icon;
 
   const AppDropdownField({
     super.key,
+    this.label,
     required this.hint,
     required this.icon,
   });
@@ -14,7 +17,7 @@ class AppDropdownField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
-    return TextField(
+    Widget dropdown = TextField(
       readOnly: true,
       style: TextStyle(
         color: theme.colorScheme.onSurface,
@@ -23,8 +26,29 @@ class AppDropdownField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         prefixIcon: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
-        suffixIcon: Icon(Icons.keyboard_arrow_down, color: theme.colorScheme.onSurfaceVariant),
+        suffixIcon: Icon(AppIcons.keyboard_arrow_down, color: theme.colorScheme.onSurfaceVariant),
       ),
     );
+
+    if (label != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label!,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 6),
+          dropdown,
+        ],
+      );
+    }
+
+    return dropdown;
   }
 }

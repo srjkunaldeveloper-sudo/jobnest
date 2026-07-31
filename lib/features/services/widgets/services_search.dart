@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:jobnest/features/services/providers/services_data_provider.dart';
@@ -81,7 +82,7 @@ class _ServicesSearchState extends State<ServicesSearch> {
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Icon(
-                Icons.search_rounded,
+                AppIcons.search_rounded,
                 color: provider.searchQuery.isNotEmpty
                     ? theme.colorScheme.primary
                     : theme.colorScheme.onSurfaceVariant,
@@ -93,7 +94,7 @@ class _ServicesSearchState extends State<ServicesSearch> {
                     label: "Clear search query",
                     button: true,
                     child: IconButton(
-                      icon: const Icon(Icons.clear_rounded),
+                      icon: const Icon(AppIcons.clear_rounded),
                       constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                       onPressed: () {
                         _controller.clear();

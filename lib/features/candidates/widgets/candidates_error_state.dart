@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
@@ -23,7 +24,7 @@ class CandidatesErrorState extends StatelessWidget {
         onRetry: onRetry,
         secondaryButtonText: "Restore Profiles",
         onSecondaryAction: onRestore,
-        iconData: Icons.cloud_off_rounded,
+        iconData: AppIcons.cloud_off_rounded,
       ),
     );
   }

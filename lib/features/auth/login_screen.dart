@@ -1,3 +1,4 @@
+import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -66,7 +67,7 @@ class _LoginContentState extends State<LoginContent> {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              Icons.work_rounded,
+              AppIcons.work_rounded,
               size: 40,
               color: theme.colorScheme.primary,
             ),
@@ -188,7 +189,7 @@ class _LoginContentState extends State<LoginContent> {
                     AppTextField(
                       controller: _mobileController,
                       hint: "Mobile Number",
-                      icon: Icons.phone_outlined,
+                      icon: AppIcons.phone_outlined,
                       keyboardType: TextInputType.number,
                       prefixText: "+91 ",
                       maxLength: 10,

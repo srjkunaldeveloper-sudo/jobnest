@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class ProfileAiRecommendations extends StatelessWidget {
@@ -17,7 +18,7 @@ class ProfileAiRecommendations extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.tips_and_updates_rounded, color: Colors.orangeAccent, size: 24),
+          const Icon(AppIcons.tips_and_updates_rounded, color: Colors.orangeAccent, size: 24),
           const SizedBox(width: 16),
           Expanded(
             child: Column(

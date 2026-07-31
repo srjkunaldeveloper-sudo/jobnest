@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
@@ -49,27 +50,27 @@ class ProfileSummary extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: itemWidth,
-                        child: _buildSummaryItem(context, Icons.email_outlined, "Email", "rahul.sharma@example.com"),
+                        child: _buildSummaryItem(context, AppIcons.email_outlined, "Email", "rahul.sharma@example.com"),
                       ),
                       SizedBox(
                         width: itemWidth,
-                        child: _buildSummaryItem(context, Icons.phone_outlined, "Phone", "+91 98765 43210"),
+                        child: _buildSummaryItem(context, AppIcons.phone_outlined, "Phone", "+91 98765 43210"),
                       ),
                       SizedBox(
                         width: itemWidth,
-                        child: _buildSummaryItem(context, Icons.business_outlined, "Current Company", company),
+                        child: _buildSummaryItem(context, AppIcons.business_outlined, "Current Company", company),
                       ),
                       SizedBox(
                         width: itemWidth,
-                        child: _buildSummaryItem(context, Icons.work_history_outlined, "Total Experience", exp),
+                        child: _buildSummaryItem(context, AppIcons.work_history_outlined, "Total Experience", exp),
                       ),
                       SizedBox(
                         width: itemWidth,
-                        child: _buildSummaryItem(context, Icons.monetization_on_outlined, "Expected Salary", salary),
+                        child: _buildSummaryItem(context, AppIcons.monetization_on_outlined, "Expected Salary", salary),
                       ),
                       SizedBox(
                         width: itemWidth,
-                        child: _buildSummaryItem(context, Icons.location_city_outlined, "Preferred Location", "Bangalore, Remote"),
+                        child: _buildSummaryItem(context, AppIcons.location_city_outlined, "Preferred Location", "Bangalore, Remote"),
                       ),
                     ],
                   );

@@ -1,3 +1,4 @@
+import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
@@ -49,7 +50,7 @@ class DetailsOverview extends StatelessWidget {
                   child: StatCard(
                     title: "Applications",
                     count: activeJob.applicationsCount,
-                    icon: Icons.description_outlined,
+                    icon: AppIcons.description_outlined,
                     color: Colors.blueAccent,
                     trend: "+12%",
                     isPositiveTrend: true,
@@ -60,7 +61,7 @@ class DetailsOverview extends StatelessWidget {
                   child: const StatCard(
                     title: "Shortlisted",
                     count: "45",
-                    icon: Icons.fact_check_outlined,
+                    icon: AppIcons.fact_check_outlined,
                     color: Colors.orangeAccent,
                     trend: "+3%",
                     isPositiveTrend: true,
@@ -71,7 +72,7 @@ class DetailsOverview extends StatelessWidget {
                   child: const StatCard(
                     title: "Interviews",
                     count: "12",
-                    icon: Icons.people_alt_outlined,
+                    icon: AppIcons.people_alt_outlined,
                     color: Colors.deepPurpleAccent,
                     trend: "Stable",
                   ),
@@ -81,7 +82,7 @@ class DetailsOverview extends StatelessWidget {
                   child: const StatCard(
                     title: "Selected",
                     count: "2",
-                    icon: Icons.star_border_rounded,
+                    icon: AppIcons.star_border_rounded,
                     color: Colors.green,
                     trend: "+1",
                     isPositiveTrend: true,
@@ -92,7 +93,7 @@ class DetailsOverview extends StatelessWidget {
                   child: const StatCard(
                     title: "Rejected",
                     count: "15",
-                    icon: Icons.cancel_outlined,
+                    icon: AppIcons.cancel_outlined,
                     color: Colors.redAccent,
                     trend: "-2%",
                   ),
@@ -116,7 +117,7 @@ class DetailsOverview extends StatelessWidget {
               const SizedBox(height: 20),
 
               // About the Role
-              _buildSectionHeading(theme, Icons.info_outline_rounded, "About the Role (Company & Description)"),
+              _buildSectionHeading(theme, AppIcons.info_outline_rounded, "About the Role (Company & Description)"),
               const SizedBox(height: 12),
               Text(
                 activeJob.description,
@@ -128,19 +129,19 @@ class DetailsOverview extends StatelessWidget {
               const SizedBox(height: 28),
 
               // Key Responsibilities
-              _buildSectionHeading(theme, Icons.task_alt_rounded, "Key Responsibilities"),
+              _buildSectionHeading(theme, AppIcons.task_alt_rounded, "Key Responsibilities"),
               const SizedBox(height: 12),
-              ...activeJob.responsibilities.map((resp) => _buildBulletItem(theme, resp, Icons.check_circle_outline_rounded, Colors.blueAccent)),
+              ...activeJob.responsibilities.map((resp) => _buildBulletItem(theme, resp, AppIcons.check_circle_outline_rounded, Colors.blueAccent)),
               const SizedBox(height: 28),
 
               // Requirements & Qualifications
-              _buildSectionHeading(theme, Icons.school_outlined, "Requirements & Qualifications"),
+              _buildSectionHeading(theme, AppIcons.school_outlined, "Requirements & Qualifications"),
               const SizedBox(height: 12),
-              ...activeJob.requirements.map((req) => _buildBulletItem(theme, req, Icons.arrow_right_rounded, theme.colorScheme.primary)),
+              ...activeJob.requirements.map((req) => _buildBulletItem(theme, req, AppIcons.arrow_right_rounded, theme.colorScheme.primary)),
               const SizedBox(height: 28),
 
               // Required Skills
-              _buildSectionHeading(theme, Icons.auto_awesome_outlined, "Required Skills & Competencies"),
+              _buildSectionHeading(theme, AppIcons.auto_awesome_outlined, "Required Skills & Competencies"),
               const SizedBox(height: 12),
               Wrap(
                 spacing: 10,
@@ -150,7 +151,7 @@ class DetailsOverview extends StatelessWidget {
               const SizedBox(height: 28),
 
               // Compensation & Benefits
-              _buildSectionHeading(theme, Icons.card_giftcard_rounded, "Compensation & Benefits"),
+              _buildSectionHeading(theme, AppIcons.card_giftcard_rounded, "Compensation & Benefits"),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(16),
@@ -161,7 +162,7 @@ class DetailsOverview extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.monetization_on_rounded, color: Colors.green, size: 28),
+                    const Icon(AppIcons.monetization_on_rounded, color: Colors.green, size: 28),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
@@ -183,11 +184,11 @@ class DetailsOverview extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              ...activeJob.benefits.map((ben) => _buildBulletItem(theme, ben, Icons.favorite_border_rounded, Colors.pinkAccent)),
+              ...activeJob.benefits.map((ben) => _buildBulletItem(theme, ben, AppIcons.favorite_border_rounded, Colors.pinkAccent)),
               const SizedBox(height: 28),
 
               // Hiring Timeline & Process
-              _buildSectionHeading(theme, Icons.timeline_rounded, "Hiring Timeline & Process"),
+              _buildSectionHeading(theme, AppIcons.timeline_rounded, "Hiring Timeline & Process"),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(16),
@@ -198,7 +199,7 @@ class DetailsOverview extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.access_time_filled_rounded, color: theme.colorScheme.primary, size: 24),
+                    Icon(AppIcons.access_time_filled_rounded, color: theme.colorScheme.primary, size: 24),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Text(

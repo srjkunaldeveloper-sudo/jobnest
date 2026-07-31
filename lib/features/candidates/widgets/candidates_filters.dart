@@ -1,3 +1,4 @@
+import '../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class CandidatesFilters extends StatelessWidget {
@@ -19,6 +20,8 @@ class CandidatesFilters extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final filters = ["All", "Shortlisted", "Interview", "Offer", "Hired", "Remote"];
+    final bool hasActiveFilters = selectedFilter != "All" || selectedSort != "Newest";
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
@@ -27,52 +30,30 @@ class CandidatesFilters extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Row(
           children: [
-            // Sort Dropdown Chip (Section 7)
             _buildSortDropdown(context),
             const SizedBox(width: 12),
-            Container(width: 1, height: 24, color: theme.dividerColor),
+            Container(
+              width: 1,
+              height: 24,
+              color: theme.dividerColor,
+            ),
             const SizedBox(width: 12),
-
-            // Quick Filter Chips (Section 6)
-            _buildFilterChip(context, "All"),
-            const SizedBox(width: 8),
-            _buildFilterChip(context, "Shortlisted"),
-            const SizedBox(width: 8),
-            _buildFilterChip(context, "Interview"),
-            const SizedBox(width: 8),
-            _buildFilterChip(context, "Offer"),
-            const SizedBox(width: 8),
-            _buildFilterChip(context, "Hired"),
-            const SizedBox(width: 8),
-            _buildFilterChip(context, "Remote"),
-            const SizedBox(width: 12),
-            Container(width: 1, height: 24, color: theme.dividerColor),
-            const SizedBox(width: 12),
-
-            // Dummy Enterprise ATS Dropdowns (Section 6)
-            _buildDropdownChip(context, "Experience", ["All", "1-3 Years", "3-5 Years", "5+ Years"]),
-            const SizedBox(width: 8),
-            _buildDropdownChip(context, "Location", ["All", "Bangalore", "Delhi", "Mumbai", "Remote"]),
-            const SizedBox(width: 8),
-            _buildDropdownChip(context, "Status", ["All", "Applied", "Screening", "Interview", "Offer"]),
-            const SizedBox(width: 8),
-            _buildDropdownChip(context, "Skills", ["All", "Flutter", "Python", "React", "AWS"]),
-            const SizedBox(width: 8),
-            _buildDropdownChip(context, "Expected Salary", ["All", "₹ 10-15 LPA", "₹ 15-25 LPA", "₹ 25+ LPA"]),
-            const SizedBox(width: 8),
-            _buildDropdownChip(context, "Availability", ["All", "Immediate", "15 Days", "30 Days"]),
-            const SizedBox(width: 12),
-
-            // Clear All Button (if any filter or custom sort is active)
-            if (selectedFilter != "All" || selectedSort != "Newest")
-              TextButton.icon(
-                onPressed: onClearAll,
-                icon: Icon(Icons.refresh_rounded, size: 16, color: theme.colorScheme.error),
-                label: Text("Reset Filters", style: TextStyle(color: theme.colorScheme.error, fontWeight: FontWeight.bold)),
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            if (hasActiveFilters) ...[
+              _buildClearAllChip(context),
+              const SizedBox(width: 8),
+            ],
+            ...filters.map((filter) {
+              final isSelected = selectedFilter.toLowerCase() == filter.toLowerCase();
+              return Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: _buildFilterChip(
+                  context,
+                  filter,
+                  isSelected: isSelected,
+                  onTap: () => onFilterChanged?.call(filter),
                 ),
-              ),
+              );
+            }),
           ],
         ),
       ),
@@ -89,53 +70,73 @@ class CandidatesFilters extends StatelessWidget {
       "Highest Rating",
       "Recently Updated",
     ];
-
+    
     return Semantics(
       label: "Sort candidates by $selectedSort",
       button: true,
       child: PopupMenuButton<String>(
+        onSelected: (newValue) => onSortChanged?.call(newValue),
         tooltip: "Sort Candidates",
-        onSelected: (value) => onSortChanged?.call(value),
-        itemBuilder: (context) {
-          return sortOptions.map((opt) {
-            final isCur = opt == selectedSort;
-            return PopupMenuItem<String>(
-              value: opt,
-              child: Row(
-                children: [
-                  Icon(
-                    isCur ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-                    size: 18,
-                    color: isCur ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+        constraints: const BoxConstraints(minWidth: 200),
+        itemBuilder: (context) => sortOptions.map((option) {
+          final isSelected = selectedSort == option;
+          return PopupMenuItem<String>(
+            value: option,
+            child: Row(
+              children: [
+                Icon(
+                  isSelected ? AppIcons.radio_button_checked_rounded : AppIcons.radio_button_unchecked_rounded,
+                  size: 18,
+                  color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  option,
+                  style: TextStyle(
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurface,
                   ),
-                  const SizedBox(width: 12),
-                  Text(opt, style: TextStyle(fontWeight: isCur ? FontWeight.bold : FontWeight.normal)),
-                ],
-              ),
-            );
-          }).toList();
-        },
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+        offset: const Offset(0, 40),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer.withValues(alpha: 0.7),
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.5)),
+            border: Border.all(
+              color: selectedSort != "Newest"
+                  ? theme.colorScheme.primary
+                  : theme.dividerColor.withValues(alpha: 0.5),
+              width: selectedSort != "Newest" ? 1.5 : 1.0,
+            ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.sort_rounded, size: 16, color: theme.colorScheme.onPrimaryContainer),
-              const SizedBox(width: 6),
+              Icon(
+                AppIcons.sort_rounded,
+                size: 16,
+                color: selectedSort != "Newest" ? theme.colorScheme.primary : theme.colorScheme.onSurface,
+              ),
+              const SizedBox(width: 8),
               Text(
-                "Sort: $selectedSort",
+                selectedSort,
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.onPrimaryContainer,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
+                  color: selectedSort != "Newest" ? theme.colorScheme.primary : theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(width: 4),
-              Icon(Icons.arrow_drop_down_rounded, size: 18, color: theme.colorScheme.onPrimaryContainer),
+              Icon(
+                AppIcons.keyboard_arrow_down_rounded,
+                size: 16,
+                color: selectedSort != "Newest" ? theme.colorScheme.primary : theme.colorScheme.onSurface,
+              ),
             ],
           ),
         ),
@@ -143,34 +144,38 @@ class CandidatesFilters extends StatelessWidget {
     );
   }
 
-  Widget _buildFilterChip(BuildContext context, String label) {
+  Widget _buildClearAllChip(BuildContext context) {
     final theme = Theme.of(context);
-    final isSelected = selectedFilter.toLowerCase() == label.toLowerCase();
-
     return Semantics(
-      label: "Filter by $label",
+      label: "Clear All Filters and Search",
       button: true,
-      child: InkWell(
-        onTap: () => onFilterChanged?.call(isSelected ? "All" : label),
-        borderRadius: BorderRadius.circular(20),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: isSelected ? theme.colorScheme.primary : theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isSelected ? theme.colorScheme.primary : theme.dividerColor.withValues(alpha: 0.5),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            onClearAll?.call();
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.error.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: theme.colorScheme.error.withValues(alpha: 0.4)),
             ),
-            boxShadow: isSelected
-                ? [BoxShadow(color: theme.colorScheme.primary.withValues(alpha: 0.25), blurRadius: 6, offset: const Offset(0, 2))]
-                : null,
-          ),
-          child: Text(
-            label,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: isSelected ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(AppIcons.refresh_rounded, size: 14, color: theme.colorScheme.error),
+                const SizedBox(width: 6),
+                Text(
+                  "Clear All",
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -178,45 +183,56 @@ class CandidatesFilters extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdownChip(BuildContext context, String label, List<String> options) {
+  Widget _buildFilterChip(
+    BuildContext context,
+    String label, {
+    bool isSelected = false,
+    VoidCallback? onTap,
+  }) {
     final theme = Theme.of(context);
-    final isSelected = selectedFilter.toLowerCase().contains(label.toLowerCase());
-
+    
     return Semantics(
-      label: "Filter by $label dropdown",
+      label: "Filter by $label, ${isSelected ? 'Selected' : 'Not selected'}",
       button: true,
-      child: PopupMenuButton<String>(
-        tooltip: "Filter by $label",
-        onSelected: (val) {
-          if (val == "All") {
-            onFilterChanged?.call("All");
-          } else {
-            onFilterChanged?.call(val);
-          }
-        },
-        itemBuilder: (ctx) => options.map((opt) => PopupMenuItem(value: opt, child: Text(opt))).toList(),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            color: isSelected ? theme.colorScheme.secondaryContainer : theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isSelected ? theme.colorScheme.secondary : theme.dividerColor.withValues(alpha: 0.5),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                label,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: isSelected ? theme.colorScheme.onSecondaryContainer : theme.colorScheme.onSurface,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(999),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            height: 34,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: isSelected ? theme.colorScheme.primary : theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(
+                color: isSelected ? theme.colorScheme.primary : theme.dividerColor.withValues(alpha: 0.5),
+                width: 1.0,
               ),
-              const SizedBox(width: 4),
-              Icon(Icons.keyboard_arrow_down_rounded, size: 16, color: isSelected ? theme.colorScheme.onSecondaryContainer : theme.colorScheme.onSurfaceVariant),
-            ],
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.25),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      )
+                    ]
+                  : null,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontSize: 13,
+                    color: isSelected ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

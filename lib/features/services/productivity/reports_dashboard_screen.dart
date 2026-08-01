@@ -12,9 +12,9 @@ class ReportsDashboardScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: Reports analytics API se load honge.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Reports & Analytics"),
       ),

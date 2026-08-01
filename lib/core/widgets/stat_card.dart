@@ -76,11 +76,10 @@ class _StatCardState extends State<StatCard> {
             splashColor: theme.colorScheme.primary.withValues(alpha: 0.06),
             highlightColor: theme.colorScheme.primary.withValues(alpha: 0.04),
             child: Container(
-              height: 120,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   // Icon + Trend row
                   Row(
@@ -147,10 +146,11 @@ class _StatCardState extends State<StatCard> {
                         ),
                     ],
                   ),
-
+                  const SizedBox(height: 12),
                   // Texts
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
                     children: [
                       // Count
                       Text(
@@ -158,23 +158,25 @@ class _StatCardState extends State<StatCard> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.headlineLarge?.copyWith(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
                           letterSpacing: -0.6,
                           height: 1.1,
                           color: theme.colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(width: 8),
                       // Title
-                      Text(
-                        widget.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                      Expanded(
+                        child: Text(
+                          widget.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                     ],

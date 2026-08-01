@@ -4,8 +4,17 @@ import 'user_model.dart';
 /// Response payload received after a successful login.
 @immutable
 class LoginResponse {
+  // TODO: TEMPORARY PLACEHOLDER FIELDS - DO NOT ASSUME BACKEND SCHEMA
+  // Wait for the exact POST /api-recruiter/login/ response structure.
+  
+  // TODO: Verify exact token field name (e.g. 'access_token', 'token', 'jwt').
+  // Maintained as 'accessToken' for backward compatibility with MockAuthRepository.
   final String accessToken;
+  
+  // TODO: Verify if a refresh token is returned and its exact JSON key.
   final String refreshToken;
+  
+  // TODO: Verify user model fields and JSON structure.
   final UserModel user;
 
   const LoginResponse({
@@ -16,8 +25,10 @@ class LoginResponse {
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
+      // TODO: BACKEND CONTRACT REQUIRED - Do not assume 'accessToken' or 'refreshToken' keys.
       accessToken: json['accessToken'] as String,
       refreshToken: json['refreshToken'] as String,
+      // TODO: BACKEND CONTRACT REQUIRED - Do not assume 'user' object structure.
       user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
     );
   }

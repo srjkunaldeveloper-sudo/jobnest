@@ -47,7 +47,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
     return ChangeNotifierProvider<ServicesDataProvider>.value(
       value: ServicesDataProvider(),
       child: Scaffold(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         body: SafeArea(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),

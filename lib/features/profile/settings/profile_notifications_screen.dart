@@ -15,9 +15,9 @@ class ProfileNotificationsScreen extends StatelessWidget {
     // TODO: Notification preferences API.
     // TODO: Notification settings backend sync hongi.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Notification Preferences"),
       ),

@@ -59,9 +59,9 @@ class CandidateProfileScreen extends StatelessWidget {
     // TODO: WebSocket live stage sync and recruiter notes collaboration.
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(AppIcons.arrow_back_rounded),

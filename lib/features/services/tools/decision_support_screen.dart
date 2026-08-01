@@ -12,9 +12,9 @@ class DecisionSupportScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: Decision Support AI service backend se data layegi.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Decision Support AI"),
       ),

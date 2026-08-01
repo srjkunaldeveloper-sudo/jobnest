@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jobnest/core/widgets/app_card.dart';
+import '../../../../core/widgets/app_card.dart';
 
 /// A reusable chip-style widget for displaying quick actions on the dashboard.
 class QuickActionCard extends StatelessWidget {

@@ -97,12 +97,14 @@ class _CandidatesPipelineState extends State<CandidatesPipeline> {
           spacing: 16,
           runSpacing: 8,
           children: [
-            Text(
-              "Hiring Pipeline (${widget.totalCount} Total)",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                letterSpacing: -0.3,
-              ),
+              Text(
+                "Hiring Pipeline (${widget.totalCount} Total)",
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.3,
+                  color: theme.colorScheme.onSurface,
+                ),
             ),
             if (widget.activeStage != "All")
               TextButton.icon(

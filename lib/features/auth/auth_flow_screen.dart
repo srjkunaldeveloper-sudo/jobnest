@@ -1,8 +1,10 @@
+import 'package:provider/provider.dart';
+import 'package:jobnest/features/auth/presentation/screens/login_screen.dart';
+import 'package:jobnest/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jobnest/core/services/session_manager.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
-import 'package:jobnest/features/auth/login_screen.dart';
 import 'package:jobnest/features/auth/forgot_password_screen.dart';
 import 'package:jobnest/features/auth/otp_screen.dart';
 import 'package:jobnest/features/auth/create_new_password_screen.dart';
@@ -63,16 +65,28 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
   Widget _buildCurrentStep() {
     switch (_currentStep) {
       case AuthStep.login:
-        return LoginContent(
+        return LoginScreen(
           key: const ValueKey('login'),
+          authProvider: context.read<AuthProvider>(),
+          onLoginSuccess: () async {
+            // SessionManager is currently used to track the startup routing login state.
+            // When token validation on launch is implemented, this should delegate to JWT token presence.
+            await SessionManager.instance.setLoginState(true);
+            if (!mounted) return;
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const MainDashboard()),
+              (route) => false,
+            );
+          },
           onForgotPassword: () => _navigateTo(AuthStep.forgotPassword),
-          onSendMobileOtp: (mobile) => _navigateTo(AuthStep.verifyMobileOtp, contactInfo: mobile),
         );
       case AuthStep.forgotPassword:
         return ForgotPasswordContent(
           key: const ValueKey('forgotPassword'),
           onBack: _goBack,
-          onSendOtp: (email) => _navigateTo(AuthStep.verifyEmailOtp, contactInfo: email),
+          onSendOtp: (email) =>
+              _navigateTo(AuthStep.verifyEmailOtp, contactInfo: email),
         );
       case AuthStep.verifyMobileOtp:
         return OtpContent(
@@ -84,6 +98,8 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
           onBack: _goBack,
           onVerify: () async {
             // End of mobile flow
+            // TODO:
+            // Replace SessionManager login bypass with actual OTP authentication after backend integration.
             await SessionManager.instance.setLoginState(true);
             if (!mounted) return;
             Navigator.pushAndRemoveUntil(
@@ -123,10 +139,7 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 40,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
             child: TweenAnimationBuilder<double>(
               tween: Tween(begin: 0.0, end: 1.0),
               duration: const Duration(milliseconds: 800),
@@ -141,7 +154,8 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
                 );
               },
               child: AppCard(
-                padding: EdgeInsets.zero, // Padding will be handled inside AnimatedSize wrapper
+                padding: EdgeInsets
+                    .zero, // Padding will be handled inside AnimatedSize wrapper
                 child: AnimatedSize(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOutCubic,
@@ -151,10 +165,7 @@ class _AuthFlowScreenState extends State<AuthFlowScreen> {
                     switchInCurve: Curves.easeIn,
                     switchOutCurve: Curves.easeOut,
                     transitionBuilder: (child, animation) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
+                      return FadeTransition(opacity: animation, child: child);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(32),

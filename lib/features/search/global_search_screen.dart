@@ -104,7 +104,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
             comp.location.toLowerCase().contains(lowerQuery)).toList();
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -261,7 +261,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
                   deleteIcon: const Icon(AppIcons.close_rounded, size: 16),
                   onDeleted: () => searchProvider.deleteRecentSearch(term),
                   onPressed: () => _submitSearch(term),
-                  backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                  // backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 );
               }).toList(),
@@ -283,7 +283,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> with SingleTick
                 label: Text(term),
                 avatar: const Icon(AppIcons.trending_up_rounded, size: 16, color: Colors.amber),
                 onPressed: () => _submitSearch(term),
-                backgroundColor: theme.colorScheme.surface,
+                // backgroundColor: theme.colorScheme.surface,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                   side: BorderSide(color: theme.dividerColor),

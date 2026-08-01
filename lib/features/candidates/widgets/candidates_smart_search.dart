@@ -213,7 +213,7 @@ class _CandidatesSmartSearchState extends State<CandidatesSmartSearch> {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -229,19 +229,19 @@ class _CandidatesSmartSearchState extends State<CandidatesSmartSearch> {
             hintText: "Try 'Flutter', 'Delhi', 'Infosys', or 'Python'...",
             icon: AppIcons.search_rounded,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             "Recent",
             style: theme.textTheme.labelMedium?.copyWith(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
               color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: 6,
+            runSpacing: 6,
             children: [
               _buildRecentChip(context, "Flutter Developer"),
               _buildRecentChip(context, "Python Engineer"),
@@ -274,8 +274,8 @@ class _CandidatesSmartSearchState extends State<CandidatesSmartSearch> {
           borderRadius: BorderRadius.circular(999),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            height: 26,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: 24,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHighest.withValues(
                 alpha: 0.3,
@@ -292,9 +292,9 @@ class _CandidatesSmartSearchState extends State<CandidatesSmartSearch> {
                 Text(
                   label,
                   style: theme.textTheme.labelSmall?.copyWith(
-                    fontSize: 12,
+                    fontSize: 11,
                     color: theme.colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],

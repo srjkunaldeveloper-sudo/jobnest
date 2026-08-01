@@ -14,6 +14,9 @@ class AppTextField extends StatefulWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const AppTextField({
     super.key,
@@ -29,6 +32,9 @@ class AppTextField extends StatefulWidget {
     this.controller,
     this.keyboardType,
     this.onChanged,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -42,11 +48,14 @@ class _AppTextFieldState extends State<AppTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      focusNode: widget.focusNode,
       obscureText: widget.isPassword ? _obscureText : false,
       readOnly: widget.readOnly,
       enabled: widget.enabled,
       validator: widget.validator,
       keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      onFieldSubmitted: widget.onFieldSubmitted,
       onChanged: widget.onChanged,
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(

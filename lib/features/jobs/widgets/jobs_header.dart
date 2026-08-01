@@ -23,8 +23,8 @@ class JobsHeader extends StatelessWidget {
                 Text(
                   "Jobs",
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    fontSize: 30, // 30px size
-                    fontWeight: FontWeight.w700, // 700 weight
+                    fontSize: 24, // 24px size
+                    fontWeight: FontWeight.w600, // 600 weight
                     letterSpacing: -0.4,
                     height: 1.1,
                   ),

@@ -40,9 +40,9 @@ class JobDetailsScreen extends StatelessWidget {
     // TODO: Real-time job updates.
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         leading: Semantics(
           label: "Back to Job Requisitions",

@@ -168,9 +168,9 @@ class JobTemplatesPlaceholderScreen extends StatelessWidget {
     final theme = Theme.of(context);
     // TODO: AI APIs for dynamic template generation and SEO optimization.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Job & Email Templates Library"),
       ),

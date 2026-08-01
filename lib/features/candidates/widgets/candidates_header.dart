@@ -9,7 +9,7 @@ class CandidatesHeader extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Padding(
-      padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+      padding: const EdgeInsets.only(top: 0.0, bottom: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,8 +21,8 @@ class CandidatesHeader extends StatelessWidget {
                 Text(
                   "Candidates",
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: -0.4,
                     height: 1.1,
                   ),

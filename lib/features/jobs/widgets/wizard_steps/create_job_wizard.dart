@@ -62,9 +62,9 @@ class CreateJobWizard extends StatelessWidget {
     final totalSteps = formProvider.totalSteps;
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(AppIcons.close_rounded),

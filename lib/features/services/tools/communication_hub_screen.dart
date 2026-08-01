@@ -12,9 +12,9 @@ class CommunicationHubScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: Communication APIs future me integrate hongi.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Communication Hub"),
       ),

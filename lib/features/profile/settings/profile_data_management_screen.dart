@@ -528,7 +528,7 @@ class _ProfileDataManagementScreenState
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: percent * (100 / 34), // Relative to used capacity
-              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+              // backgroundColor: theme.colorScheme.surfaceContainerHighest,
               color: color,
               minHeight: 6,
             ),

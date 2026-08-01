@@ -239,7 +239,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     final earlierItems = filtered.where((item) => item.section == "Earlier").toList();
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: _isMultiSelectMode
           ? _buildMultiSelectAppBar(theme, provider, filtered)
           : _buildNormalAppBar(theme, provider),
@@ -283,7 +283,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   PreferredSizeWidget _buildNormalAppBar(ThemeData theme, NotificationProvider provider) {
     final hasUnread = provider.unreadNotificationsCount > 0;
     return AppBar(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       elevation: 0,
       title: const Text(
         "Notifications",
@@ -518,7 +518,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     _selectedFilter = chip;
                   });
                 },
-                backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+                // backgroundColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
                 selectedColor: theme.colorScheme.primary.withValues(alpha: 0.15),
                 checkmarkColor: theme.colorScheme.primary,
                 labelStyle: TextStyle(

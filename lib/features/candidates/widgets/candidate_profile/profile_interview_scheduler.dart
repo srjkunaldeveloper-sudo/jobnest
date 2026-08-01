@@ -16,12 +16,13 @@ class ProfileInterviewScheduler extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(AppIcons.calendar_month_rounded, color: Colors.blueAccent, size: 24),
-            AppSpacing.w12,
-            Text(
-              "Interview Scheduler",
-              style: AppText.h3,
+            const Icon(
+              AppIcons.calendar_month_rounded,
+              color: Colors.blueAccent,
+              size: 24,
             ),
+            AppSpacing.w12,
+            Text("Interview Scheduler", style: AppText.h3),
           ],
         ),
         AppSpacing.h16,
@@ -45,26 +46,40 @@ class ProfileInterviewScheduler extends StatelessWidget {
                         ),
                         AppSpacing.h16,
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(AppIcons.calendar_today_rounded, size: 16, color: Colors.blueAccent),
+                            const Icon(
+                              AppIcons.calendar_today_rounded,
+                              size: 16,
+                              color: Colors.blueAccent,
+                            ),
                             AppSpacing.w8,
-                            Text(
-                              "28 Oct 2023",
-                              style: AppText.label.copyWith(
-                                fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: Text(
+                                "28 Oct 2023",
+                                style: AppText.label.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
                         ),
                         AppSpacing.h12,
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(AppIcons.access_time_rounded, size: 16, color: Colors.blueAccent),
+                            const Icon(
+                              AppIcons.access_time_rounded,
+                              size: 16,
+                              color: Colors.blueAccent,
+                            ),
                             AppSpacing.w8,
-                            Text(
-                              "10:30 AM - 11:30 AM (IST)",
-                              style: AppText.label.copyWith(
-                                fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: Text(
+                                "10:30 AM - 11:30 AM (IST)",
+                                style: AppText.label.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -73,16 +88,25 @@ class ProfileInterviewScheduler extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.blueAccent.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.blueAccent.withValues(alpha: 0.3)),
+                      border: Border.all(
+                        color: Colors.blueAccent.withValues(alpha: 0.3),
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(AppIcons.videocam_rounded, size: 16, color: Colors.blueAccent),
+                        const Icon(
+                          AppIcons.videocam_rounded,
+                          size: 16,
+                          color: Colors.blueAccent,
+                        ),
                         AppSpacing.w8,
                         Text(
                           "Google Meet",
@@ -103,10 +127,15 @@ class ProfileInterviewScheduler extends StatelessWidget {
                   Expanded(
                     child: FilledButton.tonalIcon(
                       onPressed: () {},
-                      icon: const Icon(AppIcons.edit_calendar_rounded, size: 18),
+                      icon: const Icon(
+                        AppIcons.edit_calendar_rounded,
+                        size: 18,
+                      ),
                       label: const Text("Reschedule"),
                       style: FilledButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
                   ),
@@ -118,8 +147,12 @@ class ProfileInterviewScheduler extends StatelessWidget {
                       label: const Text("Cancel"),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.redAccent,
-                        side: BorderSide(color: Colors.redAccent.withValues(alpha: 0.5)),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        side: BorderSide(
+                          color: Colors.redAccent.withValues(alpha: 0.5),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
                   ),

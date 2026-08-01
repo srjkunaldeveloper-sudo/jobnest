@@ -12,9 +12,9 @@ class AiInsightsScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: AI Insights ML service se generate honge.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("AI Insights"),
         actions: [

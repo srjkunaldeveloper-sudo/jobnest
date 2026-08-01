@@ -42,12 +42,12 @@ class HomeScreen extends StatelessWidget {
     final bool isError = provider.isDashboardError;
 
     return Scaffold(
-      backgroundColor: AppColors.lightBackground, // Depth canvas — cards lift against this
+      // backgroundColor: theme.colorScheme.surface, // Depth canvas — cards lift against this
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => provider.refreshDashboard(),
           color: theme.colorScheme.primary,
-          backgroundColor: theme.colorScheme.surface,
+          // backgroundColor: theme.colorScheme.surface,
           displacement: 40,
           child: LayoutBuilder(
             builder: (context, constraints) {

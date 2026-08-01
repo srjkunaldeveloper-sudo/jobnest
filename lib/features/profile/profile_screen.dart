@@ -420,7 +420,7 @@ class ProfileScreen extends StatelessWidget {
             child: LinearProgressIndicator(
               value: percentage / 100.0,
               minHeight: 8,
-              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+              // backgroundColor: theme.colorScheme.surfaceContainerHighest,
               valueColor: AlwaysStoppedAnimation<Color>(percentage >= 80 ? Colors.green : Colors.orange),
             ),
           ),

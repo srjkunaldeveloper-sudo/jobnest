@@ -1,3 +1,14 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jobnest/core/config/app_config.dart';
+import 'package:jobnest/core/network/rest_client.dart';
+import 'package:jobnest/core/network/interceptors/auth_interceptor.dart';
+import 'package:jobnest/core/network/interceptors/logger_interceptor.dart';
+import 'package:jobnest/core/storage/secure_storage.dart';
+import 'package:jobnest/core/constants/app_config.dart' as constants;
+import 'package:jobnest/features/auth/domain/repositories/auth_repository.dart';
+import 'package:jobnest/features/auth/data/repositories/api_auth_repository.dart';
+import 'package:jobnest/features/auth/data/repositories/mock_auth_repository.dart';
+import 'package:jobnest/features/auth/presentation/providers/auth_provider.dart';
 import 'core/constants/app_icons.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -28,11 +39,37 @@ import 'package:jobnest/core/widgets/responsive_layout.dart';
 import 'package:jobnest/core/constants/app_colors.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  const appConfig = AppConfig(
+    environment: Environment.dev,
+    apiBaseUrl: 'https://recruiter.api.jobnest.com',
+    aiBaseUrl: 'https://ai.api.jobnest.com',
+  );
+
+  final restClient = RestClient(appConfig);
+  final secureStorage = SecureStorage(const FlutterSecureStorage());
+
+  restClient.dio.interceptors.addAll([
+    AuthInterceptor(secureStorage),
+    LoggerInterceptor(),
+  ]);
+
+  final AuthRepository authRepository = constants.AppConfig.kFrontendMode
+      ? MockAuthRepository()
+      : ApiAuthRepository(restClient);
+
   runApp(
     MultiProvider(
       providers: [
+        Provider<SecureStorage>.value(value: secureStorage),
+        Provider<RestClient>.value(value: restClient),
+        Provider<AuthRepository>.value(value: authRepository),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => ProfileDataProvider()),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(authRepository, secureStorage),
+        ),
         ChangeNotifierProvider(create: (_) => JobFormProvider()),
         ChangeNotifierProvider(create: (_) => JobProvider()),
         ChangeNotifierProvider(create: (_) => CandidateProvider()),
@@ -43,17 +80,42 @@ void main() {
         ChangeNotifierProxyProvider<JobProvider, JobFilterProvider>(
           create: (_) => JobFilterProvider(),
           update: (_, jobProvider, filterProvider) =>
-              (filterProvider ?? JobFilterProvider())..updateJobs(jobProvider.jobs),
+              (filterProvider ?? JobFilterProvider())
+                ..updateJobs(jobProvider.jobs),
         ),
         ChangeNotifierProxyProvider<CandidateProvider, CandidateFilterProvider>(
           create: (_) => CandidateFilterProvider(),
           update: (_, candidateProvider, filterProvider) =>
-              (filterProvider ?? CandidateFilterProvider())..updateCandidates(candidateProvider.candidates),
+              (filterProvider ?? CandidateFilterProvider())
+                ..updateCandidates(candidateProvider.candidates),
         ),
-        ChangeNotifierProxyProvider5<JobProvider, CandidateProvider, InterviewProvider, NotificationProvider, SearchProvider, DashboardProvider>(
+        ChangeNotifierProxyProvider5<
+          JobProvider,
+          CandidateProvider,
+          InterviewProvider,
+          NotificationProvider,
+          SearchProvider,
+          DashboardProvider
+        >(
           create: (_) => DashboardProvider(),
-          update: (_, jobProvider, candidateProvider, interviewProvider, notificationProvider, searchProvider, dashboardProvider) =>
-              (dashboardProvider ?? DashboardProvider())..updateDependencies(jobProvider, candidateProvider, interviewProvider, notificationProvider, searchProvider),
+          update:
+              (
+                _,
+                jobProvider,
+                candidateProvider,
+                interviewProvider,
+                notificationProvider,
+                searchProvider,
+                dashboardProvider,
+              ) =>
+                  (dashboardProvider ?? DashboardProvider())
+                    ..updateDependencies(
+                      jobProvider,
+                      candidateProvider,
+                      interviewProvider,
+                      notificationProvider,
+                      searchProvider,
+                    ),
         ),
       ],
       child: const JobNestApp(),
@@ -96,38 +158,45 @@ class _MainDashboardState extends State<MainDashboard> {
   int _currentIndex = 0;
 
   List<Widget> get _screens => [
-        HomeScreen(
-          onProfileTap: () {
-            setState(() {
-              _currentIndex = 4;
-            });
-          },
-          onNavigateToJobs: () {
-            setState(() {
-              _currentIndex = 1;
-            });
-          },
-          onNavigateToCandidates: () {
-            setState(() {
-              _currentIndex = 2;
-            });
-          },
-          onNavigateToInterviews: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const InterviewAssistantScreen()),
-            );
-          },
-        ),
-        const JobsScreen(),
-        const CandidatesScreen(),
-        const ServicesScreen(),
-        const ProfileScreen(),
-      ];
+    HomeScreen(
+      onProfileTap: () {
+        setState(() {
+          _currentIndex = 4;
+        });
+      },
+      onNavigateToJobs: () {
+        setState(() {
+          _currentIndex = 1;
+        });
+      },
+      onNavigateToCandidates: () {
+        setState(() {
+          _currentIndex = 2;
+        });
+      },
+      onNavigateToInterviews: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const InterviewAssistantScreen()),
+        );
+      },
+    ),
+    const JobsScreen(),
+    const CandidatesScreen(),
+    const ServicesScreen(),
+    const ProfileScreen(),
+  ];
 
-  Widget _buildNavItem(int index, IconData icon, String label, ThemeData theme) {
+  Widget _buildNavItem(
+    int index,
+    IconData icon,
+    String label,
+    ThemeData theme,
+  ) {
     final isSelected = _currentIndex == index;
-    final color = isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant;
+    final color = isSelected
+        ? theme.colorScheme.primary
+        : theme.colorScheme.onSurfaceVariant;
 
     return GestureDetector(
       onTap: () => setState(() => _currentIndex = index),
@@ -145,15 +214,15 @@ class _MainDashboardState extends State<MainDashboard> {
               width: isSelected ? 24 : 0,
               margin: const EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
-                color: isSelected ? theme.colorScheme.primary : Colors.transparent,
-                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(2)),
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : Colors.transparent,
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(2),
+                ),
               ),
             ),
-            Icon(
-              icon,
-              size: isSelected ? 24 : 22,
-              color: color,
-            ),
+            Icon(icon, size: isSelected ? 24 : 22, color: color),
             const SizedBox(height: 6),
             Text(
               label,
@@ -220,10 +289,12 @@ class _MainDashboardState extends State<MainDashboard> {
           ),
           boxShadow: [
             BoxShadow(
-              color: isDark ? Colors.black.withValues(alpha: 0.16) : Colors.black.withValues(alpha: 0.03),
+              color: isDark
+                  ? Colors.black.withValues(alpha: 0.16)
+                  : Colors.black.withValues(alpha: 0.03),
               blurRadius: 12,
               offset: const Offset(0, -4),
-            )
+            ),
           ],
         ),
         child: SafeArea(
@@ -251,14 +322,29 @@ class _MainDashboardState extends State<MainDashboard> {
               setState(() => _currentIndex = index);
             },
             labelType: NavigationRailLabelType.all,
-            backgroundColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+            backgroundColor: isDark
+                ? AppColors.darkSurface
+                : AppColors.lightSurface,
             selectedIconTheme: IconThemeData(color: theme.colorScheme.primary),
-            selectedLabelTextStyle: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold, fontSize: 12),
-            unselectedLabelTextStyle: TextStyle(color: isDark ? AppColors.darkSecondaryText : AppColors.lightSecondaryText, fontSize: 12),
+            selectedLabelTextStyle: TextStyle(
+              color: theme.colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+            unselectedLabelTextStyle: TextStyle(
+              color: isDark
+                  ? AppColors.darkSecondaryText
+                  : AppColors.lightSecondaryText,
+              fontSize: 12,
+            ),
             indicatorColor: theme.colorScheme.primary.withValues(alpha: 0.12),
             destinations: railDestinations,
           ),
-          VerticalDivider(thickness: 1, width: 1, color: isDark ? AppColors.borderDark : AppColors.borderLight),
+          VerticalDivider(
+            thickness: 1,
+            width: 1,
+            color: isDark ? AppColors.borderDark : AppColors.borderLight,
+          ),
           Expanded(child: _screens[_currentIndex]),
         ],
       ),

@@ -12,7 +12,6 @@ class AppText {
     fontWeight: FontWeight.w800,
     height: 1.2,
     letterSpacing: -0.5,
-    color: AppColors.lightPrimaryText,
   );
 
   static TextStyle h2 = GoogleFonts.inter(
@@ -20,7 +19,6 @@ class AppText {
     fontWeight: FontWeight.w700,
     height: 1.25,
     letterSpacing: -0.3,
-    color: AppColors.lightPrimaryText,
   );
 
   static TextStyle h3 = GoogleFonts.inter(
@@ -28,7 +26,6 @@ class AppText {
     fontWeight: FontWeight.w700,
     height: 1.3,
     letterSpacing: -0.2,
-    color: AppColors.lightPrimaryText,
   );
 
   // ── Section titles (dashboard widget headers) ─────────────────────────────
@@ -37,7 +34,6 @@ class AppText {
     fontWeight: FontWeight.w700,
     height: 1.3,
     letterSpacing: -0.1,
-    color: AppColors.lightPrimaryText,
   );
 
   // ── Body ──────────────────────────────────────────────────────────────────
@@ -45,14 +41,12 @@ class AppText {
     fontSize: 15,
     fontWeight: FontWeight.w400,
     height: 1.5,
-    color: AppColors.lightSecondaryText,
   );
 
   static TextStyle bodyMedium = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     height: 1.5,
-    color: AppColors.lightSecondaryText,
   );
 
   // ── Labels & Chips ────────────────────────────────────────────────────────
@@ -60,14 +54,12 @@ class AppText {
     fontSize: 13,
     fontWeight: FontWeight.w600,
     height: 1.4,
-    color: AppColors.lightPrimaryText,
   );
 
   static TextStyle labelSmall = GoogleFonts.inter(
     fontSize: 12,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    color: AppColors.lightSecondaryText,
   );
 
   // ── Button ────────────────────────────────────────────────────────────────
@@ -84,7 +76,6 @@ class AppText {
     fontSize: 12,
     fontWeight: FontWeight.w400,
     height: 1.4,
-    color: AppColors.lightSecondaryText,
   );
 
   // ── Responsive greeting size helper ──────────────────────────────────────

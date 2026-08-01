@@ -12,9 +12,9 @@ class CommunicationTimelineScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: Communications CRM backend se load hongi.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Communication Timeline"),
         actions: [

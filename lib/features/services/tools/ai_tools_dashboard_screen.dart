@@ -27,9 +27,9 @@ class AiToolPlaceholderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: Text(title),
       ),
@@ -860,9 +860,9 @@ class _AiToolsDashboardScreenState extends State<AiToolsDashboardScreen> {
     }
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("AI Tools Dashboard"),
         centerTitle: false,

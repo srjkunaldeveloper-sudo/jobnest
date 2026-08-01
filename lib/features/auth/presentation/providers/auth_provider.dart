@@ -1,17 +1,20 @@
+import '../../../../core/storage/secure_storage.dart';
+import '../../../../core/constants/storage_keys.dart';
 import 'package:flutter/foundation.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../data/models/auth_requests.dart';
 import 'auth_state.dart';
 
 /// Provider responsible for managing Authentication State.
-/// 
+///
 /// Strictly acts as a state manager, delegating business logic and token
 /// management directly to the injected [AuthRepository].
 class AuthProvider extends ChangeNotifier {
   final AuthRepository _repository;
+  final SecureStorage _secureStorage;
   AuthState _state = const AuthState();
 
-  AuthProvider(this._repository);
+  AuthProvider(this._repository, this._secureStorage);
 
   /// Exposes the current authentication state.
   AuthState get state => _state;
@@ -27,15 +30,27 @@ class AuthProvider extends ChangeNotifier {
     final result = await _repository.login(request);
 
     if (result.isSuccess && result.data != null) {
-      _setState(_state.copyWith(
-        status: AuthStatus.authenticated,
-        user: result.data!.user,
-      ));
+      await _secureStorage.write(
+        StorageKeys.authToken,
+        result.data!.accessToken,
+      );
+      await _secureStorage.write(
+        StorageKeys.refreshToken,
+        result.data!.refreshToken,
+      );
+      _setState(
+        _state.copyWith(
+          status: AuthStatus.authenticated,
+          user: result.data!.user,
+        ),
+      );
     } else {
-      _setState(_state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: result.errorMessage ?? 'Login failed.',
-      ));
+      _setState(
+        _state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: result.errorMessage ?? 'Login failed.',
+        ),
+      );
     }
   }
 
@@ -48,10 +63,12 @@ class AuthProvider extends ChangeNotifier {
       // Revert to authenticated without dropping user data
       _setState(_state.copyWith(status: AuthStatus.authenticated));
     } else {
-      _setState(const AuthState(
-        status: AuthStatus.unauthenticated,
-        errorMessage: 'Session expired. Please log in again.',
-      ));
+      _setState(
+        const AuthState(
+          status: AuthStatus.unauthenticated,
+          errorMessage: 'Session expired. Please log in again.',
+        ),
+      );
     }
   }
 
@@ -64,10 +81,12 @@ class AuthProvider extends ChangeNotifier {
       _setState(const AuthState(status: AuthStatus.unauthenticated));
     } else {
       // Even if API call fails, we forcefully unauthenticate locally.
-      _setState(AuthState(
-        status: AuthStatus.unauthenticated,
-        errorMessage: result.errorMessage ?? 'Logout failed on server.',
-      ));
+      _setState(
+        AuthState(
+          status: AuthStatus.unauthenticated,
+          errorMessage: result.errorMessage ?? 'Logout failed on server.',
+        ),
+      );
     }
   }
 
@@ -79,10 +98,13 @@ class AuthProvider extends ChangeNotifier {
     if (result.isSuccess) {
       _setState(_state.copyWith(status: AuthStatus.initial));
     } else {
-      _setState(_state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: result.errorMessage ?? 'Failed to request password reset.',
-      ));
+      _setState(
+        _state.copyWith(
+          status: AuthStatus.error,
+          errorMessage:
+              result.errorMessage ?? 'Failed to request password reset.',
+        ),
+      );
     }
   }
 
@@ -94,10 +116,12 @@ class AuthProvider extends ChangeNotifier {
     if (result.isSuccess) {
       _setState(_state.copyWith(status: AuthStatus.initial));
     } else {
-      _setState(_state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: result.errorMessage ?? 'Password reset failed.',
-      ));
+      _setState(
+        _state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: result.errorMessage ?? 'Password reset failed.',
+        ),
+      );
     }
   }
 
@@ -109,10 +133,12 @@ class AuthProvider extends ChangeNotifier {
     if (result.isSuccess) {
       _setState(_state.copyWith(status: AuthStatus.initial));
     } else {
-      _setState(_state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: result.errorMessage ?? 'Email verification failed.',
-      ));
+      _setState(
+        _state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: result.errorMessage ?? 'Email verification failed.',
+        ),
+      );
     }
   }
 
@@ -124,10 +150,12 @@ class AuthProvider extends ChangeNotifier {
     if (result.isSuccess) {
       _setState(_state.copyWith(status: AuthStatus.authenticated));
     } else {
-      _setState(_state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: result.errorMessage ?? 'Failed to change password.',
-      ));
+      _setState(
+        _state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: result.errorMessage ?? 'Failed to change password.',
+        ),
+      );
     }
   }
 }

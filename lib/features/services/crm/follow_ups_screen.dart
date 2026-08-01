@@ -12,9 +12,9 @@ class FollowUpsScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: Follow-ups CRM tasks backend se ayenge.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Follow-ups"),
         actions: [

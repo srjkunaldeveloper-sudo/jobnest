@@ -14,11 +14,17 @@ class ProfileAiHiringProbability extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(AppIcons.psychology_rounded, color: Colors.deepPurpleAccent, size: 24),
+            const Icon(
+              AppIcons.psychology_rounded,
+              color: Colors.deepPurpleAccent,
+              size: 24,
+            ),
             const SizedBox(width: 12),
             Text(
               "Hiring Probability",
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -36,9 +42,19 @@ class ProfileAiHiringProbability extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        _buildMetric(context, "Hiring Success", "88%", Colors.green),
+                        _buildMetric(
+                          context,
+                          "Hiring Success",
+                          "88%",
+                          Colors.green,
+                        ),
                         const SizedBox(height: 16),
-                        _buildMetric(context, "Interview Probability", "92%", Colors.blue),
+                        _buildMetric(
+                          context,
+                          "Interview Probability",
+                          "92%",
+                          Colors.blue,
+                        ),
                       ],
                     ),
                   ),
@@ -46,9 +62,19 @@ class ProfileAiHiringProbability extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        _buildMetric(context, "Culture Fit", "High", Colors.deepPurpleAccent),
+                        _buildMetric(
+                          context,
+                          "Culture Fit",
+                          "High",
+                          Colors.deepPurpleAccent,
+                        ),
                         const SizedBox(height: 16),
-                        _buildMetric(context, "Technical Fit", "Excellent", Colors.orange),
+                        _buildMetric(
+                          context,
+                          "Technical Fit",
+                          "Excellent",
+                          Colors.orange,
+                        ),
                       ],
                     ),
                   ),
@@ -67,7 +93,12 @@ class ProfileAiHiringProbability extends StatelessWidget {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  _buildRecommendationChip(context, "Hire", Colors.green, isSelected: true),
+                  _buildRecommendationChip(
+                    context,
+                    "Hire",
+                    Colors.green,
+                    isSelected: true,
+                  ),
                   const SizedBox(width: 12),
                   _buildRecommendationChip(context, "Consider", Colors.orange),
                   const SizedBox(width: 12),
@@ -81,17 +112,26 @@ class ProfileAiHiringProbability extends StatelessWidget {
     );
   }
 
-  Widget _buildMetric(BuildContext context, String label, String value, Color valueColor) {
+  Widget _buildMetric(
+    BuildContext context,
+    String label,
+    String value,
+    Color valueColor,
+  ) {
     final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: theme.textTheme.labelMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
+        Expanded(
+          child: Text(
+            label,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
+        const SizedBox(width: 8),
         Text(
           value,
           style: theme.textTheme.titleMedium?.copyWith(
@@ -103,7 +143,12 @@ class ProfileAiHiringProbability extends StatelessWidget {
     );
   }
 
-  Widget _buildRecommendationChip(BuildContext context, String label, Color color, {bool isSelected = false}) {
+  Widget _buildRecommendationChip(
+    BuildContext context,
+    String label,
+    Color color, {
+    bool isSelected = false,
+  }) {
     final theme = Theme.of(context);
     return Expanded(
       child: Container(
@@ -112,7 +157,9 @@ class ProfileAiHiringProbability extends StatelessWidget {
           color: isSelected ? color : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? color : theme.dividerColor.withValues(alpha: 0.5),
+            color: isSelected
+                ? color
+                : theme.dividerColor.withValues(alpha: 0.5),
           ),
         ),
         alignment: Alignment.center,

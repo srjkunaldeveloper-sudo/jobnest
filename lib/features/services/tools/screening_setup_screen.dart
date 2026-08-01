@@ -19,9 +19,9 @@ class _ScreeningSetupScreenState extends State<ScreeningSetupScreen> {
     // ===== BACKEND TODO =====
     // TODO: Screening setup future me save hogi backend me.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Screening Setup"),
         actions: [

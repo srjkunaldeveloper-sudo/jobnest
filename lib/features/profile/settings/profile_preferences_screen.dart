@@ -189,9 +189,9 @@ class _ProfilePreferencesScreenState extends State<ProfilePreferencesScreen> {
     // TODO: Language localization backend support future me add hoga.
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("App Preferences & Theme"),
       ),

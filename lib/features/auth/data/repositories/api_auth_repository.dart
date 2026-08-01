@@ -17,12 +17,19 @@ class ApiAuthRepository extends BaseRepository implements AuthRepository {
 
   @override
   Future<RepositoryResult<LoginResponse>> login(LoginRequest request) {
-    // Skeleton: Real API call goes here wrapped in executeSafe()
-    throw UnimplementedError('API login is not yet implemented.');
+    return executeSafe(() async {
+      final response = await _apiClient.post(
+        '/api-recruiter/login/',
+        data: request.toJson(),
+      );
+      return LoginResponse.fromJson(response as Map<String, dynamic>);
+    });
   }
 
   @override
-  Future<RepositoryResult<RefreshTokenResponse>> refreshToken(RefreshTokenRequest request) {
+  Future<RepositoryResult<RefreshTokenResponse>> refreshToken(
+    RefreshTokenRequest request,
+  ) {
     throw UnimplementedError('API refresh token is not yet implemented.');
   }
 

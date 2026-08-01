@@ -29,9 +29,9 @@ class ProfileHeader extends StatelessWidget {
     final String company = candidate?.company ?? "TechCorp India";
     final String stage = candidate?.stage ?? "Screening";
     final String salary = candidate?.expectedSalary ?? "₹ 18 - 22 LPA";
-    final String appliedDate = candidate?.appliedDate ?? "2 days ago";
+
     final bool isBookmarked = candidate?.isBookmarked ?? false;
-    
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 32.0),
       child: Column(
@@ -39,111 +39,137 @@ class ProfileHeader extends StatelessWidget {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              CircleAvatar(
+                radius: 28,
+                backgroundColor: theme.colorScheme.primaryContainer,
+                child: Text(
+                  name.isNotEmpty ? name[0].toUpperCase() : "?",
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: theme.colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
               Expanded(
-                child: Row(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: theme.colorScheme.primaryContainer,
-                      child: Text(
-                        name.isNotEmpty ? name[0].toUpperCase() : "?",
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          color: theme.colorScheme.onPrimaryContainer,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 24),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 8,
+                            runSpacing: 8,
                             children: [
-                              Flexible(
-                                child: Text(
-                                  name,
-                                  style: theme.textTheme.headlineMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: -0.5,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                              Text(
+                                name,
+                                style: theme.textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: -0.3,
                                 ),
                               ),
-                              AppSpacing.w12,
-                              CandidateStageBadge(stage: stage, isUppercase: true),
+                              CandidateStageBadge(
+                                stage: stage,
+                                isUppercase: true,
+                              ),
                             ],
                           ),
-                          AppSpacing.h8,
-                          Text(
-                            "$role at $company",
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.w600,
+                        ),
+                        AppSpacing.w8,
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Semantics(
+                              label: isBookmarked
+                                  ? "Remove Bookmark"
+                                  : "Bookmark Candidate",
+                              button: true,
+                              child: CandidateIconButton(
+                                icon: isBookmarked
+                                    ? AppIcons.bookmark_rounded
+                                    : AppIcons.bookmark_border_rounded,
+                                onTap: onBookmarkTap ?? () {},
+                                iconColor: isBookmarked
+                                    ? theme.colorScheme.primary
+                                    : null,
+                                constraints: const BoxConstraints(
+                                  minWidth: 36,
+                                  minHeight: 36,
+                                ),
+                              ),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            "$experience Experience • $location • Applied $appliedDate",
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                            AppSpacing.w4,
+                            Semantics(
+                              label: "Share Candidate Profile",
+                              button: true,
+                              child: CandidateIconButton(
+                                icon: AppIcons.share_rounded,
+                                onTap: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "Profile link copied to clipboard for $name.",
+                                      ),
+                                    ),
+                                  );
+                                },
+                                constraints: const BoxConstraints(
+                                  minWidth: 36,
+                                  minHeight: 36,
+                                ),
+                              ),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                            AppSpacing.w4,
+                            Semantics(
+                              label: "More Options",
+                              button: true,
+                              child: CandidateIconButton(
+                                icon: AppIcons.more_vert_rounded,
+                                onTap: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Additional enterprise options...",
+                                      ),
+                                    ),
+                                  );
+                                },
+                                constraints: const BoxConstraints(
+                                  minWidth: 36,
+                                  minHeight: 36,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    AppSpacing.h8,
+                    Text(
+                      "$role at $company",
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w600,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "$experience Experience • $location",
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
-              ),
-              Row(
-                children: [
-                  Semantics(
-                    label: isBookmarked ? "Remove Bookmark" : "Bookmark Candidate",
-                    button: true,
-                    child: CandidateIconButton(
-                      icon: isBookmarked ? AppIcons.bookmark_rounded : AppIcons.bookmark_border_rounded,
-                      onTap: onBookmarkTap ?? () {},
-                      iconColor: isBookmarked ? theme.colorScheme.primary : null,
-                      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                    ),
-                  ),
-                  AppSpacing.w8,
-                  Semantics(
-                    label: "Share Candidate Profile",
-                    button: true,
-                    child: CandidateIconButton(
-                      icon: AppIcons.share_rounded,
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Profile link copied to clipboard for $name.")),
-                        );
-                      },
-                      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                    ),
-                  ),
-                  AppSpacing.w8,
-                  Semantics(
-                    label: "More Options",
-                    button: true,
-                    child: CandidateIconButton(
-                      icon: AppIcons.more_vert_rounded,
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Additional enterprise options...")),
-                        );
-                      },
-                      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
@@ -152,10 +178,37 @@ class ProfileHeader extends StatelessWidget {
             spacing: 16,
             runSpacing: 12,
             children: [
-              _buildInfoChip(context, AppIcons.event_available_rounded, "Immediate Joiner / 15 Days"),
-              _buildInfoChip(context, AppIcons.account_balance_wallet_rounded, "Expected Salary: $salary"),
-              _buildInfoChip(context, AppIcons.star_rounded, "Rating: ${candidate?.rating ?? 4.8} / 5.0", color: Colors.amber.shade700),
-              _buildInfoChip(context, AppIcons.work_history_rounded, "Stage: $stage", color: theme.colorScheme.primary),
+              _buildInfoChip(
+                context,
+                AppIcons.event_available_rounded,
+                "Immediate Joiner / 15 Days",
+              ),
+              _buildInfoChip(
+                context,
+                AppIcons.account_balance_wallet_rounded,
+                "Expected Salary: $salary",
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildInfoChip(
+                      context,
+                      AppIcons.star_rounded,
+                      "Rating: ${candidate?.rating ?? 4.8} / 5.0",
+                      color: Colors.amber.shade700,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildInfoChip(
+                      context,
+                      AppIcons.work_history_rounded,
+                      "Stage: $stage",
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ],
@@ -163,7 +216,12 @@ class ProfileHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoChip(BuildContext context, IconData icon, String label, {Color? color}) {
+  Widget _buildInfoChip(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    Color? color,
+  }) {
     final theme = Theme.of(context);
     final c = color ?? theme.colorScheme.onSurfaceVariant;
     return Container(

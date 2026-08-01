@@ -12,9 +12,9 @@ class ProfileAboutScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: Version check and OTA update API.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("About JobNest"),
       ),

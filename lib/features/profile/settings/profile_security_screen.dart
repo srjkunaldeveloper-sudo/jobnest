@@ -187,7 +187,9 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
     IconData icon, {
     bool isDanger = false,
   }) {
-    final color = isDanger ? theme.colorScheme.error : theme.colorScheme.primary;
+    final color = isDanger
+        ? theme.colorScheme.error
+        : theme.colorScheme.primary;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -380,14 +382,18 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Checklist Progress: $completedCount of ${items.length} Completed ($percent%)",
-                style: theme.textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary,
+              Expanded(
+                child: Text(
+                  "Checklist Progress: $completedCount of ${items.length} Completed ($percent%)",
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
               ),
+              const SizedBox(width: 16),
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: SizedBox(
@@ -395,8 +401,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   height: 8,
                   child: LinearProgressIndicator(
                     value: completedCount / items.length,
-                    backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                    color: percent == 100 ? Colors.green : theme.colorScheme.primary,
+                    // backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                    color: percent == 100
+                        ? Colors.green
+                        : theme.colorScheme.primary,
                   ),
                 ),
               ),
@@ -457,7 +465,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   if (!item.isCompleted)
                     TextButton(
                       onPressed: () {
-                        _showFeedback(context, "Navigating to configure ${item.title}");
+                        _showFeedback(
+                          context,
+                          "Navigating to configure ${item.title}",
+                        );
                       },
                       child: const Text("Resolve"),
                     ),
@@ -497,8 +508,11 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(AppIcons.access_time_rounded,
-                      size: 16, color: theme.colorScheme.onSurfaceVariant),
+                  Icon(
+                    AppIcons.access_time_rounded,
+                    size: 16,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                   const SizedBox(width: 6),
                   Text(
                     "Last Password Change: ${provider.lastPasswordChangeDate}",
@@ -510,11 +524,16 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.green.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: Colors.green.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
@@ -584,8 +603,11 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(AppIcons.check_circle_rounded,
-                        size: 15, color: Colors.green),
+                    const Icon(
+                      AppIcons.check_circle_rounded,
+                      size: 15,
+                      color: Colors.green,
+                    ),
                     const SizedBox(width: 6),
                     Text(r, style: const TextStyle(fontSize: 12)),
                   ],
@@ -602,8 +624,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                 if (_currentPassCtrl.text.isEmpty ||
                     _newPassCtrl.text.isEmpty ||
                     _confirmPassCtrl.text.isEmpty) {
-                  _showFeedback(
-                      context, "Please complete all password fields");
+                  _showFeedback(context, "Please complete all password fields");
                   return;
                 }
                 if (_newPassCtrl.text != _confirmPassCtrl.text) {
@@ -614,7 +635,9 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                 _newPassCtrl.clear();
                 _confirmPassCtrl.clear();
                 _showFeedback(
-                    context, "Password updated successfully (Dummy action)");
+                  context,
+                  "Password updated successfully (Dummy action)",
+                );
               },
               icon: const Icon(AppIcons.lock_reset_rounded),
               label: const Text(
@@ -622,7 +645,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 28,
+                  vertical: 14,
+                ),
               ),
             ),
           ),
@@ -643,9 +669,9 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 6),
         TextField(
@@ -654,8 +680,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
           decoration: InputDecoration(
             hintText: "••••••••••••",
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
             suffixIcon: IconButton(
               onPressed: onToggle,
               icon: Icon(
@@ -671,10 +699,7 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
     );
   }
 
-  Widget _build2FACard(
-    BuildContext context,
-    ProfileDataProvider provider,
-  ) {
+  Widget _build2FACard(BuildContext context, ProfileDataProvider provider) {
     final theme = Theme.of(context);
 
     return AppCard(
@@ -695,8 +720,11 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                     children: [
                       Row(
                         children: [
-                          Icon(AppIcons.security_rounded,
-                              color: theme.colorScheme.primary, size: 22),
+                          Icon(
+                            AppIcons.security_rounded,
+                            color: theme.colorScheme.primary,
+                            size: 22,
+                          ),
                           const SizedBox(width: 10),
                           Text(
                             "Two-Factor Authentication (2FA)",
@@ -781,8 +809,11 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(AppIcons.password_rounded,
-                          color: theme.colorScheme.primary, size: 20),
+                      Icon(
+                        AppIcons.password_rounded,
+                        color: theme.colorScheme.primary,
+                        size: 20,
+                      ),
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -954,46 +985,48 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
     VoidCallback onEdit,
   ) {
     final theme = Theme.of(context);
-    return Wrap(
-      alignment: WrapAlignment.spaceBetween,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: 16,
-      runSpacing: 10,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(10),
+        Expanded(
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, color: theme.colorScheme.primary, size: 20),
               ),
-              child: Icon(icon, color: theme.colorScheme.primary, size: 20),
-            ),
-            const SizedBox(width: 14),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w600,
-                  ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      value,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  value,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
+        const SizedBox(width: 16),
         OutlinedButton(
           onPressed: onEdit,
           style: OutlinedButton.styleFrom(
@@ -1038,8 +1071,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               }
 
               return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
                 child: Wrap(
                   alignment: WrapAlignment.spaceBetween,
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -1053,10 +1088,11 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: s.isCurrentDevice
-                                ? theme.colorScheme.primary
-                                    .withValues(alpha: 0.15)
+                                ? theme.colorScheme.primary.withValues(
+                                    alpha: 0.15,
+                                  )
                                 : theme.colorScheme.surfaceContainerHighest
-                                    .withValues(alpha: 0.4),
+                                      .withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
@@ -1084,14 +1120,19 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                                     const SizedBox(width: 8),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 2),
+                                        horizontal: 8,
+                                        vertical: 2,
+                                      ),
                                       decoration: BoxDecoration(
-                                        color: Colors.green
-                                            .withValues(alpha: 0.15),
+                                        color: Colors.green.withValues(
+                                          alpha: 0.15,
+                                        ),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                            color: Colors.green
-                                                .withValues(alpha: 0.3)),
+                                          color: Colors.green.withValues(
+                                            alpha: 0.3,
+                                          ),
+                                        ),
                                       ),
                                       child: const Text(
                                         "Current Device",
@@ -1136,7 +1177,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                             "Sign Out Device",
                             () {
                               provider.terminateSession(s.id);
-                              _showFeedback(context, "Signed out ${s.deviceName}");
+                              _showFeedback(
+                                context,
+                                "Signed out ${s.deviceName}",
+                              );
                             },
                           );
                         },
@@ -1144,7 +1188,9 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                           foregroundColor: theme.colorScheme.error,
                           side: BorderSide(color: theme.colorScheme.error),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 6),
+                            horizontal: 14,
+                            vertical: 6,
+                          ),
                           minimumSize: const Size(0, 32),
                         ),
                         child: const Text("Sign Out"),
@@ -1181,8 +1227,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                       "Sign Out All Others",
                       () {
                         provider.terminateOtherSessions();
-                        _showFeedback(context,
-                            "Signed out all other devices successfully");
+                        _showFeedback(
+                          context,
+                          "Signed out all other devices successfully",
+                        );
                       },
                     );
                   },
@@ -1241,8 +1289,8 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                       isFailed
                           ? AppIcons.warning_rounded
                           : (isCurrent
-                              ? AppIcons.verified_user_rounded
-                              : AppIcons.history_rounded),
+                                ? AppIcons.verified_user_rounded
+                                : AppIcons.history_rounded),
                       color: badgeColor,
                       size: 22,
                     ),
@@ -1270,12 +1318,16 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                   ],
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: badgeColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: badgeColor.withValues(alpha: 0.3)),
+                    border: Border.all(
+                      color: badgeColor.withValues(alpha: 0.3),
+                    ),
                   ),
                   child: Text(
                     item.status,
@@ -1303,31 +1355,36 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
       _PrivacyItem(
         key: 'profile',
         title: "Profile Visibility",
-        description: "Allow prospective talent and clients to view your professional recruiter profile.",
+        description:
+            "Allow prospective talent and clients to view your professional recruiter profile.",
         val: provider.profileVisibility,
       ),
       _PrivacyItem(
         key: 'online',
         title: "Online Status Display",
-        description: "Show a green active dot when you are currently signed in to the JobNest portal.",
+        description:
+            "Show a green active dot when you are currently signed in to the JobNest portal.",
         val: provider.onlineStatus,
       ),
       _PrivacyItem(
         key: 'activity',
         title: "Recruitment Activity Status",
-        description: "Display your recent hiring responsiveness and average feedback turnaround time.",
+        description:
+            "Display your recent hiring responsiveness and average feedback turnaround time.",
         val: provider.activityStatus,
       ),
       _PrivacyItem(
         key: 'search',
         title: "Public Search Engine Visibility",
-        description: "Allow external search engines (Google, Bing) to index your recruiter profile.",
+        description:
+            "Allow external search engines (Google, Bing) to index your recruiter profile.",
         val: provider.searchVisibility,
       ),
       _PrivacyItem(
         key: 'recruiter',
         title: "Recruiter Directory Visibility",
-        description: "Include your profile in the verified JobNest Enterprise Recruiter Directory.",
+        description:
+            "Include your profile in the verified JobNest Enterprise Recruiter Directory.",
         val: provider.recruiterProfileVisibility,
       ),
     ];
@@ -1399,25 +1456,29 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
       _PrivacyItem(
         key: 'email',
         title: "Email Login Alerts",
-        description: "Send an instant security notification to your inbox for every successful sign-in.",
+        description:
+            "Send an instant security notification to your inbox for every successful sign-in.",
         val: provider.emailLoginAlerts,
       ),
       _PrivacyItem(
         key: 'device',
         title: "Unrecognized Device Alerts",
-        description: "Trigger high-priority alerts when access occurs from a new browser or IP address.",
+        description:
+            "Trigger high-priority alerts when access occurs from a new browser or IP address.",
         val: provider.newDeviceAlerts,
       ),
       _PrivacyItem(
         key: 'suspicious',
         title: "Suspicious Activity Diagnostics",
-        description: "Automatically lock session and notify admin if anomalous login patterns are detected.",
+        description:
+            "Automatically lock session and notify admin if anomalous login patterns are detected.",
         val: provider.suspiciousActivityAlerts,
       ),
       _PrivacyItem(
         key: 'password',
         title: "Credential Modification Alerts",
-        description: "Send immediate verification alerts whenever password or 2FA settings are updated.",
+        description:
+            "Send immediate verification alerts whenever password or 2FA settings are updated.",
         val: provider.passwordChangeAlerts,
       ),
     ];
@@ -1489,7 +1550,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: errorColor.withValues(alpha: 0.4), width: 1.5),
+          border: Border.all(
+            color: errorColor.withValues(alpha: 0.4),
+            width: 1.5,
+          ),
           color: errorColor.withValues(alpha: 0.05),
         ),
         padding: const EdgeInsets.all(20),
@@ -1498,7 +1562,11 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
           children: [
             Row(
               children: [
-                Icon(AppIcons.warning_amber_rounded, color: errorColor, size: 24),
+                Icon(
+                  AppIcons.warning_amber_rounded,
+                  color: errorColor,
+                  size: 24,
+                ),
                 const SizedBox(width: 10),
                 Text(
                   "High-Risk Destructive Operations",
@@ -1532,16 +1600,23 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                       "Deactivating your account will temporarily hide your job postings and suspend recruiter access until you sign in again.",
                       "Deactivate Account",
                       () {
-                        _showFeedback(context,
-                            "Account deactivated successfully (Dummy action)");
+                        _showFeedback(
+                          context,
+                          "Account deactivated successfully (Dummy action)",
+                        );
                       },
                       isDestructive: true,
                     );
                   },
-                  icon: Icon(AppIcons.pause_circle_outline_rounded,
-                      color: errorColor, size: 18),
-                  label: Text("Deactivate Account",
-                      style: TextStyle(color: errorColor)),
+                  icon: Icon(
+                    AppIcons.pause_circle_outline_rounded,
+                    color: errorColor,
+                    size: 18,
+                  ),
+                  label: Text(
+                    "Deactivate Account",
+                    style: TextStyle(color: errorColor),
+                  ),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: errorColor),
                   ),
@@ -1558,16 +1633,23 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                         if (!context.mounted) return;
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                              builder: (_) => const AuthFlowScreen()),
+                            builder: (_) => const AuthFlowScreen(),
+                          ),
                           (route) => false,
                         );
                       },
                       isDestructive: true,
                     );
                   },
-                  icon: Icon(AppIcons.logout_rounded, color: errorColor, size: 18),
-                  label: Text("Sign Out All Devices",
-                      style: TextStyle(color: errorColor)),
+                  icon: Icon(
+                    AppIcons.logout_rounded,
+                    color: errorColor,
+                    size: 18,
+                  ),
+                  label: Text(
+                    "Sign Out All Devices",
+                    style: TextStyle(color: errorColor),
+                  ),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: errorColor),
                   ),
@@ -1580,8 +1662,10 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
                       "WARNING: This action cannot be undone. All active requisitions, candidate pipelines, scorecard histories, and company billing records will be permanently purged.",
                       "Delete Account Permanently",
                       () {
-                        _showFeedback(context,
-                            "Account deletion scheduled (Dummy action)");
+                        _showFeedback(
+                          context,
+                          "Account deletion scheduled (Dummy action)",
+                        );
                       },
                       isDestructive: true,
                     );
@@ -1731,10 +1815,9 @@ class _ProfileSecurityScreenState extends State<ProfileSecurityScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest
-                      .withValues(alpha: 0.5),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: GridView.builder(

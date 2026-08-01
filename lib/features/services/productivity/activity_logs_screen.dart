@@ -12,9 +12,9 @@ class ActivityLogsScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: Activity Logs backend events se sync honge.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("System Activity Logs"),
         actions: [

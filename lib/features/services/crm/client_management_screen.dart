@@ -12,9 +12,9 @@ class ClientManagementScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: Clients list backend CRM se fetch hogi.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("Client Management"),
         actions: [
@@ -193,7 +193,7 @@ class ClientManagementScreen extends StatelessWidget {
       selected: isSelected,
       onSelected: (_) {},
       showCheckmark: false,
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       selectedColor: theme.colorScheme.primaryContainer,
       labelStyle: theme.textTheme.labelMedium?.copyWith(
         color: isSelected ? theme.colorScheme.onPrimaryContainer : theme.colorScheme.onSurface,

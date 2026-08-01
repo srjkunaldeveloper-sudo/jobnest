@@ -12,9 +12,9 @@ class ClientDashboardScreen extends StatelessWidget {
     // ===== BACKEND TODO =====
     // TODO: CRM Analytics backend se sync honge.
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        // backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         title: const Text("CRM Dashboard"),
       ),
@@ -248,7 +248,7 @@ class ClientDashboardScreen extends StatelessWidget {
         LinearProgressIndicator(
           value: value,
           minHeight: 8,
-          backgroundColor: theme.colorScheme.surfaceContainerHighest,
+          // backgroundColor: theme.colorScheme.surfaceContainerHighest,
           color: color,
           borderRadius: BorderRadius.circular(4),
         ),

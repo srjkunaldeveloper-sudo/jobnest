@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 /// Request payload for logging in.
 @immutable
 class LoginRequest {
+  // TODO: Verify if POST /api-recruiter/login/ requires additional fields (e.g., device_id, source, fcm_token).
   final String email;
   final String password;
 
@@ -12,6 +13,7 @@ class LoginRequest {
   });
 
   Map<String, dynamic> toJson() => {
+        // TODO: Verify exact JSON keys for email and password if different.
         'email': email,
         'password': password,
       };

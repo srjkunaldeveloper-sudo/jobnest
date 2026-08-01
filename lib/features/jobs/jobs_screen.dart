@@ -35,7 +35,7 @@ class JobsScreen extends StatelessWidget {
     // TODO: Bookmark sync.
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      // backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
@@ -47,7 +47,7 @@ class JobsScreen extends StatelessWidget {
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 48.0, bottom: 24.0),
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 16.0, bottom: 24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -70,8 +70,8 @@ class JobsScreen extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: theme.textTheme.titleLarge?.copyWith(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w700,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
                                   letterSpacing: -0.3,
                                   color: theme.colorScheme.onSurface,
                                 ),

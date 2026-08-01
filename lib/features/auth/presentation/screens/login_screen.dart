@@ -29,10 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
-  
+
   bool _rememberMe = false;
 
   @override
@@ -59,8 +59,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
       await widget.authProvider.login(request);
 
-      if (mounted && widget.authProvider.state.status == AuthStatus.authenticated) {
-        widget.onLoginSuccess();
+      if (mounted) {
+        final state = widget.authProvider.state;
+        if (state.status == AuthStatus.authenticated) {
+          widget.onLoginSuccess();
+        } else if (state.status == AuthStatus.error &&
+            state.errorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errorMessage!),
+              backgroundColor: Theme.of(context).colorScheme.error,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
       }
     }
   }
@@ -107,84 +119,77 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Form(
                       key: _formKey,
                       child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const AuthHeader(
-                          title: 'Welcome Back',
-                          subtitle: 'Log in to your JobNest Enterprise account.',
-                          topWidget: AppLogo(size: 80),
-                        ),
-                        const SizedBox(height: 32),
-
-                        // Error Message Display
-                        if (state.status == AuthStatus.error && state.errorMessage != null)
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            margin: const EdgeInsets.only(bottom: 24),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.errorContainer,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              state.errorMessage!,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.onErrorContainer,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const AuthHeader(
+                            title: 'Welcome Back',
+                            subtitle:
+                                'Log in to your JobNest Enterprise account.',
+                            topWidget: AppLogo(size: 80),
                           ),
+                          const SizedBox(height: 32),
 
-                        AppTextField(
-                          label: 'Email',
-                          hint: 'Enter your corporate email',
-                          prefixIcon: const Icon(AppIcons.email_outlined),
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: _validateEmail,
-                          enabled: !isLoading,
-                        ),
-                        const SizedBox(height: 20),
+                          AppTextField(
+                            label: 'Email',
+                            hint: 'Enter your corporate email',
+                            prefixIcon: const Icon(AppIcons.email_outlined),
+                            controller: _emailController,
+                            focusNode: _emailFocusNode,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (_) => FocusScope.of(
+                              context,
+                            ).requestFocus(_passwordFocusNode),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: _validateEmail,
+                            enabled: !isLoading,
+                          ),
+                          const SizedBox(height: 20),
 
-                        AppTextField(
-                          label: 'Password',
-                          hint: 'Enter your password',
-                          prefixIcon: const Icon(AppIcons.lock_outline),
-                          isPassword: true,
-                          controller: _passwordController,
-                          validator: _validatePassword,
-                          enabled: !isLoading,
-                        ),
-                        const SizedBox(height: 16),
+                          AppTextField(
+                            label: 'Password',
+                            hint: 'Enter your password',
+                            prefixIcon: const Icon(AppIcons.lock_outline),
+                            isPassword: true,
+                            controller: _passwordController,
+                            focusNode: _passwordFocusNode,
+                            textInputAction: TextInputAction.done,
+                            onFieldSubmitted: (_) => _handleLogin(),
+                            validator: _validatePassword,
+                            enabled: !isLoading,
+                          ),
+                          const SizedBox(height: 16),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RememberMeCheckbox(
-                              value: _rememberMe,
-                              onChanged: isLoading
-                                  ? (val) {}
-                                  : (value) {
-                                      setState(() {
-                                        _rememberMe = value ?? false;
-                                      });
-                                    },
-                            ),
-                            ForgotPasswordButton(
-                              onPressed: isLoading ? () {} : widget.onForgotPassword,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 32),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              RememberMeCheckbox(
+                                value: _rememberMe,
+                                onChanged: isLoading
+                                    ? (val) {}
+                                    : (value) {
+                                        setState(() {
+                                          _rememberMe = value ?? false;
+                                        });
+                                      },
+                              ),
+                              ForgotPasswordButton(
+                                onPressed: isLoading
+                                    ? () {}
+                                    : widget.onForgotPassword,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 32),
 
-                        AppPrimaryButton(
-                          text: 'Log In',
-                          isLoading: isLoading,
-                          onPressed: _handleLogin,
-                          icon: AppIcons.login,
-                        ),
-                      ],
-                    ),
+                          AppPrimaryButton(
+                            text: 'Log In',
+                            isLoading: isLoading,
+                            onPressed: isLoading ? null : _handleLogin,
+                            icon: AppIcons.login,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

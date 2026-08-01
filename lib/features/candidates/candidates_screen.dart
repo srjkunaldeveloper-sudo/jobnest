@@ -79,7 +79,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
       create: (_) => CandidateSelectionProvider(),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: theme.colorScheme.surface,
+          // backgroundColor: theme.colorScheme.surface,
           body: LayoutBuilder(
             builder: (context, constraints) {
               final double screenWidth = constraints.maxWidth;
@@ -106,7 +106,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                         await candidateProvider.refreshCandidates();
                       },
                       child: SingleChildScrollView(
-                        padding: const EdgeInsets.only(top: 24.0),
+                        padding: EdgeInsets.zero,
                         physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
                         child: Center(
                           child: ConstrainedBox(
@@ -120,7 +120,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                                   padding: EdgeInsets.only(
                                     left: horizontalPadding,
                                     right: horizontalPadding,
-                                    top: 24.0,
+                                    top: 16.0,
                                     bottom: hasSelection
                                         ? 160.0 + MediaQuery.of(context).padding.bottom 
                                         : 40.0 + MediaQuery.of(context).padding.bottom,
@@ -156,7 +156,7 @@ class _CandidatesScreenState extends State<CandidatesScreen> {
                                       );
                                     },
                                   ),
-                                  const SizedBox(height: 28),
+                                  const SizedBox(height: 12),
 
                                   Consumer<CandidateFilterProvider>(
                                     builder: (context, filter, _) {

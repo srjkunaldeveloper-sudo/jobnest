@@ -1,3 +1,5 @@
+import 'package:provider/provider.dart';
+import 'package:jobnest/core/storage/secure_storage.dart';
 import '../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
@@ -81,7 +83,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _initStartupFlow() async {
     try {
-      await AppInitializationService.instance.initializeApp();
+      final secureStorage = context.read<SecureStorage>();
+      await AppInitializationService.instance.initializeApp(secureStorage);
       if (!mounted) return;
       setState(() {
         _initError = false;

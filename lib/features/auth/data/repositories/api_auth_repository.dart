@@ -19,7 +19,7 @@ class ApiAuthRepository extends BaseRepository implements AuthRepository {
   Future<RepositoryResult<LoginResponse>> login(LoginRequest request) {
     return executeSafe(() async {
       final response = await _apiClient.post(
-        '/api-recruiter/login/',
+        '/api/v1/recruiter/auth/login/',
         data: request.toJson(),
       );
       return LoginResponse.fromJson(response as Map<String, dynamic>);

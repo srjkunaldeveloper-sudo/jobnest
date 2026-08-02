@@ -1,3 +1,5 @@
+import '../storage/secure_storage.dart';
+import '../constants/storage_keys.dart';
 import 'preferences_manager.dart';
 import 'session_manager.dart';
 
@@ -25,7 +27,7 @@ class AppInitializationService {
   bool get isInitialized => _isInitialized;
   InitializationResult? get result => _result;
 
-  Future<InitializationResult> initializeApp() async {
+  Future<InitializationResult> initializeApp(SecureStorage secureStorage) async {
     try {
       // ===== FUTURE BACKEND INITIALIZATION TODOs =====
       // TODO: Remote Config.
@@ -44,6 +46,17 @@ class AppInitializationService {
 
       // 3. Initialize SessionManager & Check Login State
       await SessionManager.instance.init();
+      
+      // Determine session state from SecureStorage token presence
+      // TODO: Current validation only checks token presence. 
+      // JWT expiry validation must be implemented after the refresh token flow becomes available.
+      final token = await secureStorage.read(StorageKeys.authToken);
+      final hasToken = token != null && token.isNotEmpty;
+      
+      final isLoggedInBefore = SessionManager.instance.isLoggedIn();
+      if (isLoggedInBefore != hasToken) {
+        await SessionManager.instance.setLoginState(hasToken);
+      }
       final isLoggedIn = SessionManager.instance.isLoggedIn();
 
       // Prepare final initialization state

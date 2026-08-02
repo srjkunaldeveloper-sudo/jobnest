@@ -23,6 +23,7 @@ class LoginResponse {
     required this.user,
   });
 
+  // TODO: The backend response schema is missing from the OpenAPI contract and must be verified before final mapping.
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
       // TODO: BACKEND CONTRACT REQUIRED - Do not assume 'accessToken' or 'refreshToken' keys.

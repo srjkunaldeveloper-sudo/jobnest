@@ -3,43 +3,64 @@ import 'package:flutter/foundation.dart';
 /// Request payload for logging in.
 @immutable
 class LoginRequest {
-  // TODO: Verify if POST /api-recruiter/login/ requires additional fields (e.g., device_id, source, fcm_token).
   final String email;
   final String password;
+  final String? source;
+  final String? sessionToken;
 
   const LoginRequest({
     required this.email,
     required this.password,
+    this.source,
+    this.sessionToken,
   });
 
   Map<String, dynamic> toJson() => {
-        // TODO: Verify exact JSON keys for email and password if different.
         'email': email,
         'password': password,
+        if (source != null) 'source': source,
+        if (sessionToken != null) 'session_token': sessionToken,
       };
 
   factory LoginRequest.fromJson(Map<String, dynamic> json) {
     return LoginRequest(
       email: json['email'] as String,
       password: json['password'] as String,
+      source: json['source'] as String?,
+      sessionToken: json['session_token'] as String?,
     );
   }
 
-  LoginRequest copyWith({String? email, String? password}) {
+  LoginRequest copyWith({
+    String? email,
+    String? password,
+    String? source,
+    String? sessionToken,
+  }) {
     return LoginRequest(
       email: email ?? this.email,
       password: password ?? this.password,
+      source: source ?? this.source,
+      sessionToken: sessionToken ?? this.sessionToken,
     );
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is LoginRequest && other.email == email && other.password == password;
+    return other is LoginRequest &&
+        other.email == email &&
+        other.password == password &&
+        other.source == source &&
+        other.sessionToken == sessionToken;
   }
 
   @override
-  int get hashCode => email.hashCode ^ password.hashCode;
+  int get hashCode =>
+      email.hashCode ^
+      password.hashCode ^
+      (source?.hashCode ?? 0) ^
+      (sessionToken?.hashCode ?? 0);
 }
 
 /// Request payload for refreshing an access token.

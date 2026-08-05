@@ -1,5 +1,4 @@
 import '../../core/constants/app_icons.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +6,7 @@ import 'package:jobnest/features/jobs/widgets/jobs_header.dart';
 import 'package:jobnest/features/jobs/widgets/jobs_search_and_filters.dart';
 import 'package:jobnest/features/jobs/widgets/jobs_overview.dart';
 import 'package:jobnest/features/jobs/widgets/job_list_card.dart';
-import 'package:jobnest/features/jobs/widgets/wizard_steps/create_job_wizard.dart';
+import 'package:jobnest/features/jobs/create_job/create_job_screen.dart';
 import 'package:jobnest/core/widgets/app_shimmer_loading.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
@@ -27,15 +26,7 @@ class JobsScreen extends StatelessWidget {
     final filteredJobs = filterProvider.filteredJobs;
     final bool isLoading = provider.isLoading;
 
-    // ===== BACKEND TODO =====
-    // TODO: Jobs API integration.
-    // TODO: Pagination.
-    // TODO: Server-side filtering.
-    // TODO: Real-time job updates.
-    // TODO: Bookmark sync.
-
     return Scaffold(
-      // backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
@@ -81,20 +72,14 @@ class JobsScreen extends StatelessWidget {
                             Text(
                               "Swipe left to archive",
                               style: theme.textTheme.labelSmall?.copyWith(
-                                fontSize: 13,
-                                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-                                fontStyle: FontStyle.italic,
+                                  fontSize: 13,
+                                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                                  fontStyle: FontStyle.italic,
                               ),
                             ),
                           ],
                         ),
                       ),
-
-                      // QA Simulation Toolbar (Hidden in release/demo mode)
-                      if (kDebugMode) ...[
-                        _buildQaSimulationBar(context, provider, theme),
-                        const SizedBox(height: 16),
-                      ],
 
                       // State Handling: Loading, Error, Empty, List
                       AnimatedSwitcher(
@@ -117,26 +102,29 @@ class JobsScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: Semantics(
-        label: "Create New Job Requisition",
-        button: true,
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            context.read<JobFormProvider>().initializeCreate();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context) => const CreateJobWizard(),
-              ),
-            );
-          },
-          icon: const Icon(AppIcons.add_rounded),
-          label: const Text(
-            "Create Job",
-            style: TextStyle(fontWeight: FontWeight.bold),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80.0),
+        child: Semantics(
+          label: "Create New Job Requisition",
+          button: true,
+          child: FloatingActionButton.extended(
+            onPressed: () {
+              context.read<JobFormProvider>().initializeCreate();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => const CreateJobScreen(),
+                ),
+              );
+            },
+            icon: const Icon(AppIcons.add_rounded),
+            label: const Text(
+              "Create Job",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            elevation: 4,
           ),
-          elevation: 4,
         ),
       ),
     );
@@ -223,7 +211,7 @@ class JobsScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       fullscreenDialog: true,
-                      builder: (context) => const CreateJobWizard(),
+                      builder: (context) => const CreateJobScreen(),
                     ),
                   );
                 },
@@ -319,92 +307,6 @@ class JobsScreen extends StatelessWidget {
           ),
         );
       }).toList(),
-    );
-  }
-
-  Widget _buildQaSimulationBar(BuildContext context, JobProvider provider, ThemeData theme) {
-    if (!kDebugMode) return const SizedBox.shrink();
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
-      ),
-      child: Wrap(
-        alignment: WrapAlignment.spaceBetween,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 12,
-        runSpacing: 12,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(AppIcons.bug_report_rounded, size: 16, color: theme.colorScheme.primary),
-              const SizedBox(width: 8),
-              Text(
-                "ATS QA Controls:",
-                style: theme.textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary,
-                ),
-              ),
-            ],
-          ),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _buildQaButton(
-                context,
-                "Skeleton Load",
-                () => provider.simulateJobsLoading(),
-              ),
-              _buildQaButton(
-                context,
-                "Simulate Error",
-                () => provider.simulateJobsError(),
-              ),
-              _buildQaButton(
-                context,
-                "Empty State",
-                () => provider.simulateJobsEmpty(),
-              ),
-              _buildQaButton(
-                context,
-                "Reset Default",
-                () => provider.restoreJobsDefault(),
-                isPrimary: true,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQaButton(BuildContext context, String label, VoidCallback onTap, {bool isPrimary = false}) {
-    final theme = Theme.of(context);
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: isPrimary ? theme.colorScheme.primary : theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: isPrimary ? theme.colorScheme.primary : theme.dividerColor.withValues(alpha: 0.5),
-          ),
-        ),
-        child: Text(
-          label,
-          style: theme.textTheme.labelSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: isPrimary ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface,
-          ),
-        ),
-      ),
     );
   }
 }

@@ -1,86 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'app_colors.dart';
+class AppTypography {
+  AppTypography._();
 
+  static TextStyle h1 = GoogleFonts.poppins(
+    fontSize: 34,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle h2 = GoogleFonts.poppins(
+    fontSize: 28,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle h3 = GoogleFonts.poppins(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle sectionTitle = GoogleFonts.poppins(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle cardTitle = GoogleFonts.poppins(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle body = GoogleFonts.poppins(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle caption = GoogleFonts.poppins(
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle small = GoogleFonts.poppins(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle button = GoogleFonts.poppins(
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
+  );
+}
+
+// Keep AppText for backward compatibility so existing code doesn't break
 class AppText {
   AppText._();
 
-  // ── Headings ──────────────────────────────────────────────────────────────
-  static TextStyle h1 = GoogleFonts.inter(
-    fontSize: 32,
-    fontWeight: FontWeight.w800,
-    height: 1.2,
-    letterSpacing: -0.5,
-  );
+  static TextStyle get h1 => AppTypography.h1;
+  static TextStyle get h2 => AppTypography.h2;
+  static TextStyle get h3 => AppTypography.h3;
+  static TextStyle get sectionTitle => AppTypography.sectionTitle;
+  static TextStyle get body => AppTypography.body;
+  static TextStyle get bodyMedium => AppTypography.body; // Map to body (Medium, 15)
+  static TextStyle get label => AppTypography.cardTitle;
+  static TextStyle get labelSmall => AppTypography.small;
+  static TextStyle get button => AppTypography.button;
+  static TextStyle get caption => AppTypography.caption;
 
-  static TextStyle h2 = GoogleFonts.inter(
-    fontSize: 24,
-    fontWeight: FontWeight.w700,
-    height: 1.25,
-    letterSpacing: -0.3,
-  );
-
-  static TextStyle h3 = GoogleFonts.inter(
-    fontSize: 20,
-    fontWeight: FontWeight.w700,
-    height: 1.3,
-    letterSpacing: -0.2,
-  );
-
-  // ── Section titles (dashboard widget headers) ─────────────────────────────
-  static TextStyle sectionTitle = GoogleFonts.inter(
-    fontSize: 16,
-    fontWeight: FontWeight.w700,
-    height: 1.3,
-    letterSpacing: -0.1,
-  );
-
-  // ── Body ──────────────────────────────────────────────────────────────────
-  static TextStyle body = GoogleFonts.inter(
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
-    height: 1.5,
-  );
-
-  static TextStyle bodyMedium = GoogleFonts.inter(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    height: 1.5,
-  );
-
-  // ── Labels & Chips ────────────────────────────────────────────────────────
-  static TextStyle label = GoogleFonts.inter(
-    fontSize: 13,
-    fontWeight: FontWeight.w600,
-    height: 1.4,
-  );
-
-  static TextStyle labelSmall = GoogleFonts.inter(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    height: 1.4,
-  );
-
-  // ── Button ────────────────────────────────────────────────────────────────
-  static TextStyle button = GoogleFonts.inter(
-    fontSize: 15,
-    fontWeight: FontWeight.w600,
-    height: 1.0,
-    letterSpacing: 0.1,
-    color: Colors.white,
-  );
-
-  // ── Caption / hint ────────────────────────────────────────────────────────
-  static TextStyle caption = GoogleFonts.inter(
-    fontSize: 12,
-    fontWeight: FontWeight.w400,
-    height: 1.4,
-  );
-
-  // ── Responsive greeting size helper ──────────────────────────────────────
-  /// Returns greeting font size based on screen width:
-  ///   Desktop (>800px): 28 | Tablet (480–800px): 22 | Mobile (<480px): 18
   static double greetingFontSize(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     if (width > 800) return 28.0;
@@ -88,7 +72,6 @@ class AppText {
     return 18.0;
   }
 
-  /// Company subtitle size per breakpoint: 14 / 13 / 12
   static double companyFontSize(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     if (width > 800) return 14.0;

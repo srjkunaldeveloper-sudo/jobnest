@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
@@ -11,7 +12,7 @@ class HomeFocus extends StatelessWidget {
   final VoidCallback? onNavigateToInterviews;
 
   const HomeFocus({
-    super.key,
+    key,
     this.onNavigateToJobs,
     this.onNavigateToCandidates,
     this.onNavigateToInterviews,
@@ -20,9 +21,10 @@ class HomeFocus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    
+    // Select existing metrics from DashboardProvider
     final int interviewsCount = context.select<DashboardProvider, int>((p) => p.todayInterviewsCount);
     final int candidatesCount = context.select<DashboardProvider, int>((p) => p.newCandidatesCount);
-    final int jobsCount = context.select<DashboardProvider, int>((p) => p.urgentJobsCount);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
@@ -30,69 +32,59 @@ class HomeFocus extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Today's Focus",
+                "🔥 Priority Follow-ups",
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.3,
                 ),
               ),
-              AppSpacing.w8,
-              const Icon(
-                Icons.star_rounded,
-                color: Colors.amber,
-                size: 20,
+              TextButton(
+                onPressed: () {},
+                child: const Text("View All"),
               ),
             ],
           ),
           AppSpacing.h16,
           
-          // Complete card with interactive rows, hover, pressed states and graceful empty handling
           AppCard(
-            padding: const EdgeInsets.all(12),
+            borderRadius: 18,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Row 1: Interviews Today
                 _FocusRowWidget(
-                  icon: interviewsCount > 0 ? Icons.calendar_month_rounded : Icons.check_circle_outline_rounded,
-                  iconColor: interviewsCount > 0 ? theme.colorScheme.primary : Colors.green,
-                  text: interviewsCount > 0 
-                      ? "$interviewsCount ${interviewsCount == 1 ? 'interview' : 'interviews'} today" 
-                      : "No interviews scheduled today — Tap to schedule",
-                  isEmpty: interviewsCount == 0,
-                  onTap: () {
-                    if (onNavigateToInterviews != null) onNavigateToInterviews!();
-                  },
+                  icon: LucideIcons.calendar,
+                  iconColor: theme.colorScheme.primary,
+                  text: "Today's Interviews",
+                  badgeText: "$interviewsCount",
+                  onTap: onNavigateToInterviews,
                 ),
-                const Divider(height: 16, thickness: 0.5),
-                
-                // Row 2: New Candidates
+                const Divider(height: 24, thickness: 0.5),
                 _FocusRowWidget(
-                  icon: candidatesCount > 0 ? Icons.group_add_rounded : Icons.person_search_outlined,
-                  iconColor: candidatesCount > 0 ? Colors.orange : theme.colorScheme.secondary,
-                  text: candidatesCount > 0 
-                      ? "$candidatesCount new ${candidatesCount == 1 ? 'candidate' : 'candidates'}" 
-                      : "No new candidates — Tap to explore talent pool",
-                  isEmpty: candidatesCount == 0,
-                  onTap: () {
-                    if (onNavigateToCandidates != null) onNavigateToCandidates!();
-                  },
+                  icon: LucideIcons.userCheck,
+                  iconColor: Colors.orange,
+                  text: "Candidates Pending Review",
+                  badgeText: "$candidatesCount",
+                  onTap: onNavigateToCandidates,
                 ),
-                const Divider(height: 16, thickness: 0.5),
-                
-                // Row 3: Urgent Jobs
+                const Divider(height: 24, thickness: 0.5),
                 _FocusRowWidget(
-                  icon: jobsCount > 0 ? Icons.campaign_rounded : Icons.work_outline_rounded,
-                  iconColor: jobsCount > 0 ? theme.colorScheme.error : theme.colorScheme.primary,
-                  text: jobsCount > 0 
-                      ? "$jobsCount urgent ${jobsCount == 1 ? 'job' : 'jobs'}" 
-                      : "No urgent requisitions — All job pipelines on track",
-                  isEmpty: jobsCount == 0,
-                  onTap: () {
-                    if (onNavigateToJobs != null) onNavigateToJobs!();
-                  },
+                  icon: LucideIcons.fileText,
+                  iconColor: Colors.purple,
+                  text: "Offer Letters Pending",
+                  badgeText: "--",
+                  onTap: onNavigateToJobs,
+                ),
+                const Divider(height: 24, thickness: 0.5),
+                _FocusRowWidget(
+                  icon: LucideIcons.barChart2,
+                  iconColor: Colors.teal,
+                  text: "AI Reports Pending",
+                  badgeText: "--",
+                  onTap: () {},
                 ),
               ],
             ),
@@ -107,15 +99,15 @@ class _FocusRowWidget extends StatefulWidget {
   final IconData icon;
   final Color iconColor;
   final String text;
-  final VoidCallback onTap;
-  final bool isEmpty;
+  final String badgeText;
+  final VoidCallback? onTap;
 
   const _FocusRowWidget({
     required this.icon,
     required this.iconColor,
     required this.text,
-    required this.onTap,
-    this.isEmpty = false,
+    required this.badgeText,
+    this.onTap,
   });
 
   @override
@@ -131,21 +123,25 @@ class _FocusRowWidgetState extends State<_FocusRowWidget> {
     final theme = Theme.of(context);
     
     return Semantics(
-      label: widget.text,
-      button: true,
+      label: "${widget.text}, ${widget.badgeText} items",
+      button: widget.onTap != null,
       child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (_) => setState(() => _isHovered = true),
-        onExit: (_) => setState(() => _isHovered = false),
+        cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        onEnter: (_) {
+          if (widget.onTap != null) setState(() => _isHovered = true);
+        },
+        onExit: (_) {
+          if (widget.onTap != null) setState(() => _isHovered = false);
+        },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           curve: Curves.easeOutCubic,
           constraints: const BoxConstraints(minHeight: 48),
           decoration: BoxDecoration(
             color: _isHovered
-                ? theme.colorScheme.primaryContainer.withValues(alpha: 0.25)
+                ? theme.colorScheme.primaryContainer.withValues(alpha: 0.15)
                 : (_isPressed
-                    ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6)
+                    ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5)
                     : Colors.transparent),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -153,11 +149,11 @@ class _FocusRowWidgetState extends State<_FocusRowWidget> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
-              onHover: (hovered) => setState(() => _isHovered = hovered),
-              onHighlightChanged: (pressed) => setState(() => _isPressed = pressed),
+              onHover: widget.onTap == null ? null : (hovered) => setState(() => _isHovered = hovered),
+              onHighlightChanged: widget.onTap == null ? null : (pressed) => setState(() => _isPressed = pressed),
               onTap: widget.onTap,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 12.0),
                 child: AnimatedScale(
                   scale: _isPressed ? 0.98 : 1.0,
                   duration: const Duration(milliseconds: 120),
@@ -168,7 +164,7 @@ class _FocusRowWidgetState extends State<_FocusRowWidget> {
                         height: 38,
                         width: 38,
                         decoration: BoxDecoration(
-                          color: widget.iconColor.withValues(alpha: widget.isEmpty ? 0.08 : 0.15),
+                          color: widget.iconColor.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Icon(
@@ -182,15 +178,29 @@ class _FocusRowWidgetState extends State<_FocusRowWidget> {
                         child: Text(
                           widget.text,
                           style: theme.textTheme.bodyLarge?.copyWith(
-                            fontWeight: widget.isEmpty ? FontWeight.w500 : FontWeight.w600,
-                            color: widget.isEmpty ? theme.colorScheme.onSurfaceVariant : theme.colorScheme.onSurface,
-                            fontStyle: widget.isEmpty ? FontStyle.italic : FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: widget.iconColor.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          widget.badgeText,
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: widget.iconColor,
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Icon(
-                        Icons.chevron_right_rounded,
+                        LucideIcons.chevronRight,
                         color: (_isHovered || _isPressed) ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
                         size: 22,
                       ),

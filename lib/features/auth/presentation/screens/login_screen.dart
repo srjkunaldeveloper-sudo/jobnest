@@ -102,102 +102,91 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: AuthCard(
-              child: ListenableBuilder(
-                listenable: widget.authProvider,
-                builder: (context, _) {
-                  final state = widget.authProvider.state;
-                  final isLoading = state.status == AuthStatus.loading;
+    return ListenableBuilder(
+      listenable: widget.authProvider,
+      builder: (context, _) {
+        final state = widget.authProvider.state;
+        final isLoading = state.status == AuthStatus.loading;
 
-                  return FocusTraversalGroup(
-                    policy: WidgetOrderTraversalPolicy(),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const AuthHeader(
-                            title: 'Welcome Back',
-                            subtitle:
-                                'Log in to your JobNest Enterprise account.',
-                            topWidget: AppLogo(size: 80),
-                          ),
-                          const SizedBox(height: 32),
+        return FocusTraversalGroup(
+          policy: WidgetOrderTraversalPolicy(),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const AuthHeader(
+                  title: 'Welcome Back',
+                  subtitle:
+                      'Log in to your JobNest Enterprise account.',
+                  topWidget: AppLogo(size: 80),
+                ),
+                const SizedBox(height: 32),
 
-                          AppTextField(
-                            label: 'Email',
-                            hint: 'Enter your corporate email',
-                            prefixIcon: const Icon(AppIcons.email_outlined),
-                            controller: _emailController,
-                            focusNode: _emailFocusNode,
-                            textInputAction: TextInputAction.next,
-                            onFieldSubmitted: (_) => FocusScope.of(
-                              context,
-                            ).requestFocus(_passwordFocusNode),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: _validateEmail,
-                            enabled: !isLoading,
-                          ),
-                          const SizedBox(height: 20),
+                AppTextField(
+                  label: 'Email',
+                  hint: 'Enter your corporate email',
+                  prefixIcon: const Icon(AppIcons.email_outlined),
+                  controller: _emailController,
+                  focusNode: _emailFocusNode,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) => FocusScope.of(
+                    context,
+                  ).requestFocus(_passwordFocusNode),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: _validateEmail,
+                  enabled: !isLoading,
+                ),
+                const SizedBox(height: 20),
 
-                          AppTextField(
-                            label: 'Password',
-                            hint: 'Enter your password',
-                            prefixIcon: const Icon(AppIcons.lock_outline),
-                            isPassword: true,
-                            controller: _passwordController,
-                            focusNode: _passwordFocusNode,
-                            textInputAction: TextInputAction.done,
-                            onFieldSubmitted: (_) => _handleLogin(),
-                            validator: _validatePassword,
-                            enabled: !isLoading,
-                          ),
-                          const SizedBox(height: 16),
+                AppTextField(
+                  label: 'Password',
+                  hint: 'Enter your password',
+                  prefixIcon: const Icon(AppIcons.lock_outline),
+                  isPassword: true,
+                  controller: _passwordController,
+                  focusNode: _passwordFocusNode,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => _handleLogin(),
+                  validator: _validatePassword,
+                  enabled: !isLoading,
+                ),
+                const SizedBox(height: 16),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              RememberMeCheckbox(
-                                value: _rememberMe,
-                                onChanged: isLoading
-                                    ? (val) {}
-                                    : (value) {
-                                        setState(() {
-                                          _rememberMe = value ?? false;
-                                        });
-                                      },
-                              ),
-                              ForgotPasswordButton(
-                                onPressed: isLoading
-                                    ? () {}
-                                    : widget.onForgotPassword,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 32),
-
-                          AppPrimaryButton(
-                            text: 'Log In',
-                            isLoading: isLoading,
-                            onPressed: isLoading ? null : _handleLogin,
-                            icon: AppIcons.login,
-                          ),
-                        ],
-                      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RememberMeCheckbox(
+                      value: _rememberMe,
+                      onChanged: isLoading
+                          ? (val) {}
+                          : (value) {
+                              setState(() {
+                                _rememberMe = value ?? false;
+                              });
+                            },
                     ),
-                  );
-                },
-              ),
+                    ForgotPasswordButton(
+                      onPressed: isLoading
+                          ? () {}
+                          : widget.onForgotPassword,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+
+                AppPrimaryButton(
+                  text: 'Log In',
+                  isLoading: isLoading,
+                  onPressed: isLoading ? null : _handleLogin,
+                  icon: AppIcons.login,
+                ),
+              ],
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -24,6 +24,9 @@ class JobFormProvider extends ChangeNotifier {
   final TextEditingController jobTitleController = TextEditingController();
   final TextEditingController companyController = TextEditingController(text: "JobNest Inc.");
   final TextEditingController locationController = TextEditingController();
+  
+  // NOTE: departmentController, hiringManagerController, and recruiterController are currently 
+  // unused in the UI and models. They are preserved here for future UI bindings/integrations.
   final TextEditingController departmentController = TextEditingController(text: "Engineering");
   final TextEditingController hiringManagerController = TextEditingController(text: "Sarah Jenkins");
   final TextEditingController recruiterController = TextEditingController(text: "Alex Morgan");
@@ -42,6 +45,7 @@ class JobFormProvider extends ChangeNotifier {
 
   // Step 2: AI Generator & Descriptions
   final TextEditingController promptController = TextEditingController(text: "Sales Executive Fresher");
+  // NOTE: descriptionController is connected to the JobModel.description field but is not bound to a UI field.
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController responsibilitiesController = TextEditingController(
     text: "• Identify and prospect new sales leads.\n• Maintain relationships with existing clients.\n• Achieve monthly sales targets.",
@@ -51,6 +55,9 @@ class JobFormProvider extends ChangeNotifier {
   );
   final TextEditingController requirementsController = TextEditingController(
     text: "• Bachelor's Degree in Business or related field.\n• Willingness to travel if required.",
+  );
+  final TextEditingController experienceDetailController = TextEditingController(
+    text: "• 0-1 years of experience in sales or marketing.\n• Fresher with strong aptitude can apply.",
   );
 
   List<String> _skills = ["Flutter", "Dart", "REST APIs", "Git"];
@@ -159,6 +166,8 @@ class JobFormProvider extends ChangeNotifier {
 
     promptController.text = "Sales Executive Fresher";
     descriptionController.clear();
+    experienceDetailController.text =
+        "• 0-1 years of experience in sales or marketing.\n• Fresher with strong aptitude can apply.";
     responsibilitiesController.text =
         "• Identify and prospect new sales leads.\n• Maintain relationships with existing clients.\n• Achieve monthly sales targets.";
     skillsTextController.text =
@@ -209,6 +218,8 @@ class JobFormProvider extends ChangeNotifier {
     requirementsController.text = job.requirements
         .map((r) => r.startsWith('• ') ? r : '• $r')
         .join('\n');
+    experienceDetailController.text =
+        "• 0-1 years of experience in sales or marketing.\n• Fresher with strong aptitude can apply.";
     _skills = List.from(job.skills);
     _benefits = List.from(job.benefits);
 
@@ -444,6 +455,66 @@ class JobFormProvider extends ChangeNotifier {
     maxApplicantsController.dispose();
     openingsController.dispose();
     deadlineController.dispose();
+    experienceDetailController.dispose();
     super.dispose();
+  }
+
+  bool get hasUnsavedChanges {
+    if (!_isInitialized) return false;
+    if (_isEditMode) {
+      final job = _editingJob;
+      if (job == null) return false;
+      return jobTitleController.text != job.title ||
+          companyController.text != job.company ||
+          locationController.text != job.location ||
+          descriptionController.text != job.description ||
+          _employmentType != job.jobType ||
+          _status != job.status ||
+          _isUrgent != job.isUrgent ||
+          formattedSalary != job.salary ||
+          !_listEquals(skills, job.skills) ||
+          !_listEquals(benefits, job.benefits) ||
+          responsibilitiesController.text != job.responsibilities.map((r) => r.startsWith('• ') ? r : '• $r').join('\n') ||
+          requirementsController.text != job.requirements.map((r) => r.startsWith('• ') ? r : '• $r').join('\n');
+    } else {
+      return jobTitleController.text.isNotEmpty ||
+          locationController.text.isNotEmpty ||
+          companyController.text != "JobNest Inc." ||
+          _employmentType != "Full Time" ||
+          _workMode != "Office" ||
+          _workingDays != "5 Days" ||
+          _workingHours != "Standard (9-5)" ||
+          !_listEquals(_benefits, ["Health Insurance", "Paid Time Off", "Learning Budget"]) ||
+          promptController.text != "Sales Executive Fresher" ||
+          !_listEquals(_skills, ["Flutter", "Dart", "REST APIs", "Git"]) ||
+          minSalaryController.text != "400000" ||
+          maxSalaryController.text != "600000" ||
+          _currency != "INR (₹)" ||
+          _salaryType != "Yearly" ||
+          _experience != "1-3 Years" ||
+          !_listEquals(_education, ["Bachelor's", "Master's"]) ||
+          !_listEquals(_noticePeriod, ["Immediate", "15 Days"]) ||
+          !_listEquals(_languages, ["English", "Hindi"]) ||
+          maxApplicantsController.text.isNotEmpty ||
+          openingsController.text != "1" ||
+          deadlineController.text != "30 Aug 2026" ||
+          _status != "Open" ||
+          !_isUrgent ||
+          _autoShortlist ||
+          !_fastHiring;
+    }
+  }
+
+  void clearInitialized() {
+    _isInitialized = false;
+    notifyListeners();
+  }
+
+  bool _listEquals(List<String> a, List<String> b) {
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
   }
 }

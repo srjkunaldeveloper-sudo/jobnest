@@ -36,8 +36,8 @@ class _HomeAiAssistantState extends State<HomeAiAssistant> {
         padding: EdgeInsets.only(bottom: 20.0),
         child: AppShimmerLoading(
           width: double.infinity,
-          height: 180,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+          height: 160,
+          borderRadius: BorderRadius.all(Radius.circular(18)),
         ),
       );
     }
@@ -45,6 +45,7 @@ class _HomeAiAssistantState extends State<HomeAiAssistant> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0), // Bottom padding 20px
       child: AppCard(
+        borderRadius: 18,
         padding: const EdgeInsets.all(16), // Overall card padding reduced to 16px
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

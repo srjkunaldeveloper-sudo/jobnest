@@ -1,7 +1,6 @@
-import '../../../core/constants/app_icons.dart';
+import 'package:jobnest/core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
-import 'package:jobnest/core/constants/app_colors.dart';
 import 'package:jobnest/core/constants/app_text.dart';
 import 'package:jobnest/features/notifications/notifications_screen.dart';
 
@@ -11,12 +10,10 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key, this.onProfileTap});
 
   static bool _isDesktop(double w)  => w > 800;
-  static bool _isTablet(double w)   => w > 480 && w <= 800;
 
   @override
   Widget build(BuildContext context) {
     final theme  = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     final width  = MediaQuery.of(context).size.width;
 
     final now   = DateTime.now();
@@ -74,7 +71,7 @@ class HomeHeader extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     _OutlinedAction(
-                      icon: AppIcons.notifications,
+                      icon: AppIcons.notifications_outlined,
                       onTap: () {
                          Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen()));
                       },

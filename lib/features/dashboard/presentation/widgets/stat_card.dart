@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../core/widgets/app_card.dart';
+import 'package:jobnest/core/widgets/app_card.dart';
 
 class StatCard extends StatelessWidget {
   final IconData icon;
@@ -24,7 +24,6 @@ class StatCard extends StatelessWidget {
     return AppCard(
       padding: const EdgeInsets.all(20.0),
       onTap: onTap,
-      borderRadius: 16.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

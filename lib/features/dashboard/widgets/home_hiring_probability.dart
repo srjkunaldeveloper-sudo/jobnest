@@ -46,10 +46,11 @@ class HomeHiringProbability extends StatelessWidget {
             const AppShimmerLoading(
               width: double.infinity,
               height: 260,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: BorderRadius.all(Radius.circular(18)),
             )
           else
             AppCard(
+              borderRadius: 18,
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [

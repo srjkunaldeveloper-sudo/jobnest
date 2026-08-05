@@ -48,10 +48,11 @@ class HomeDailyTasks extends StatelessWidget {
             const AppShimmerLoading(
               width: double.infinity,
               height: 220,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: BorderRadius.all(Radius.circular(18)),
             )
           else if (isEmpty)
             AppCard(
+              borderRadius: 18,
               padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
               child: Center(
                 child: Column(
@@ -84,6 +85,7 @@ class HomeDailyTasks extends StatelessWidget {
             )
           else
             AppCard(
+              borderRadius: 18,
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

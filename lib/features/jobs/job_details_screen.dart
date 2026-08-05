@@ -9,7 +9,7 @@ import 'package:jobnest/features/jobs/widgets/job_details/details_pipeline.dart'
 import 'package:jobnest/features/jobs/widgets/job_details/details_analytics.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_ai_insights.dart';
 import 'package:jobnest/features/jobs/widgets/job_details/details_top_candidates.dart';
-import 'package:jobnest/features/jobs/widgets/wizard_steps/create_job_wizard.dart';
+import 'package:jobnest/features/jobs/create_job/create_job_screen.dart';
 
 class JobDetailsScreen extends StatelessWidget {
   final String title;
@@ -117,7 +117,7 @@ class JobDetailsScreen extends StatelessWidget {
             context.read<JobFormProvider>().initializeEdit(jobToEdit);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => CreateJobWizard(initialJob: jobToEdit)),
+              MaterialPageRoute(builder: (_) => const CreateJobScreen()),
             );
           },
           icon: const Icon(AppIcons.edit_rounded),

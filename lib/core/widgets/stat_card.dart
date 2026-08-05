@@ -34,12 +34,45 @@ class _StatCardState extends State<StatCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final borderColor = isDark ? AppColors.borderDark : AppColors.borderLight;
-    final hoverBorderColor = theme.colorScheme.primary.withValues(alpha: 0.25);
-    final surfaceColor = isDark ? AppColors.darkSurface : AppColors.lightSurface;
+    final borderColor = isDark ? widget.color.withValues(alpha: 0.3) : widget.color.withValues(alpha: 0.15);
+    final hoverBorderColor = theme.colorScheme.primary.withValues(alpha: 0.3);
+    final surfaceColor = isDark ? widget.color.withValues(alpha: 0.12) : widget.color.withValues(alpha: 0.05);
 
-    final trendPositiveColor = const Color(0xFF16A34A); // Green-600
-    final trendNegativeColor = const Color(0xFFDC2626); // Red-600
+    final trendPositiveBg = const Color(0xFFDCFCE7);
+    final trendPositiveText = const Color(0xFF16A34A);
+    final trendNegativeBg = const Color(0xFFFEE2E2);
+    final trendNegativeText = const Color(0xFFDC2626);
+
+    Color iconBgColor = widget.color.withValues(alpha: 0.12);
+    Color iconColor = widget.color;
+
+    if (!isDark) {
+      if (widget.color == Colors.blueAccent) {
+        iconBgColor = const Color(0xFFEEF4FF);
+        iconColor = const Color(0xFF2563EB);
+      } else if (widget.color == Colors.redAccent) {
+        iconBgColor = const Color(0xFFFEE2E2);
+        iconColor = const Color(0xFFDC2626);
+      } else if (widget.color == Colors.orangeAccent) {
+        iconBgColor = const Color(0xFFFFF4E8);
+        iconColor = const Color(0xFFEA580C);
+      } else if (widget.color == Colors.deepOrangeAccent) {
+        iconBgColor = const Color(0xFFFFECE5);
+        iconColor = const Color(0xFFE04F1A);
+      } else if (widget.color == Colors.greenAccent) {
+        iconBgColor = const Color(0xFFECFDF3);
+        iconColor = const Color(0xFF16A34A);
+      } else if (widget.color == Colors.purpleAccent) {
+        iconBgColor = const Color(0xFFF5EEFF);
+        iconColor = const Color(0xFF7C3AED);
+      } else if (widget.color == Colors.pinkAccent) {
+        iconBgColor = const Color(0xFFFFF0F7);
+        iconColor = const Color(0xFFDB2777);
+      } else if (widget.color == Colors.tealAccent) {
+        iconBgColor = const Color(0xFFECFBFF);
+        iconColor = const Color(0xFF0891B2);
+      }
+    }
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -48,23 +81,22 @@ class _StatCardState extends State<StatCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         curve: Curves.easeOutCubic,
-        transform: Matrix4.translationValues(0, _isHovered ? -3 : 0, 0),
+        transform: Matrix4.translationValues(0, _isHovered ? -2 : 0, 0),
         decoration: BoxDecoration(
           color: surfaceColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: _isHovered ? hoverBorderColor : borderColor,
-            width: _isHovered ? 1.5 : 1.0,
+            width: 1.0,
           ),
           boxShadow: [
             BoxShadow(
-              color: _isHovered
-                  ? theme.colorScheme.primary.withValues(alpha: 0.08)
-                  : (isDark
-                      ? Colors.black.withValues(alpha: 0.3)
-                      : const Color(0xFF0F172A).withValues(alpha: 0.04)),
-              blurRadius: _isHovered ? 16 : 8,
-              offset: Offset(0, _isHovered ? 6 : 2),
+              color: isDark
+                  ? Colors.black.withValues(alpha: 0.2)
+                  : const Color(0xFF0F172A).withValues(alpha: 0.04),
+              blurRadius: _isHovered ? 20 : 16,
+              spreadRadius: 0,
+              offset: Offset(0, _isHovered ? 8 : 6),
             ),
           ],
         ),
@@ -72,114 +104,88 @@ class _StatCardState extends State<StatCard> {
           color: Colors.transparent,
           child: InkWell(
             onTap: widget.onTap ?? () {},
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(18),
             splashColor: theme.colorScheme.primary.withValues(alpha: 0.06),
             highlightColor: theme.colorScheme.primary.withValues(alpha: 0.04),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Icon + Trend row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 40,
-                        height: 40,
+                        width: 48,
+                        height: 48,
                         decoration: BoxDecoration(
-                          color: widget.color.withValues(alpha: 0.10),
-                          borderRadius: BorderRadius.circular(8),
+                          color: iconBgColor,
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Center(
-                          child: Icon(widget.icon, color: widget.color, size: 20),
+                          child: Icon(
+                            widget.icon,
+                            color: iconColor,
+                            size: 22,
+                          ),
                         ),
                       ),
                       if (widget.trend.isNotEmpty)
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Container(
-                              height: 22,
-                              padding: const EdgeInsets.symmetric(horizontal: 6),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: (widget.isPositiveTrend
-                                        ? trendPositiveColor
-                                        : trendNegativeColor)
-                                    .withValues(alpha: 0.10),
-                                borderRadius: BorderRadius.circular(6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: widget.isPositiveTrend ? trendPositiveBg : trendNegativeBg,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                widget.isPositiveTrend
+                                    ? Icons.trending_up_rounded
+                                    : Icons.trending_down_rounded,
+                                color: widget.isPositiveTrend ? trendPositiveText : trendNegativeText,
+                                size: 12,
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    widget.isPositiveTrend
-                                        ? AppIcons.trending_up_rounded
-                                        : AppIcons.trending_down_rounded,
-                                    color: widget.isPositiveTrend
-                                        ? trendPositiveColor
-                                        : trendNegativeColor,
-                                    size: 10,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Flexible(
-                                    child: Text(
-                                      widget.trend,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w700,
-                                        color: widget.isPositiveTrend
-                                            ? trendPositiveColor
-                                            : trendNegativeColor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              const SizedBox(width: 4),
+                              Text(
+                                widget.trend,
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: widget.isPositiveTrend ? trendPositiveText : trendNegativeText,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  // Texts
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      // Count
-                      Text(
-                        widget.count,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.headlineLarge?.copyWith(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.6,
-                          height: 1.1,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      // Title
-                      Expanded(
-                        child: Text(
-                          widget.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    widget.count,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? Colors.white : const Color(0xFF1E293B),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    widget.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF64748B),
+                    ),
                   ),
                 ],
               ),

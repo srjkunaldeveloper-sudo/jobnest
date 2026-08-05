@@ -22,6 +22,7 @@ class MockAuthRepository implements AuthRepository {
           user: const UserModel(
             id: 'usr_1',
             email: 'admin@jobnest.com',
+
             firstName: 'Admin',
             lastName: 'User',
             isEmailVerified: true,

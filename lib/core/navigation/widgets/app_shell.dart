@@ -83,12 +83,35 @@ class _AppShellState extends State<AppShell> {
               // Mobile layout
               return Scaffold(
                 appBar: const AppTopBar(),
-                body: IndexedStack(
-                  index: widget.provider.currentIndex,
-                  children: widget.screens,
-                ),
-                bottomNavigationBar: AppBottomNavigation(
-                  provider: widget.provider,
+                body: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Builder(
+                        builder: (context) {
+                          final mediaQuery = MediaQuery.of(context);
+                          return MediaQuery(
+                            data: mediaQuery.copyWith(
+                              padding: mediaQuery.padding.copyWith(
+                                bottom: mediaQuery.padding.bottom + 92,
+                              ),
+                            ),
+                            child: IndexedStack(
+                              index: widget.provider.currentIndex,
+                              children: widget.screens,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      right: 20,
+                      bottom: 16 + MediaQuery.of(context).padding.bottom,
+                      child: AppBottomNavigation(
+                        provider: widget.provider,
+                      ),
+                    ),
+                  ],
                 ),
               );
             }

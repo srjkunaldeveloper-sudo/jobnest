@@ -611,9 +611,13 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Icon(icon, color: theme.colorScheme.primary, size: 20),
                 AppSpacing.w12,
-                Text(
-                  title,
-                  style: AppText.label.copyWith(color: theme.colorScheme.primary),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: AppText.label.copyWith(color: theme.colorScheme.primary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

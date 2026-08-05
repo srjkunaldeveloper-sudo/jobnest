@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:jobnest/core/storage/secure_storage.dart';
 import '../../core/constants/app_icons.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
 
@@ -10,6 +11,7 @@ import 'package:jobnest/core/services/session_manager.dart';
 import 'package:jobnest/features/auth/auth_flow_screen.dart';
 import 'package:jobnest/features/onboarding/onboarding_screen.dart';
 import 'package:jobnest/main.dart';
+import 'package:jobnest/core/constants/app_config.dart' as constants;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -114,6 +116,10 @@ class _SplashScreenState extends State<SplashScreen>
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
+            if (constants.AppConfig.kSkipAuth &&
+                !Platform.environment.containsKey('FLUTTER_TEST')) {
+              return const MainDashboard();
+            }
             if (isFirstLaunch) {
               return const OnboardingScreen();
             }

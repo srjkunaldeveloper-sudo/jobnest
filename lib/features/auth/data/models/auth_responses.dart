@@ -4,41 +4,52 @@ import 'user_model.dart';
 /// Response payload received after a successful login.
 @immutable
 class LoginResponse {
-  // TODO: TEMPORARY PLACEHOLDER FIELDS - DO NOT ASSUME BACKEND SCHEMA
-  // Wait for the exact POST /api-recruiter/login/ response structure.
-  
-  // TODO: Verify exact token field name (e.g. 'access_token', 'token', 'jwt').
-  // Maintained as 'accessToken' for backward compatibility with MockAuthRepository.
+  /// The access token to be used for authentication.
   final String accessToken;
-  
-  // TODO: Verify if a refresh token is returned and its exact JSON key.
+
+  /// The refresh token to be used to obtain a new access token.
   final String refreshToken;
-  
-  // TODO: Verify user model fields and JSON structure.
+
+  /// The authenticated recruiter user details.
   final UserModel user;
+
+  /// Whether the user needs to complete their profile setup.
+  final bool requiresProfileCompletion;
+
+  /// The redirect URL path (e.g. '/dashboard') after login.
+  final String? redirectTo;
+
+  /// Flag indicating if this is a newly registered user.
+  final bool isNewUser;
 
   const LoginResponse({
     required this.accessToken,
     required this.refreshToken,
     required this.user,
+    this.requiresProfileCompletion = false,
+    this.redirectTo,
+    this.isNewUser = false,
   });
 
-  // TODO: The backend response schema is missing from the OpenAPI contract and must be verified before final mapping.
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      // TODO: BACKEND CONTRACT REQUIRED - Do not assume 'accessToken' or 'refreshToken' keys.
-      accessToken: json['accessToken'] as String,
-      refreshToken: json['refreshToken'] as String,
-      // TODO: BACKEND CONTRACT REQUIRED - Do not assume 'user' object structure.
+      accessToken: json['access'] as String,
+      refreshToken: json['refresh'] as String,
       user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
+      requiresProfileCompletion: json['requires_profile_completion'] as bool? ?? false,
+      redirectTo: json['redirect_to'] as String?,
+      isNewUser: json['is_new_user'] as bool? ?? false,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'accessToken': accessToken,
-      'refreshToken': refreshToken,
+      'access': accessToken,
+      'refresh': refreshToken,
       'user': user.toJson(),
+      'requires_profile_completion': requiresProfileCompletion,
+      'redirect_to': redirectTo,
+      'is_new_user': isNewUser,
     };
   }
 
@@ -46,11 +57,17 @@ class LoginResponse {
     String? accessToken,
     String? refreshToken,
     UserModel? user,
+    bool? requiresProfileCompletion,
+    String? redirectTo,
+    bool? isNewUser,
   }) {
     return LoginResponse(
       accessToken: accessToken ?? this.accessToken,
       refreshToken: refreshToken ?? this.refreshToken,
       user: user ?? this.user,
+      requiresProfileCompletion: requiresProfileCompletion ?? this.requiresProfileCompletion,
+      redirectTo: redirectTo ?? this.redirectTo,
+      isNewUser: isNewUser ?? this.isNewUser,
     );
   }
 
@@ -60,11 +77,20 @@ class LoginResponse {
     return other is LoginResponse &&
         other.accessToken == accessToken &&
         other.refreshToken == refreshToken &&
-        other.user == user;
+        other.user == user &&
+        other.requiresProfileCompletion == requiresProfileCompletion &&
+        other.redirectTo == redirectTo &&
+        other.isNewUser == isNewUser;
   }
 
   @override
-  int get hashCode => accessToken.hashCode ^ refreshToken.hashCode ^ user.hashCode;
+  int get hashCode =>
+      accessToken.hashCode ^
+      refreshToken.hashCode ^
+      user.hashCode ^
+      requiresProfileCompletion.hashCode ^
+      (redirectTo?.hashCode ?? 0) ^
+      isNewUser.hashCode;
 }
 
 /// Response payload received after a successful token refresh.

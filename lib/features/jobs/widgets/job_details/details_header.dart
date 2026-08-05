@@ -12,6 +12,10 @@ class DetailsHeader extends StatelessWidget {
   final String jobType;
   final String status;
   final JobModel? job;
+  final String? experience;
+  final String? closingDate;
+  final VoidCallback? onShareTap;
+  final VoidCallback? onMoreTap;
 
   const DetailsHeader({
     super.key,
@@ -22,6 +26,10 @@ class DetailsHeader extends StatelessWidget {
     required this.jobType,
     required this.status,
     this.job,
+    this.experience,
+    this.closingDate,
+    this.onShareTap,
+    this.onMoreTap,
   });
 
   @override
@@ -35,38 +43,30 @@ class DetailsHeader extends StatelessWidget {
     final bool isBookmarked = activeJob?.isBookmarked ?? false;
     final String displayStatus = activeJob?.status ?? status;
     final String postedDate = activeJob?.postedDate ?? "2 days ago";
+    final int matchScore = activeJob?.aiMatchScore ?? 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Top Row: Job Title (large), Status Badge & Actions (right)
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "$company • $location",
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+              child: Text(
+                title,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -0.5,
+                ),
               ),
             ),
+            const SizedBox(width: 8),
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
+                _buildStatusBadge(theme, displayStatus),
+                const SizedBox(width: 6),
                 // Bookmark button (48dp touch target)
                 Semantics(
                   label: isBookmarked ? "Remove Bookmark" : "Bookmark Job Requisition",
@@ -82,36 +82,98 @@ class DetailsHeader extends StatelessWidget {
                     iconColor: isBookmarked ? theme.colorScheme.primary : theme.colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 6),
                 Semantics(
                   label: "Share Requisition",
                   button: true,
-                  child: _buildIconButton(context, AppIcons.share_rounded, () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Job link copied to clipboard.")),
-                    );
-                  }),
+                  child: _buildIconButton(
+                    context,
+                    AppIcons.share_rounded,
+                    onShareTap,
+                  ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 6),
                 Semantics(
                   label: "More Actions",
                   button: true,
-                  child: _buildIconButton(context, AppIcons.more_vert_rounded, () {}),
+                  child: _buildIconButton(
+                    context,
+                    AppIcons.more_vert_rounded,
+                    onMoreTap,
+                  ),
                 ),
               ],
             ),
           ],
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 12),
+
+        // Second Row: Company Badge & AI Match Badge
         Wrap(
-          spacing: 14,
-          runSpacing: 12,
+          spacing: 10,
+          runSpacing: 8,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            _buildInfoChip(context, AppIcons.monetization_on_rounded, salary),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                ),
+              ),
+              child: Text(
+                company,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+            if (matchScore > 0)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.deepPurpleAccent.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.deepPurpleAccent.withValues(alpha: 0.25),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(AppIcons.auto_awesome_rounded, color: Colors.deepPurpleAccent, size: 12),
+                    const SizedBox(width: 4),
+                    Text(
+                      "$matchScore% AI Match",
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: Colors.deepPurpleAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 16),
+
+        // Combined metadata into a single-row layout whenever horizontal space permits
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            _buildInfoChip(context, AppIcons.location_on_rounded, location),
             _buildInfoChip(context, AppIcons.work_outline_rounded, jobType),
-            _buildInfoChip(context, AppIcons.calendar_today_rounded, postedDate),
-            _buildStatusBadge(theme, displayStatus),
+            _buildInfoChip(context, AppIcons.monetization_on_rounded, salary, isSalary: true),
+            if (experience != null && experience!.isNotEmpty && experience != "--")
+              _buildInfoChip(context, AppIcons.work_history_rounded, experience!),
+            _buildInfoChip(context, AppIcons.calendar_today_rounded, "Posted: $postedDate"),
+            if (closingDate != null && closingDate!.isNotEmpty && closingDate != "--")
+              _buildInfoChip(context, Icons.event_busy_rounded, "Closing: $closingDate!"),
           ],
         ),
       ],
@@ -123,13 +185,13 @@ class DetailsHeader extends StatelessWidget {
     IconData badgeIcon = AppIcons.check_circle_rounded;
     final s = statusStr.toLowerCase();
 
-    if (s == "active" || s == "open") {
+    if (s == "active" || s == "open" || s == "live") {
       badgeColor = Colors.green;
       badgeIcon = AppIcons.check_circle_rounded;
     } else if (s == "hiring") {
       badgeColor = Colors.blueAccent;
       badgeIcon = AppIcons.group_add_rounded;
-    } else if (s == "paused") {
+    } else if (s == "paused" || s == "expired") {
       badgeColor = Colors.amber.shade700;
       badgeIcon = AppIcons.pause_circle_filled_rounded;
     } else if (s == "closed") {
@@ -141,7 +203,7 @@ class DetailsHeader extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: badgeColor.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(20),
@@ -150,13 +212,15 @@ class DetailsHeader extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(badgeIcon, size: 15, color: badgeColor),
-          const SizedBox(width: 6),
+          Icon(badgeIcon, size: 12, color: badgeColor),
+          const SizedBox(width: 4),
           Text(
             statusStr,
-            style: theme.textTheme.labelMedium?.copyWith(
+            style: theme.textTheme.labelSmall?.copyWith(
               color: badgeColor,
               fontWeight: FontWeight.bold,
+              letterSpacing: 0.2,
+              fontSize: 10,
             ),
           ),
         ],
@@ -164,44 +228,72 @@ class DetailsHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildIconButton(BuildContext context, IconData icon, VoidCallback onTap, {Color? iconColor}) {
+  Widget _buildIconButton(BuildContext context, IconData icon, VoidCallback? onTap, {Color? iconColor}) {
     final theme = Theme.of(context);
+    final isEnabled = onTap != null;
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: isEnabled ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerLow.withValues(alpha: 0.5),
         shape: BoxShape.circle,
         border: Border.all(
-          color: theme.dividerColor.withValues(alpha: 0.5),
+          color: theme.dividerColor.withValues(alpha: isEnabled ? 0.5 : 0.2),
         ),
       ),
       child: IconButton(
-        icon: Icon(icon, size: 20, color: iconColor ?? theme.colorScheme.onSurface),
+        icon: Icon(
+          icon,
+          size: 18,
+          color: isEnabled
+              ? (iconColor ?? theme.colorScheme.onSurface)
+              : theme.disabledColor,
+        ),
         onPressed: onTap,
-        splashRadius: 24,
-        constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+        splashRadius: 20,
+        constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+        padding: EdgeInsets.zero,
       ),
     );
   }
 
-  Widget _buildInfoChip(BuildContext context, IconData icon, String label) {
+  Widget _buildInfoChip(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    bool isSalary = false,
+  }) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        color: isSalary
+            ? theme.colorScheme.primaryContainer.withValues(alpha: 0.8)
+            : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: isSalary
+              ? theme.colorScheme.primary.withValues(alpha: 0.3)
+              : theme.dividerColor.withValues(alpha: 0.2),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: theme.colorScheme.onSurfaceVariant),
-          const SizedBox(width: 6),
+          Icon(
+            icon,
+            size: 13,
+            color: isSalary
+                ? theme.colorScheme.onPrimaryContainer
+                : theme.colorScheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: 5),
           Text(
             label,
-            style: theme.textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface,
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: isSalary
+                  ? theme.colorScheme.onPrimaryContainer
+                  : theme.colorScheme.onSurface,
+              fontSize: 11,
             ),
           ),
         ],

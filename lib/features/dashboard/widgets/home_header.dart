@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/features/notifications/notifications_screen.dart';
@@ -53,7 +54,7 @@ class HomeHeader extends StatelessWidget {
                     color: theme.colorScheme.surfaceContainerHighest,
                   ),
                   child: Icon(
-                    Icons.person_rounded,
+                    LucideIcons.user,
                     color: theme.colorScheme.onSurfaceVariant,
                     size: 24,
                   ),
@@ -102,7 +103,7 @@ class HomeHeader extends StatelessWidget {
             children: [
               _buildIconButton(
                 context,
-                icon: Icons.notifications_rounded,
+                icon: LucideIcons.bell,
                 tooltip: "Notifications",
                 hasBadge: true,
                 onTap: () {
@@ -116,7 +117,7 @@ class HomeHeader extends StatelessWidget {
               ),
               _buildIconButton(
                 context,
-                icon: Icons.message_rounded,
+                icon: LucideIcons.messageSquare,
                 tooltip: "Messages",
                 hasBadge: true,
                 onTap: () {},

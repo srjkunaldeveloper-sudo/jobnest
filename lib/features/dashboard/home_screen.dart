@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:jobnest/core/constants/app_colors.dart';
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
 import 'package:jobnest/core/widgets/app_error_state.dart';
@@ -20,6 +19,8 @@ import 'package:jobnest/features/dashboard/widgets/home_daily_tasks.dart';
 import 'package:jobnest/features/dashboard/widgets/home_activity_timeline.dart';
 import 'package:jobnest/features/dashboard/widgets/home_smart_notifications.dart';
 import 'package:jobnest/features/dashboard/widgets/home_hiring_probability.dart';
+import 'package:jobnest/features/dashboard/widgets/home_pipeline_snapshot.dart';
+import 'package:jobnest/features/dashboard/widgets/home_today_interviews.dart';
 
 class HomeScreen extends StatelessWidget {
   final VoidCallback? onProfileTap;
@@ -42,22 +43,16 @@ class HomeScreen extends StatelessWidget {
     final bool isError = provider.isDashboardError;
 
     return Scaffold(
-      // backgroundColor: theme.colorScheme.surface, // Depth canvas — cards lift against this
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => provider.refreshDashboard(),
           color: theme.colorScheme.primary,
-          // backgroundColor: theme.colorScheme.surface,
           displacement: 40,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              // 8pt spacing system — responsive padding per breakpoint
-              final double hPad = constraints.maxWidth > 800
-                  ? 24.0
-                  : constraints.maxWidth > 480
-                      ? 20.0
-                      : 16.0;
-              final double vPad = constraints.maxWidth > 800 ? 24.0 : 20.0;
+              final double hPad = constraints.maxWidth > 480 ? 24.0 : 20.0;
+              final double vPad = 16.0;
               return SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics(),
@@ -85,6 +80,12 @@ class HomeScreen extends StatelessWidget {
 
                       // Section 5 & 6: Quick Stats (Shimmer loading & empty metrics banner)
                       HomeQuickStats(),
+
+                      // Pipeline Snapshot overview
+                      const HomePipelineSnapshot(),
+
+                      // Today's Interviews list card
+                      const HomeTodayInterviews(),
 
                       // Section 5: Analytics
                       HomeAnalytics(),

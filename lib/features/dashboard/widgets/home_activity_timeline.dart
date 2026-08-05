@@ -46,10 +46,11 @@ class HomeActivityTimeline extends StatelessWidget {
             const AppShimmerLoading(
               width: double.infinity,
               height: 250,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: BorderRadius.all(Radius.circular(18)),
             )
           else if (isEmpty)
             AppCard(
+              borderRadius: 18,
               padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
               child: Center(
                 child: Column(
@@ -82,6 +83,7 @@ class HomeActivityTimeline extends StatelessWidget {
             )
           else
             AppCard(
+              borderRadius: 18,
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: provider.activityTimeline.asMap().entries.map((entry) {

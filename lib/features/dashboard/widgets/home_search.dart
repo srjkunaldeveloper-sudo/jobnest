@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import 'package:jobnest/core/constants/app_spacing.dart';
 import 'package:jobnest/features/dashboard/providers/dashboard_provider.dart';
@@ -188,7 +189,7 @@ class _HomeSearchState extends State<HomeSearch> {
                     child: Row(
                       children: [
                         Icon(
-                          Icons.search_rounded,
+                          LucideIcons.search,
                           color: (_isHovered || _isPressed)
                               ? theme.colorScheme.primary
                               : theme.colorScheme.onSurfaceVariant,
@@ -210,7 +211,7 @@ class _HomeSearchState extends State<HomeSearch> {
                           onTap: () => _showVoiceSearchBottomSheet(context),
                           behavior: HitTestBehavior.opaque,
                           child: Icon(
-                            Icons.mic_none_rounded,
+                            LucideIcons.mic,
                             color: theme.colorScheme.onSurfaceVariant,
                             size: 20,
                           ),
@@ -222,7 +223,7 @@ class _HomeSearchState extends State<HomeSearch> {
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Icon(
-                            Icons.tune_rounded, // Simple ghost filter icon
+                            LucideIcons.sliders, // Simple ghost filter icon
                             color: theme.colorScheme.onSurfaceVariant,
                             size: 20,
                           ),
@@ -285,23 +286,12 @@ class _HomeSearchState extends State<HomeSearch> {
             onTap: () => _onChipSelected(label),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    isSelected ? Icons.check_circle_rounded : Icons.trending_up_rounded,
-                    size: 16,
-                    color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    label,
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                    ),
-                  ),
-                ],
+              child: Text(
+                label,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: isSelected ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                ),
               ),
             ),
           ),

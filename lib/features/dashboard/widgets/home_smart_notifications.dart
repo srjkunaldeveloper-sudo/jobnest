@@ -73,10 +73,11 @@ class HomeSmartNotifications extends StatelessWidget {
             const AppShimmerLoading(
               width: double.infinity,
               height: 250,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: BorderRadius.all(Radius.circular(18)),
             )
           else if (notifications.isEmpty)
             AppCard(
+              borderRadius: 18,
               padding: const EdgeInsets.all(24),
               child: Center(
                 child: Text(
@@ -89,6 +90,7 @@ class HomeSmartNotifications extends StatelessWidget {
             )
           else
             AppCard(
+              borderRadius: 18,
               padding: EdgeInsets.zero,
               child: Column(
                 children: notifications.asMap().entries.map((entry) {

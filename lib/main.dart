@@ -194,50 +194,48 @@ class _MainDashboardState extends State<MainDashboard> {
     ThemeData theme,
   ) {
     final isSelected = _currentIndex == index;
-    final color = isSelected
-        ? theme.colorScheme.primary
-        : theme.colorScheme.onSurfaceVariant;
+    final isDark = theme.brightness == Brightness.dark;
+    
+    final activeColor = isDark ? const Color(0xFF818CF8) : const Color(0xFF4F6DFF);
+    final inactiveColor = const Color(0xFF64748B);
+    final activeBgColor = isDark ? const Color(0xFF312E81) : const Color(0xFFEEF2FF);
 
     return GestureDetector(
       onTap: () => setState(() => _currentIndex = index),
       behavior: HitTestBehavior.opaque,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOutCubic,
-              height: 2,
-              width: isSelected ? 24 : 0,
-              margin: const EdgeInsets.only(bottom: 10),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? theme.colorScheme.primary
-                    : Colors.transparent,
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(2),
-                ),
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOutCubic,
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected ? activeBgColor : Colors.transparent,
+              borderRadius: BorderRadius.circular(16),
             ),
-            Icon(icon, size: isSelected ? 24 : 22, color: color),
-            const SizedBox(height: 6),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                letterSpacing: -0.2,
-                color: color,
-              ),
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.visible,
+            child: Icon(
+              icon,
+              size: 24,
+              color: isSelected ? activeColor : inactiveColor,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 12,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              letterSpacing: -0.2,
+              color: isSelected ? activeColor : inactiveColor,
+            ),
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.visible,
+          ),
+        ],
       ),
     );
   }
@@ -276,40 +274,58 @@ class _MainDashboardState extends State<MainDashboard> {
     ];
 
     Widget mobileLayout = Scaffold(
-      body: _screens[_currentIndex],
-      bottomNavigationBar: Container(
-        height: 72,
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-          border: Border(
-            top: BorderSide(
-              color: theme.dividerColor.withValues(alpha: 0.4),
-              width: 1,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Builder(
+              builder: (context) {
+                final mediaQuery = MediaQuery.of(context);
+                return MediaQuery(
+                  data: mediaQuery.copyWith(
+                    padding: mediaQuery.padding.copyWith(
+                      bottom: mediaQuery.padding.bottom + 92,
+                    ),
+                  ),
+                  child: _screens[_currentIndex],
+                );
+              },
             ),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: isDark
-                  ? Colors.black.withValues(alpha: 0.16)
-                  : Colors.black.withValues(alpha: 0.03),
-              blurRadius: 12,
-              offset: const Offset(0, -4),
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: 16 + MediaQuery.of(context).padding.bottom,
+            child: Container(
+              height: 76,
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                borderRadius: BorderRadius.circular(38),
+                border: Border.all(
+                  color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 24,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildNavItem(0, LucideIcons.home, 'Home', theme),
+                  _buildNavItem(1, LucideIcons.briefcase, 'Jobs', theme),
+                  _buildNavItem(2, LucideIcons.users, 'Candidates', theme),
+                  _buildNavItem(3, LucideIcons.layoutGrid, 'Services', theme),
+                  _buildNavItem(4, LucideIcons.user, 'Profile', theme),
+                ],
+              ),
             ),
-          ],
-        ),
-        child: SafeArea(
-          top: false,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildNavItem(0, LucideIcons.home, 'Home', theme),
-              _buildNavItem(1, LucideIcons.briefcase, 'Jobs', theme),
-              _buildNavItem(2, LucideIcons.users, 'Candidates', theme),
-              _buildNavItem(3, LucideIcons.sparkles, 'Services', theme),
-              _buildNavItem(4, LucideIcons.user, 'Profile', theme),
-            ],
           ),
-        ),
+        ],
       ),
     );
 

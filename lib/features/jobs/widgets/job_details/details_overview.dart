@@ -2,7 +2,6 @@ import '../../../../core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:jobnest/core/models/recruitment_models.dart';
 import 'package:jobnest/core/widgets/app_card.dart';
-import 'package:jobnest/core/widgets/stat_card.dart';
 
 class DetailsOverview extends StatelessWidget {
   final JobModel? job;
@@ -12,112 +11,77 @@ class DetailsOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final JobModel defaultJob = const JobModel(
-      id: 'dummy',
-      title: 'Senior Sales Executive',
-      company: 'TechCorp India',
-      location: 'Delhi, India',
-      salary: '₹ 4 - 6 LPA',
-      jobType: 'Full Time',
-      applicationsCount: '246',
-      status: 'Open',
-      aiMatchScore: 92,
-    );
-    final JobModel activeJob = job ?? defaultJob;
+    
+    // If job is null, render the empty state instead of fake recruiter data
+    if (job == null) {
+      return const AppCard(
+        padding: EdgeInsets.all(24),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.info_outline, size: 48, color: Colors.grey),
+              SizedBox(height: 16),
+              Text(
+                "No requisition details available.",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final JobModel activeJob = job!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // 1. ATS Stat Cards
-        LayoutBuilder(
-          builder: (context, constraints) {
-            double cardWidth;
-            if (constraints.maxWidth > 800) {
-              cardWidth = (constraints.maxWidth - (16 * 4)) / 5;
-            } else if (constraints.maxWidth > 500) {
-              cardWidth = (constraints.maxWidth - (16 * 2)) / 3;
-            } else {
-              cardWidth = (constraints.maxWidth - 16) / 2;
-            }
-            if (cardWidth < 0) cardWidth = 100.0;
-
-            return Wrap(
-              spacing: 16,
-              runSpacing: 16,
-              children: [
-                SizedBox(
-                  width: cardWidth,
-                  child: StatCard(
-                    title: "Applications",
-                    count: activeJob.applicationsCount,
-                    icon: AppIcons.description_outlined,
-                    color: Colors.blueAccent,
-                    trend: "+12%",
-                    isPositiveTrend: true,
-                  ),
-                ),
-                SizedBox(
-                  width: cardWidth,
-                  child: const StatCard(
-                    title: "Shortlisted",
-                    count: "45",
-                    icon: AppIcons.fact_check_outlined,
-                    color: Colors.orangeAccent,
-                    trend: "+3%",
-                    isPositiveTrend: true,
-                  ),
-                ),
-                SizedBox(
-                  width: cardWidth,
-                  child: const StatCard(
-                    title: "Interviews",
-                    count: "12",
-                    icon: AppIcons.people_alt_outlined,
-                    color: Colors.deepPurpleAccent,
-                    trend: "Stable",
-                  ),
-                ),
-                SizedBox(
-                  width: cardWidth,
-                  child: const StatCard(
-                    title: "Selected",
-                    count: "2",
-                    icon: AppIcons.star_border_rounded,
-                    color: Colors.green,
-                    trend: "+1",
-                    isPositiveTrend: true,
-                  ),
-                ),
-                SizedBox(
-                  width: cardWidth,
-                  child: const StatCard(
-                    title: "Rejected",
-                    count: "15",
-                    icon: AppIcons.cancel_outlined,
-                    color: Colors.redAccent,
-                    trend: "-2%",
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-        const SizedBox(height: 32),
-
-        // 2. Job Requisition Profile Card
+        // SECTION 1: Overview Card
         AppCard(
-          padding: const EdgeInsets.all(28),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Job Requisition Details",
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              _buildSectionHeading(theme, AppIcons.info_outline_rounded, "Requisition Overview"),
+              const SizedBox(height: 16),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final isWide = constraints.maxWidth > 600;
+                  return GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: isWide ? 2 : 1,
+                    childAspectRatio: isWide ? 3.5 : 4.5,
+                    mainAxisSpacing: 4,
+                    crossAxisSpacing: 16,
+                    children: [
+                      if (activeJob.company.isNotEmpty && activeJob.company != "--")
+                        _buildMetadataItem(context, AppIcons.work_outline_rounded, "Company", activeJob.company),
+                      if (activeJob.location.isNotEmpty && activeJob.location != "--")
+                        _buildMetadataItem(context, AppIcons.location_on_rounded, "Location", activeJob.location),
+                      if (activeJob.jobType.isNotEmpty && activeJob.jobType != "--")
+                        _buildMetadataItem(context, AppIcons.description_outlined, "Employment Type", activeJob.jobType),
+                      if (activeJob.salary.isNotEmpty && activeJob.salary != "--")
+                        _buildMetadataItem(context, AppIcons.monetization_on_rounded, "Salary Package", activeJob.salary),
+                      if (activeJob.postedDate.isNotEmpty && activeJob.postedDate != "--")
+                        _buildMetadataItem(context, AppIcons.calendar_today_rounded, "Posted Date", activeJob.postedDate),
+                    ],
+                  );
+                },
               ),
-              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
 
-              // About the Role
-              _buildSectionHeading(theme, AppIcons.info_outline_rounded, "About the Role (Company & Description)"),
+        // SECTION 2: Job Description
+        AppCard(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionHeading(theme, AppIcons.description_outlined, "Job Description"),
               const SizedBox(height: 12),
               Text(
                 activeJob.description,
@@ -126,96 +90,111 @@ class DetailsOverview extends StatelessWidget {
                   height: 1.6,
                 ),
               ),
-              const SizedBox(height: 28),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
 
-              // Key Responsibilities
-              _buildSectionHeading(theme, AppIcons.task_alt_rounded, "Key Responsibilities"),
+        // SECTION 3: Requirements
+        AppCard(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionHeading(theme, AppIcons.task_alt_rounded, "Requirements & Qualifications"),
               const SizedBox(height: 12),
-              ...activeJob.responsibilities.map((resp) => _buildBulletItem(theme, resp, AppIcons.check_circle_outline_rounded, Colors.blueAccent)),
-              const SizedBox(height: 28),
-
-              // Requirements & Qualifications
-              _buildSectionHeading(theme, AppIcons.school_outlined, "Requirements & Qualifications"),
-              const SizedBox(height: 12),
-              ...activeJob.requirements.map((req) => _buildBulletItem(theme, req, AppIcons.arrow_right_rounded, theme.colorScheme.primary)),
-              const SizedBox(height: 28),
-
-              // Required Skills
-              _buildSectionHeading(theme, AppIcons.auto_awesome_outlined, "Required Skills & Competencies"),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: activeJob.skills.map((skill) => _buildSkillChip(theme, skill)).toList(),
-              ),
-              const SizedBox(height: 28),
-
-              // Compensation & Benefits
-              _buildSectionHeading(theme, AppIcons.card_giftcard_rounded, "Compensation & Benefits"),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.green.withValues(alpha: 0.2)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(AppIcons.monetization_on_rounded, color: Colors.green, size: 28),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Annual Compensation Range",
-                            style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            activeJob.salary,
-                            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.green),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              ...activeJob.benefits.map((ben) => _buildBulletItem(theme, ben, AppIcons.favorite_border_rounded, Colors.pinkAccent)),
-              const SizedBox(height: 28),
-
-              // Hiring Timeline & Process
-              _buildSectionHeading(theme, AppIcons.timeline_rounded, "Hiring Timeline & Process"),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2)),
-                ),
-                child: Row(
-                  children: [
-                    Icon(AppIcons.access_time_filled_rounded, color: theme.colorScheme.primary, size: 24),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(
-                        activeJob.hiringTimeline,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                      ),
-                    ),
-                  ],
+              ...activeJob.requirements.map(
+                (req) => _buildBulletItem(
+                  theme,
+                  req,
+                  AppIcons.arrow_right_rounded,
+                  theme.colorScheme.primary,
                 ),
               ),
             ],
           ),
         ),
+
+        // Required Skills Section (Restored if available)
+        if (activeJob.skills.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          AppCard(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSectionHeading(theme, AppIcons.auto_awesome_outlined, "Required Skills & Competencies"),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: activeJob.skills.map((skill) => _buildSkillChip(theme, skill)).toList(),
+                ),
+              ],
+            ),
+          ),
+        ],
+
+        // SECTION 4: Benefits (only if data exists)
+        if (activeJob.benefits.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          AppCard(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSectionHeading(theme, AppIcons.card_giftcard_rounded, "Compensation & Benefits"),
+                const SizedBox(height: 12),
+                ...activeJob.benefits.map(
+                  (ben) => _buildBulletItem(
+                    theme,
+                    ben,
+                    AppIcons.favorite_border_rounded,
+                    Colors.pinkAccent,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+
+        // Hiring Timeline Section (Restored if timeline data exists)
+        if (activeJob.hiringTimeline.isNotEmpty && activeJob.hiringTimeline != "--") ...[
+          const SizedBox(height: 20),
+          AppCard(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSectionHeading(theme, AppIcons.timeline_rounded, "Hiring Timeline & Process"),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(AppIcons.access_time_filled_rounded, color: theme.colorScheme.primary, size: 24),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          activeJob.hiringTimeline,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -225,11 +204,13 @@ class DetailsOverview extends StatelessWidget {
       children: [
         Icon(icon, size: 20, color: theme.colorScheme.primary),
         const SizedBox(width: 10),
-        Text(
-          title,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
+        Expanded(
+          child: Text(
+            title,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onSurface,
+            ),
           ),
         ),
       ],
@@ -251,6 +232,43 @@ class DetailsOverview extends StatelessWidget {
                 color: theme.colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetadataItem(BuildContext context, IconData icon, String label, String value) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 18, color: theme.colorScheme.primary),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
